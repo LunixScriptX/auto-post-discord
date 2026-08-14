@@ -99,7 +99,16 @@
         .empty-state{color:var(--muted);text-align:center;padding:1.25rem;font-size:.82rem}
         .empty-state svg{width:36px;height:36px;margin-bottom:.5rem;color:var(--border)}
         .toast-custom{background:var(--card);border:1px solid var(--border);border-left:4px solid var(--accent)}
-        @media(max-width:768px){.container{padding:0 .3rem}.form-row > div{flex:1 1 100%}}
+        @media(max-width:768px){
+            .container{padding:0 .3rem}
+            .form-row{flex-direction:column}
+            .form-row > div{flex:1 1 100%}
+            .table-wrap{overflow-x:auto}
+            table{min-width:600px}
+            header h1{font-size:1.05rem}
+            .btn{padding:.55rem .9rem;font-size:.8rem}
+            .token-status{margin-left:0;width:100%;justify-content:center;margin-top:.5rem}
+        }
     </style>
 </head>
 <body>
@@ -420,18 +429,20 @@
                 if (!token) return notify('error', 'Token belum diisi');
                 cfg.running = true;
                 renderTable();
-                sendNow(cfg);
-                timers[i] = setInterval(() => sendNow(cfg), cfg.delay);
+                // kirim token explicitly biar selalu up-to-date
+                sendNow(cfg, token);
+                timers[i] = setInterval(() => sendNow(cfg, token), cfg.delay);
                 showToast.fire({ icon:'success', title:'Started' });
             }
         }
 
         // ===== Send message =====
-        function sendNow(cfg) {
+        function sendNow(cfg, tk) {
+            const auth = tk || token; // fallback ke global
             logMessage(cfg.message, cfg.channelID, 'sending');
             fetch(`https://discord.com/api/v10/channels/${cfg.channelID}/messages`, {
                 method:'POST',
-                headers:{'Authorization':token,'Content-Type':'application/json'},
+                headers:{'Authorization':auth,'Content-Type':'application/json'},
                 body:JSON.stringify({content:cfg.message})
             }).then(r => r.json().then(data => ({ ok:r.ok, data })))
               .then(({ok}) => logMessage(cfg.message, cfg.channelID, ok ? 'success' : 'failed'))
