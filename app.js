@@ -85,4 +85,37 @@ app.get('/conf/:authToken/load-configs', handleRequest(async (req) => {
     return { configs, autoPostState };
 }));
 
+app.post('/check-token', handleRequest(async (req) => {
+    const { token } = req.body;
+    if (!token) throw { status: 400, message: 'Token kosong' };
+    const resp = await fetch('https://discord.com/api/v10/users/@me', {
+        headers: { 'Authorization': token }
+    });
+    if (resp.ok) {
+        const user = await resp.json();
+        return { valid: true, username: user.username };
+    }
+    return { valid: false };
+}));
+
+app.post('/save-configs', handleRequest(async (req) => {
+    const { token, configs } = req.body;
+    if (!token) throw { status: 400, message: 'Token kosong' };
+    if (!Array.isArray(configs)) throw { status: 400, message: 'Data configs tidak valid. Harus berupa array.' };
+    const db = await readDB();
+    if (!db[token]) db[token] = {};
+    db[token].configs = configs;
+    await writeDB(db);
+    return { message: 'Configs berhasil disimpan.' };
+}));
+
+app.get('/load-configs', handleRequest(async (req) => {
+    const token = req.query.token;
+    if (!token) throw { status: 400, message: 'Token kosong' };
+    const db = await readDB();
+    const configs = db[token]?.configs || [];
+    const autoPostState = db[token]?.autoPostState || 'stopped';
+    return { configs, autoPostState };
+}));
+
 app.listen(port, () => console.log(`Server listening at http://localhost:${port}`));

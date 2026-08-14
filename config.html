@@ -14,7 +14,6 @@
             --bg:#313338;
             --bg-2:#2b2d31;
             --card:#1e1f22;
-            --card-2:#2b2d31;
             --border:#3f4147;
             --text:#dbdee1;
             --muted:#949ba4;
@@ -36,27 +35,11 @@
             padding:1.5rem;
         }
         .container{max-width:1000px;margin:0 auto}
-        header{
-            display:flex;align-items:center;justify-content:space-between;
-            margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem;
-        }
-        header h1{
-            font-size:1.25rem;font-weight:700;
-            display:flex;align-items:center;gap:.6rem;
-        }
+        header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem}
+        header h1{font-size:1.25rem;font-weight:700;display:flex;align-items:center;gap:.6rem}
         header h1 .logo{width:34px;height:34px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#7983f5);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(88,101,242,.35)}
         header h1 .logo svg{width:20px;height:20px;color:#fff}
-        .status-badge{
-            display:inline-flex;align-items:center;gap:.4rem;
-            padding:.35rem .8rem;border-radius:20px;font-size:.8rem;font-weight:600;
-        }
-        .status-running{background:rgba(87,243,156,.12);color:var(--success);border:1px solid var(--success)}
-        .status-stopped{background:rgba(148,155,164,.1);color:var(--muted);border:1px solid var(--border)}
-        .card{
-            background:var(--card);border:1px solid var(--border);
-            border-radius:14px;padding:1.25rem;margin-bottom:1.25rem;
-            animation:fadeUp .3s ease;
-        }
+        .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.25rem;margin-bottom:1.25rem;animation:fadeUp .3s ease}
         @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
         .card h2,.card h3{font-weight:600;margin-bottom:.7rem;display:flex;align-items:center;gap:.5rem}
         .card h2{font-size:1.1rem}
@@ -66,19 +49,11 @@
         label{font-size:.8rem;font-weight:500;color:var(--muted);margin-bottom:.3rem;display:block}
         .form-row{display:flex;gap:.75rem;flex-wrap:wrap}
         .form-row > div{flex:1;min-width:160px}
-        .input,select{
-            width:100%;padding:.6rem .8rem;border:1px solid var(--border);
-            border-radius:8px;background:var(--bg-2);color:var(--text);
-            font-size:.87rem;font-family:inherit;transition:border-color .15s,box-shadow .15s;
-        }
-        .input:focus,select:focus{outline:none;border-color:var(--accent);background:var(--card);box-shadow:0 0 0 3px rgba(88,101,242,.2)}
+        .input{width:100%;padding:.6rem .8rem;border:1px solid var(--border);border-radius:8px;background:var(--bg-2);color:var(--text);font-size:.87rem;font-family:inherit;transition:border-color .15s,box-shadow .15s}
+        .input:focus{outline:none;border-color:var(--accent);background:var(--card);box-shadow:0 0 0 3px rgba(88,101,242,.2)}
         .input.is-invalid{border-color:var(--danger);box-shadow:0 0 0 3px rgba(218,55,62,.25)}
         textarea.input{width:100%;min-height:70px;resize:vertical;font-family:inherit}
-        .btn{
-            display:inline-flex;align-items:center;justify-content:center;gap:.4rem;
-            padding:.6rem 1.1rem;border:none;border-radius:8px;font-size:.85rem;
-            font-weight:600;cursor:pointer;transition:all .15s;user-select:none;
-        }
+        .btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;padding:.6rem 1.1rem;border:none;border-radius:8px;font-size:.85rem;font-weight:600;cursor:pointer;transition:all .15s;user-select:none}
         .btn:active{transform:scale(.96)}
         .btn svg{width:16px;height:16px}
         .btn-primary{background:var(--accent);color:#fff}
@@ -87,71 +62,33 @@
         .btn-secondary:hover{border-color:var(--accent);color:var(--accent)}
         .btn-danger{background:rgba(218,55,62,.12);color:#ff7875;border:1px solid #ff7875}
         .btn-danger:hover{background:rgba(218,55,62,.24)}
-        .btn-toggle{background:var(--success);color:#0a0a12}
-        .btn-toggle.active{background:var(--accent);color:#fff}
-        .btn-toggle:hover{filter:brightness(1.05)}
-        .toolbar{
-            display:flex;justify-content:space-between;align-items:center;
-            margin-bottom:.5rem;flex-wrap:wrap;gap:.5rem;
-        }
-        .toggle-wrapper{
-            display:flex;align-items:center;gap:.5rem;cursor:pointer;user-select:none;
-        }
-        .switch{
-            position:relative;display:inline-flex;align-items:center;
-            width:46px;height:26px;background:var(--border);border-radius:999px;
-            cursor:pointer;transition:background .25s;
-        }
-        .switch.on{background:var(--accent)}
-        .switch .knob{
-            position:absolute;top:3px;left:3px;width:20px;height:20px;
-            border-radius:50%;background:#fff;
-            transition:transform .25s cubic-bezier(.4,0,.2,1);
-            box-shadow:0 1px 3px rgba(0,0,0,.3);
-        }
-        .switch.on .knob{transform:translateX(20px)}
+        .btn-success{background:var(--success);color:#0a0a12}
+        .btn-success:hover{filter:brightness(1.05)}
+        .toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;flex-wrap:wrap;gap:.5rem}
+        .token-status{display:flex;align-items:center;gap:.4rem;font-size:.78rem;font-weight:600;padding:.3rem .7rem;border-radius:20px;margin-left:auto}
+        .token-valid{background:rgba(87,243,156,.12);color:var(--success);border:1px solid var(--success)}
+        .token-invalid{background:rgba(218,55,62,.12);color:#ff7875;border:1px solid #ff7875}
+        .token-checking{background:rgba(245,166,35,.12);color:var(--warn);border:1px solid var(--warn)}
         .table-wrap{border:1px solid var(--border);border-radius:8px;overflow:hidden}
         table{width:100%;border-collapse:collapse;font-size:.87rem}
         th,td{padding:.7rem .9rem;text-align:left;border-bottom:1px solid var(--border)}
         thead th{color:var(--muted);font-weight:600;font-size:.78rem;text-transform:uppercase;letter-spacing:.3px}
         tbody tr:hover{background:rgba(88,101,242,.06)}
-        .check-cell{text-align:center}
-        .chk{
-            width:18px;height:18px;border:2px solid var(--border);
-            border-radius:4px;cursor:pointer;display:inline-block;
-            position:relative;top:0;left:0;transition:all .2s;
-            background:var(--bg-2);
-        }
-        .chk.checked{
-            border-color:var(--accent);
-            background:var(--accent);
-        }
-        .chk.checked::after{
-            content:'';
-            position:absolute;top:1px;left:5px;
-            width:5px;height:10px;
-            border:solid #fff;border-width:0 2px 2px 0;
-            transform:rotate(45deg);
-        }
-        .btn-icon{
-            width:30px;height:30px;padding:0;border-radius:6px;
-            border:1px solid var(--border);background:transparent;
-            color:var(--muted);cursor:pointer;display:flex;
-            align-items:center;justify-content:center;
-            transition:all .15s;
-        }
+        .btn-icon{width:30px;height:30px;padding:0;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s}
         .btn-icon:active{transform:scale(.85)}
         .btn-icon:hover{border-color:var(--accent);color:var(--accent);background:rgba(88,101,242,.1)}
         .btn-icon.danger:hover{border-color:var(--danger);color:var(--danger);background:rgba(218,55,62,.1)}
+        .btn-mini{display:inline-flex;align-items:center;gap:.3rem;padding:.35rem .7rem;border-radius:7px;font-size:.75rem;font-weight:600;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--text);transition:all .15s}
+        .btn-mini:active{transform:scale(.94)}
+        .btn-mini.start{border-color:var(--success);color:var(--success)}
+        .btn-mini.start:hover{background:rgba(87,243,156,.12)}
+        .btn-mini.stop{border-color:var(--danger);color:#ff7875}
+        .btn-mini.stop:hover{background:rgba(218,55,62,.12)}
         .badge{display:inline-flex;align-items:center;gap:.25rem;padding:.2rem .55rem;border-radius:6px;font-size:.72rem;font-weight:600}
-        .badge-on{background:rgba(88,101,242,.15);color:var(--accent)}
+        .badge-on{background:rgba(87,243,156,.15);color:var(--success)}
         .badge-off{background:rgba(148,155,164,.1);color:var(--muted);border:1px solid var(--border)}
         .logs-card{max-height:340px;overflow-y:auto}
-        .log-row{
-            display:flex;align-items:center;gap:.6rem;
-            padding:.5rem .7rem;border-bottom:1px solid var(--border);
-            font-size:.8rem;animation:fadeUp .2s ease;
-        }
+        .log-row{display:flex;align-items:center;gap:.6rem;padding:.5rem .7rem;border-bottom:1px solid var(--border);font-size:.8rem;animation:fadeUp .2s ease}
         .log-row:last-child{border-bottom:none}
         .log-status{width:9px;height:9px;border-radius:50%;flex-shrink:0}
         .dot-success{background:var(--success)}
@@ -159,7 +96,6 @@
         .dot-pending{background:var(--warn)}
         .log-msg{flex:1;word-break:break-word;color:var(--muted)}
         .log-meta{color:var(--muted);font-size:.72rem}
-        .badge-log{padding:.15rem .5rem;font-size:.7rem}
         .empty-state{color:var(--muted);text-align:center;padding:1.25rem;font-size:.82rem}
         .empty-state svg{width:36px;height:36px;margin-bottom:.5rem;color:var(--border)}
         .toast-custom{background:var(--card);border:1px solid var(--border);border-left:4px solid var(--accent)}
@@ -170,22 +106,20 @@
 <div class="container">
     <header>
         <h1><span class="logo"><i data-lucide="send"></i></span> Auto Post Discord — Setup</h1>
-        <span id="statusBadge" class="status-badge status-stopped">
-            <span style="width:8px;height:8px;border-radius:50%;background:var(--muted);display:inline-block"></span>
-            Stopped
+        <span id="tokenStatus" class="token-status token-checking">
+            <i data-lucide="loader-2" class="spin"></i> Cek token...
         </span>
     </header>
 
     <!-- Form Setup -->
     <div class="card">
         <h2><i data-lucide="settings-2"></i> Setup Bot</h2>
-        <p class="sub">Masukkan auth token Discord beserta pesan, channel, dan delay. Config tersimpan per token.</p>
+        <p class="sub">Isi auth token Discord, pesan, channel, &amp; delay. Lalu klik Save Config.</p>
 
         <div class="form-row" style="margin-bottom:.75rem">
             <div>
                 <label>Auth Token Discord</label>
                 <input type="password" id="authToken" class="input" placeholder="token...">
-                <div class="hint" style="color:var(--muted);font-size:.72rem;margin-top:.2rem">Dapatkan via browser extension / inspect element.</div>
             </div>
             <div>
                 <label>Pesan</label>
@@ -202,9 +136,8 @@
                 <input id="delay" class="input" type="number" min="5" placeholder="min 5ms">
             </div>
         </div>
-        <div style="margin-top:.9rem;display:flex;gap:.6rem">
-            <button id="addConfigBtn" class="btn btn-secondary"><i data-lucide="plus"></i> Save Config</button>
-            <button id="toggleAllConfigs" class="btn btn-secondary"><i data-lucide-layers></i> Pilih Semua</button>
+        <div style="margin-top:.9rem">
+            <button id="addConfigBtn" class="btn btn-primary"><i data-lucide="plus"></i> Save Config</button>
         </div>
     </div>
 
@@ -212,25 +145,22 @@
     <div class="card">
         <div class="toolbar">
             <h3><i data-lucide="layers"></i> Config List</h3>
-            <span class="badge badge-on" id="configCount">0 selected</span>
+            <span class="badge badge-off" id="configCount">0 config</span>
         </div>
         <div class="table-wrap">
             <table>
                 <thead>
                     <tr>
-                        <th style="width:50px"></th>
                         <th>Pesan</th>
                         <th style="width:130px">Channel ID</th>
                         <th style="width:90px">Delay (ms)</th>
-                        <th style="width:80px">Status</th>
-                        <th style="width:95px">Aksi</th>
+                        <th style="width:70px">Status</th>
+                        <th style="width:110px">Control</th>
+                        <th style="width:90px">Aksi</th>
                     </tr>
                 </thead>
                 <tbody id="configTableBody"></tbody>
             </table>
-        </div>
-        <div style="margin-top:.7rem">
-            <button id="toggleBtn" class="btn btn-toggle"><i data-lucide="play"></i> Start Selected (<span id="selectedCount">0</span>)</button>
         </div>
     </div>
 
@@ -251,12 +181,10 @@
     function safeIcons(){ if (typeof lucide !== 'undefined') lucide.createIcons(); }
 
     document.addEventListener('DOMContentLoaded', () => {
-        let botConfigs = [];
-        let activeConfigs = [];
-        let postInterval = null;
+        let botConfigs = [];   // { message, channelID, delay, running:false, selected:true, active:true }
         let token = '';
+        const timers = {};     // index -> interval id
 
-        // Toast: hanya pakai Swal bila tersedia, fallback alert
         const showToast = (typeof Swal !== 'undefined') ? Swal.mixin({
             toast: true, position: 'top-end', showConfirmButton: false,
             timer: 2200, timerProgressBar: true,
@@ -271,7 +199,6 @@
                 confirmButtonColor: type==='error'?'#da373c':'#5865f2'
             }); else alert(`${type.toUpperCase()}: ${title}`);
         };
-
         const confirmAction = (title, text, onYes) => {
             if (typeof Swal !== 'undefined') {
                 Swal.fire({ title, text, icon:'warning', showCancelButton:true, confirmButtonColor:'#5865f2',
@@ -279,10 +206,41 @@
                 }).then(r => { if (r.isConfirmed) onYes(); });
             } else if (confirm(`${title}\n${text}`)) onYes();
         };
+        const truncate = (t,n) => (t && t.length<=n) ? t : (t||'').substring(0,n-3)+'...';
 
-        function truncate(t,n){ return t&&t.length<=n ? t : (t||'').substring(0,n-3)+'...'; }
+        // ===== Token validation =====
+        function setTokenStatus(state, label) {
+            const el = document.getElementById('tokenStatus');
+            el.className = 'token-status ' + (state === 'valid' ? 'token-valid' : state === 'invalid' ? 'token-invalid' : 'token-checking');
+            el.innerHTML = (state === 'valid' ? '<i data-lucide="check-circle"></i>' :
+                            state === 'invalid' ? '<i data-lucide="x-circle"></i>' :
+                            '<i data-lucide="loader-2" class="spin"></i>') + ' ' + label;
+            safeIcons();
+        }
 
-        // ===== Render table via DOM (listeners persist) =====
+        async function checkToken(tk) {
+            if (!tk) { setTokenStatus('invalid', 'Token kosong'); return false; }
+            setTokenStatus('checking', 'Cek token...');
+            try {
+                const res = await fetch('/check-token', {
+                    method:'POST', headers:{'Content-Type':'application/json'},
+                    body:JSON.stringify({ token: tk })
+                });
+                const data = await res.json();
+                if (data.success && data.valid) {
+                    setTokenStatus('valid', 'Token valid ✓');
+                    return true;
+                } else {
+                    setTokenStatus('invalid', 'Token invalid ✗');
+                    return false;
+                }
+            } catch(e) {
+                setTokenStatus('invalid', 'Gagal cek');
+                return false;
+            }
+        }
+
+        // ===== Render table =====
         function renderTable() {
             const tbody = document.getElementById('configTableBody');
             tbody.innerHTML = '';
@@ -295,22 +253,6 @@
             const frag = document.createDocumentFragment();
             botConfigs.forEach((cfg, i) => {
                 const tr = document.createElement('tr');
-
-                // checkbox
-                const tdC = document.createElement('td');
-                tdC.className = 'check-cell';
-                const chk = document.createElement('span');
-                chk.className = 'chk' + (cfg.selected ? ' checked' : '');
-                chk.dataset.idx = i;
-                chk.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    cfg.selected = !cfg.selected;
-                    chk.className = 'chk' + (cfg.selected ? ' checked' : '');
-                    syncActive();
-                    updateSelectedCount();
-                });
-                tdC.appendChild(chk);
-                tr.appendChild(tdC);
 
                 const tdMsg = document.createElement('td');
                 tdMsg.title = cfg.message;
@@ -326,11 +268,23 @@
                 tr.appendChild(tdDelay);
 
                 const tdStatus = document.createElement('td');
-                tdStatus.innerHTML = cfg.active
-                    ? `<span class="badge badge-on">On</span>`
-                    : `<span class="badge badge-off">Off</span>`;
+                tdStatus.innerHTML = cfg.running
+                    ? `<span class="badge badge-on">Running</span>`
+                    : `<span class="badge badge-off">Stopped</span>`;
                 tr.appendChild(tdStatus);
 
+                // Control: Start / Stop per config
+                const tdCtrl = document.createElement('td');
+                const ctrlBtn = document.createElement('button');
+                ctrlBtn.className = 'btn-mini ' + (cfg.running ? 'stop' : 'start');
+                ctrlBtn.innerHTML = cfg.running
+                    ? '<i data-lucide="pause"></i> Stop'
+                    : '<i data-lucide="play"></i> Start';
+                ctrlBtn.addEventListener('click', () => toggleConfig(i));
+                tdCtrl.appendChild(ctrlBtn);
+                tr.appendChild(tdCtrl);
+
+                // Actions: edit + delete
                 const tdAct = document.createElement('td');
                 const editBtn = document.createElement('button');
                 editBtn.className = 'btn-icon'; editBtn.title = 'Edit';
@@ -349,36 +303,33 @@
             safeIcons();
         }
 
-        function syncActive() {
-            activeConfigs = botConfigs.filter(c => c.selected && c.active);
+        function updateCount() {
+            document.getElementById('configCount').textContent = botConfigs.length + ' config';
         }
 
-        function updateSelectedCount() {
-            document.getElementById('selectedCount').textContent = activeConfigs.length;
-            document.getElementById('configCount').textContent = activeConfigs.length + ' selected';
-            document.getElementById('configCount').className = activeConfigs.length > 0 ? 'badge badge-on' : 'badge badge-off';
-        }
-
-        // ===== Save configs (to server db.json via token) =====
+        // ===== Save / load configs =====
         function saveConfigs() {
             fetch('/save-configs', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ token, configs: botConfigs })
-            }).catch(e => console.error('save configs error', e));
+                method:'POST', headers:{'Content-Type':'application/json'},
+                body:JSON.stringify({ token, configs: botConfigs.map(c => ({
+                    message:c.message, channelID:c.channelID, delay:c.delay,
+                    selected:c.selected, active:c.active
+                })) })
+            }).catch(e => console.error('save error', e));
         }
 
-        // ===== Load configs =====
         async function loadConfigs() {
             if (!token) return;
             try {
                 const res = await fetch(`/load-configs?token=${encodeURIComponent(token)}`);
                 const data = await res.json();
                 if (data.success) {
-                    botConfigs = Array.isArray(data.configs) ? data.configs : [];
-                    syncActive();
+                    botConfigs = (Array.isArray(data.configs) ? data.configs : []).map(c => ({
+                        message:c.message, channelID:c.channelID, delay:c.delay,
+                        selected:c.selected!==false, active:c.active!==false, running:false
+                    }));
                     renderTable();
-                    updateSelectedCount();
+                    updateCount();
                 }
             } catch(e) { console.error('Load error:', e); }
         }
@@ -396,29 +347,20 @@
             if (parseInt(d) < 5) {
                 return notify('error', 'Delay minimal 5ms');
             }
-
-            const cfg = { message:m, channelID:parseInt(c), delay:parseInt(d), selected:true, active:true };
-            botConfigs.push(cfg);
             token = t;
-            syncActive();
+            // cek token
+            const ok = await checkToken(t);
+            if (!ok) {
+                return notify('error', 'Token Invalid', 'Token Discord tidak valid. Cek kembali.');
+            }
+            botConfigs.push({ message:m, channelID:parseInt(c), delay:parseInt(d), selected:true, active:true, running:false });
             saveConfigs();
             renderTable();
-            updateSelectedCount();
-            // clear inputs
+            updateCount();
             document.getElementById('message').value = '';
             document.getElementById('channelID').value = '';
             document.getElementById('delay').value = '';
             showToast.fire({ icon:'success', title:'Config disimpan' });
-        });
-
-        // ===== Select all toggle =====
-        document.getElementById('toggleAllConfigs').addEventListener('click', () => {
-            const allSelected = activeConfigs.length === botConfigs.length;
-            botConfigs.forEach(c => c.selected = allSelected ? false : true);
-            syncActive();
-            renderTable();
-            updateSelectedCount();
-            showToast.fire({ icon:'info', title: allSelected ? 'Deselect all' : 'Select all' });
         });
 
         // ===== Edit config =====
@@ -445,110 +387,62 @@
                 botConfigs[i].message = r.value.message;
                 botConfigs[i].channelID = r.value.channelID;
                 botConfigs[i].delay = r.value.delay;
-                syncActive();
                 saveConfigs();
                 renderTable();
-                updateSelectedCount();
                 showToast.fire({ icon:'success', title:'Diperbarui' });
             }
         }
 
         // ===== Delete config =====
         function deleteConfig(i) {
-            confirmAction(
-                'Hapus Config',
-                'Yakin hapus config ini?',
-                () => {
-                    botConfigs.splice(i, 1);
-                    syncActive();
-                    saveConfigs();
-                    renderTable();
-                    updateSelectedCount();
-                    showToast.fire({ icon:'success', title:'Dihapus' });
-                }
-            );
-        }
-
-        // ===== Start / Stop =====
-        document.getElementById('toggleBtn').addEventListener('click', toggleAutoPost);
-
-        function toggleAutoPost() {
-            const btn = document.getElementById('toggleBtn');
-            const badge = document.getElementById('statusBadge');
-            const isStarted = postInterval === null;
-
-            if (isStarted) {
-                if (activeConfigs.length === 0) {
-                    return notify('error', 'Pilih minimal 1 config dulu');
-                }
-                startAutoPost();
-                btn.innerHTML = '<i data-lucide="pause"></i> Stop';
-                btn.className = 'btn btn-danger';
-                badge.innerHTML = '<span style="width:8px;height:8px;border-radius:50%;background:var(--success);display:inline-block"></span> Running';
-                badge.className = 'status-badge status-running';
-            } else {
-                stopAutoPost();
-                btn.innerHTML = '<i data-lucide="play"></i> Start Selected (<span id="selectedCount">0</span>)';
-                btn.className = 'btn btn-toggle';
-                badge.innerHTML = '<span style="width:8px;height:8px;border-radius:50%;background:var(--muted);display:inline-block"></span> Stopped';
-                badge.className = 'status-badge status-stopped';
-            }
-            safeIcons();
-            showToast.fire({
-                icon:'success',
-                title: isStarted ? 'Bot berjalan' : 'Bot dihentikan'
+            confirmAction('Hapus Config', 'Yakin hapus config ini?', () => {
+                // stop if running
+                if (botConfigs[i].running && timers[i]) { clearInterval(timers[i]); delete timers[i]; }
+                botConfigs.splice(i, 1);
+                saveConfigs();
+                renderTable();
+                updateCount();
+                showToast.fire({ icon:'success', title:'Dihapus' });
             });
-            saveAutoPostState(isStarted ? 'started' : 'stopped');
         }
 
-        function startAutoPost() {
-            if (activeConfigs.length === 0) return;
-            let idx = 0;
-            // Immediate first send
-            sendNow(activeConfigs[idx]);
-            idx = (idx + 1) % activeConfigs.length;
-            postInterval = setInterval(() => {
-                sendNow(activeConfigs[idx]);
-                idx = (idx + 1) % activeConfigs.length;
-            }, activeConfigs[0].delay);
+        // ===== Start / Stop per config =====
+        function toggleConfig(i) {
+            const cfg = botConfigs[i];
+            if (cfg.running) {
+                // Stop
+                if (timers[i]) { clearInterval(timers[i]); delete timers[i]; }
+                cfg.running = false;
+                renderTable();
+                showToast.fire({ icon:'info', title:'Dihentikan' });
+            } else {
+                // Start
+                if (!token) return notify('error', 'Token belum diisi');
+                cfg.running = true;
+                renderTable();
+                sendNow(cfg);
+                timers[i] = setInterval(() => sendNow(cfg), cfg.delay);
+                showToast.fire({ icon:'success', title:'Started' });
+            }
         }
 
-        function stopAutoPost() {
-            clearInterval(postInterval);
-            postInterval = null;
-        }
-
-        function saveAutoPostState(state) {
-            fetch('/save-auto-post-state', {
-                method:'POST', headers:{'Content-Type':'application/json'},
-                body:JSON.stringify({ token, state })
-            }).catch(() => {});
-        }
-
-        // ===== Send message to Discord =====
+        // ===== Send message =====
         function sendNow(cfg) {
             logMessage(cfg.message, cfg.channelID, 'sending');
             fetch(`https://discord.com/api/v10/channels/${cfg.channelID}/messages`, {
                 method:'POST',
                 headers:{'Authorization':token,'Content-Type':'application/json'},
                 body:JSON.stringify({content:cfg.message})
-            }).then(r => {
-                const ok = r.ok;
-                return r.json().then(data => ({ ok, data }));
-            }).then(({ok, data}) => {
-                logMessage(cfg.message, cfg.channelID, ok ? 'success' : 'failed');
-            }).catch(() => {
-                logMessage(cfg.message, cfg.channelID, 'failed');
-            });
+            }).then(r => r.json().then(data => ({ ok:r.ok, data })))
+              .then(({ok}) => logMessage(cfg.message, cfg.channelID, ok ? 'success' : 'failed'))
+              .catch(() => logMessage(cfg.message, cfg.channelID, 'failed'));
         }
 
-        // ===== Logs (realtime) =====
+        // ===== Logs =====
         const logMap = new Map();
         function logMessage(message, channelID, status) {
             const box = document.getElementById('logTableBody');
             if (box.querySelector('.empty-state')) box.innerHTML = '';
-
-            // Update or create row by message+channel
             const key = channelID + '|' + (message||'');
             let row = logMap.get(key);
             if (!row) {
@@ -559,45 +453,27 @@
                     <div class="log-msg" title="${message||''}"></div>
                     <div class="log-meta">#${truncate(channelID,8)}</div>
                     <div class="log-time" style="color:var(--muted);font-size:.72rem"></div>
-                    <span class="badge badge-log">pending</span>
-                `;
+                    <span class="badge badge-log">pending</span>`;
                 box.prepend(row);
                 logMap.set(key, row);
             }
-
             const dot = row.querySelector('.log-status');
             const badge = row.querySelector('.badge-log');
             const timeEl = row.querySelector('.log-time');
             const msgDiv = row.querySelector('.log-msg');
-
             if (status === 'sending') {
-                dot.className = 'log-status dot-pending';
-                badge.textContent = 'sending';
-                badge.className = 'badge badge-log';
-                msgDiv.textContent = truncate(message, 60);
-                timeEl.textContent = new Date().toLocaleTimeString();
+                dot.className='log-status dot-pending'; badge.textContent='sending'; badge.className='badge badge-log';
+                msgDiv.textContent=truncate(message,60); timeEl.textContent=new Date().toLocaleTimeString();
             } else if (status === 'success') {
-                dot.className = 'log-status dot-success';
-                badge.textContent = 'Sent';
-                badge.className = 'badge badge-log';
-                timeEl.textContent = new Date().toLocaleTimeString();
-                setTimeout(() => { box.removeChild(row); logMap.delete(key); }, 3500);
+                dot.className='log-status dot-success'; badge.textContent='Sent'; badge.className='badge badge-log';
+                timeEl.textContent=new Date().toLocaleTimeString();
+                setTimeout(()=>{ if(row.parentNode){box.removeChild(row);} logMap.delete(key); }, 3500);
             } else {
-                dot.className = 'log-status dot-error';
-                badge.textContent = 'Failed';
-                badge.className = 'badge badge-log';
-                timeEl.textContent = new Date().toLocaleTimeString();
+                dot.className='log-status dot-error'; badge.textContent='Failed'; badge.className='badge badge-log';
+                timeEl.textContent=new Date().toLocaleTimeString();
             }
-
-            // Limit
             const rows = box.children;
-            if (rows.length > 40) {
-                const last = rows[rows.length - 1];
-                box.removeChild(last);
-                // remove from map
-                const k = (last.querySelector('.log-meta')?.textContent||'').slice(1);
-                logMap.delete(k);
-            }
+            if (rows.length > 40) { const last = rows[rows.length-1]; box.removeChild(last); }
         }
 
         document.getElementById('clearLogsBtn').addEventListener('click', () => {
@@ -605,35 +481,34 @@
             if (!box || box.children.length < 2) return showToast.fire({icon:'info',title:'Tidak ada log'});
             confirmAction('Clear Logs', 'Hapus semua log?', () => {
                 box.innerHTML = '<div class="empty-state"><i data-lucide="terminal"></i><div>Belum ada log.</div></div>';
-                logMap.clear();
-                safeIcons();
+                logMap.clear(); safeIcons();
                 showToast.fire({icon:'success',title:'Logs cleared'});
             });
         });
 
         // ===== Init =====
-        // Cek login flag (index.html login)
         let loggedIn = true;
         try { loggedIn = localStorage.getItem('apd_logged') === '1'; } catch(e){}
-        if (!loggedIn) {
-            window.location.href = '/';
-            return;
-        }
+        if (!loggedIn) { window.location.href = '/'; return; }
 
-        // Load token dari localStorage (jika pernah disimpan)
         try { token = localStorage.getItem('apd_token') || ''; } catch(e){}
-
-        // Bind token input listener: setiap kali ketik, update localStorage & reload configs
         const tokenInput = document.getElementById('authToken');
         tokenInput.value = token;
-        tokenInput.addEventListener('change', () => {
+        tokenInput.addEventListener('input', () => {
             token = tokenInput.value.trim();
             try { localStorage.setItem('apd_token', token); } catch(e){}
+            checkToken(token);
+        });
+        tokenInput.addEventListener('blur', () => {
+            token = tokenInput.value.trim();
+            try { localStorage.setItem('apd_token', token); } catch(e){}
+            checkToken(token);
             loadConfigs();
         });
 
+        if (token) checkToken(token);
         loadConfigs();
-        updateSelectedCount();
+        updateCount();
         safeIcons();
     });
 </script>
