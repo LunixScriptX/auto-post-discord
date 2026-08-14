@@ -209,7 +209,10 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.0/dist/sweetalert2.all.min.js"></script>
 <script>
-    lucide.createIcons();
+    // Global helper: aman jika lucide belum load
+    function safeIcons() { if (typeof lucide !== 'undefined') lucide.createIcons(); }
+
+    document.addEventListener('DOMContentLoaded', () => {
 
     // State
     let botConfigs = [];
@@ -218,7 +221,7 @@
     let currentAuthToken = '';
     let allConfigsEnabled = true;
 
-    const showToast = Swal.mixin({
+    const showToast = (typeof Swal !== 'undefined') ? Swal.mixin({
         toast: true,
         position: 'top-end',
         showConfirmButton: false,
@@ -229,7 +232,7 @@
             toast.onmouseenter = Swal.stopTimer;
             toast.onmouseleave = Swal.resumeTimer;
         }
-    });
+    }) : { fire: (o) => alert(`${o.title}: ${o.text || ''}`) };
 
     const confirmAction = (title, text) => Swal.fire({
         title, text, icon: 'warning',
@@ -303,7 +306,7 @@
                 </td>
             </tr>
         `).join('');
-        lucide.createIcons();
+        safeIcons();
     }
 
     window.toggleConfig = function(index) {
@@ -408,7 +411,7 @@
             badge.className = 'status-badge status-stopped';
             showToast.fire({ icon: 'success', title: 'Auto post dihentikan' });
         }
-        lucide.createIcons();
+        safeIcons();
 
         const state = isStarted ? 'started' : 'stopped';
         saveAutoPostState(state);
@@ -475,7 +478,7 @@
                         badge.className = 'status-badge status-running';
                     }
                 }
-                lucide.createIcons();
+                safeIcons();
             }
         } catch (error) {
             console.error('Error loading configs:', error);
@@ -540,14 +543,20 @@
     const urlParts = window.location.pathname.split('/');
     currentAuthToken = urlParts[urlParts.length - 1];
     if (!currentAuthToken) {
-        Swal.fire({
-            icon: 'error', title: 'Invalid Auth Token',
-            text: 'Redirecting...', timer: 2000, timerProgressBar: true,
-            background: '#1e1f22', color: '#dbdee1'
-        }).then(() => window.location.href = '/');
+        if (typeof Swal !== 'undefined') {
+            Swal.fire({
+                icon: 'error', title: 'Invalid Auth Token',
+                text: 'Redirecting...', timer: 2000, timerProgressBar: true,
+                background: '#1e1f22', color: '#dbdee1'
+            }).then(() => window.location.href = '/');
+        } else {
+            window.location.href = '/';
+        }
     } else {
         loadConfigs();
     }
+    }); // end DOMContentLoaded
+    safeIcons();
 </script>
 </body>
 </html>
