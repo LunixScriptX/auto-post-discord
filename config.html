@@ -374,6 +374,7 @@
                 return notify('error', 'Delay minimal 5ms');
             }
             token = t;
+            try { localStorage.setItem('apd_token', token); } catch(e){}
             const ok = await checkToken(t);
             if (!ok) {
                 return notify('error', 'Token Invalid', 'Token Discord tidak valid. Cek kembali.');
