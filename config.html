@@ -51,7 +51,13 @@
         .input{width:100%;padding:.6rem .8rem;border:1px solid var(--border);border-radius:8px;background:var(--bg-2);color:var(--text);font-size:.87rem;font-family:inherit;transition:border-color .15s,box-shadow .15s}
         .input:focus{outline:none;border-color:var(--accent);background:var(--card);box-shadow:0 0 0 3px rgba(88,101,242,.2)}
         .input.is-invalid{border-color:var(--danger);box-shadow:0 0 0 3px rgba(218,55,62,.25)}
-        textarea.input{width:100%;min-height:70px;resize:vertical;font-family:inherit}
+        textarea.input{width:100%;min-height:70px;max-height:220px;resize:vertical;font-family:inherit;padding:.7rem .8rem}
+        .field-with-status{position:relative}
+        .token-status-inline{position:absolute;right:8px;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:.3rem;font-size:.75rem;font-weight:600;padding:.2rem .6rem;border-radius:20px;white-space:nowrap}
+        .token-valid{background:rgba(87,243,156,.12);color:var(--success);border:1px solid var(--success)}
+        .token-invalid{background:rgba(218,55,62,.12);color:#ff7875;border:1px solid #ff7875}
+        .token-checking{background:rgba(245,166,35,.12);color:var(--warn);border:1px solid var(--warn)}
+        .token-status-inline svg{width:12px;height:12px;flex-shrink:0}
         .btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;padding:.6rem 1.1rem;border:none;border-radius:8px;font-size:.85rem;font-weight:600;cursor:pointer;transition:all .15s;user-select:none}
         .btn:active{transform:scale(.96)}
         .btn svg{width:16px;height:16px}
@@ -63,17 +69,14 @@
         .btn-danger:hover{background:rgba(218,55,62,.24)}
         .btn-success{background:var(--success);color:#0a0a12}
         .btn-success:hover{filter:brightness(1.05)}
+        .btn-sm{padding:.4rem .8rem;font-size:.78rem}
         .toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;flex-wrap:wrap;gap:.5rem}
-        .token-status{display:flex;align-items:center;gap:.4rem;font-size:.78rem;font-weight:600;padding:.3rem .7rem;border-radius:20px;margin-left:auto}
-        .token-valid{background:rgba(87,243,156,.12);color:var(--success);border:1px solid var(--success)}
-        .token-invalid{background:rgba(218,55,62,.12);color:#ff7875;border:1px solid #ff7875}
-        .token-checking{background:rgba(245,166,35,.12);color:var(--warn);border:1px solid var(--warn)}
         .table-wrap{border:1px solid var(--border);border-radius:8px;overflow:hidden}
         table{width:100%;border-collapse:collapse;font-size:.87rem}
         th,td{padding:.7rem .9rem;text-align:left;border-bottom:1px solid var(--border);vertical-align:middle}
         thead th{color:var(--muted);font-weight:600;font-size:.78rem;text-transform:uppercase;letter-spacing:.3px}
         tbody tr:hover{background:rgba(88,101,242,.06)}
-        .btn-icon{width:32px;height:32px;padding:0;border-radius:7px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:all .15s;margin:0 .15rem}
+        .btn-icon{width:34px;height:34px;padding:0;border-radius:7px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:all .15s;margin:0 .15rem}
         .btn-icon:active{transform:scale(.85)}
         .btn-icon:hover{border-color:var(--accent);color:var(--accent);background:rgba(88,101,242,.1)}
         .btn-icon.danger:hover{border-color:var(--danger);color:var(--danger);background:rgba(218,55,62,.1)}
@@ -88,22 +91,38 @@
         .badge{display:inline-flex;align-items:center;gap:.25rem;padding:.2rem .55rem;border-radius:6px;font-size:.72rem;font-weight:600}
         .badge-on{background:rgba(87,243,156,.15);color:var(--success)}
         .badge-off{background:rgba(148,155,164,.1);color:var(--muted);border:1px solid var(--border)}
-        .logs-card{max-height:340px;overflow-y:auto}
-        .log-row{display:flex;align-items:center;gap:.6rem;padding:.5rem .7rem;border-bottom:1px solid var(--border);font-size:.8rem;animation:fadeUp .2s ease}
+        .logs-card{max-height:380px;overflow-y:auto}
+        .log-row{display:flex;align-items:center;gap:.55rem;padding:.5rem .7rem;border-bottom:1px solid var(--border);font-size:.8rem;animation:fadeUp .2s ease}
         .log-row:last-child{border-bottom:none}
-        .log-status{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+        .log-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
         .dot-success{background:var(--success)}
         .dot-error{background:var(--danger)}
-        .dot-pending{background:var(--warn)}
-        .log-msg{flex:1;word-break:break-word;color:var(--muted);min-width:0}
-        .log-meta{color:var(--muted);font-size:.72rem;flex-shrink:0}
-.badge-log{margin-left:.2rem;padding:.15rem .5rem;border-radius:6px;font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.3px;flex-shrink:0}
-.badge-log[data-s="sending"]{background:rgba(245,166,35,.15);color:var(--warn)}
-.badge-log[data-s="success"]{background:rgba(87,243,156,.15);color:var(--success)}
-.badge-log[data-s="failed"]{background:rgba(218,55,62,.15);color:#ff7875}
+        .dot-warn{background:var(--warn)}
+        .dot-info{background:var(--accent)}
+        .log-msg{flex:1;word-break:break-word;word-wrap:break-word;color:var(--text);min-width:0;font-size:.8rem;line-height:1.35}
+        .log-meta{color:var(--muted);font-size:.7rem;flex-shrink:0;white-space:nowrap;margin-left:.3rem}
+        .badge-log{padding:.15rem .5rem;border-radius:6px;font-size:.66rem;font-weight:700;text-transform:uppercase;letter-spacing:.3px;flex-shrink:0}
+        .badge-log[data-s="INFO"]{background:rgba(88,101,242,.15);color:var(--accent)}
+        .badge-log[data-s="SUCCESS"]{background:rgba(87,243,156,.15);color:var(--success)}
+        .badge-log[data-s="FAILED"]{background:rgba(218,55,62,.15);color:#ff7875}
+        .badge-log[data-s="WARNING"]{background:rgba(245,166,35,.15);color:var(--warn)}
         .empty-state{color:var(--muted);text-align:center;padding:1.25rem;font-size:.82rem}
         .empty-state svg{width:36px;height:36px;margin-bottom:.5rem;color:var(--border)}
         .toast-custom{background:var(--card);border:1px solid var(--border);border-left:4px solid var(--accent)}
+        /* SweetAlert2 custom — compact, mobile-friendly */
+        .custom-swal { padding:1.2rem 1.4rem 1rem !important; border-radius:14px !important; max-width:90vw !important; }
+        .custom-swal2-popup { max-width:520px !important; width:95vw !important; padding:1.4rem 1.6rem 1.1rem !important; }
+        .custom-swal2-popup .swal2-actions { margin-top:1rem !important; gap:.5rem !important; }
+        .custom-swal2-popup .swal2-actions .swal2-cancel,
+        .custom-swal2-popup .swal2-actions .swal2-confirm { padding:.55rem 1rem !important; font-size:.82rem !important; min-width:90px !important; }
+        .custom-swal2-popup .swal2-confirm { background:var(--accent) !important; color:#fff !important; }
+        .custom-swal2-popup .swal2-cancel { background:var(--border) !important; color:var(--text) !important; }
+        .custom-swal2-popup label { font-size:.78rem !important; color:var(--muted) !important; }
+        .custom-swal2-popup .swal2-input { padding:.55rem .7rem !important; font-size:.82rem !important; }
+        .custom-swal2-popup .swal2-input[type="text"],
+        .custom-swal2-popup .swal2-textarea { background:var(--bg-2) !important; color:var(--text) !important; border:1px solid var(--border) !important; }
+        .custom-swal2-popup .swal2-textarea { min-height:80px !important; max-height:160px !important; resize:vertical !important; }
+        .swal2-icon.swal2-warning { display:none !important; }
         @media(max-width:768px){
             .container{padding:0 .3rem}
             .form-row{flex-direction:column}
@@ -111,7 +130,8 @@
             .table-wrap{overflow-x:auto}
             table{min-width:640px}
             header h1{font-size:1.05rem}
-            .token-status{margin-left:0;width:100%;justify-content:center;margin-top:.5rem}
+            .log-meta{display:none} /* hide channel/time on mobile, shown in msg detail */
+            .token-status-inline{position:static;transform:none;margin-left:.5rem}
         }
     </style>
 </head>
@@ -119,9 +139,6 @@
 <div class="container">
     <header>
         <h1><span class="logo"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.369a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.249a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.036A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.009c.12.099.246.198.373.292a.077.077 0 0 1-.006.127 12.3 12.3 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.029ZM8.02 15.331c-1.182 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418Zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418Z"/></svg></span> Auto Post Discord — Setup</h1>
-        <span id="tokenStatus" class="token-status token-checking">
-            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" class="spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Cek token...
-        </span>
     </header>
 
     <!-- Form Setup -->
@@ -130,13 +147,16 @@
         <p class="sub">Isi auth token Discord, pesan, channel, &amp; delay. Lalu klik Save Config.</p>
 
         <div class="form-row" style="margin-bottom:.75rem">
-            <div>
+            <div class="field-with-status">
                 <label for="authToken">Auth Token Discord</label>
                 <input type="password" id="authToken" class="input" placeholder="token...">
+                <span id="tokenStatusInline" class="token-status-inline token-checking">
+                    <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" class="spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Cek token...
+                </span>
             </div>
             <div>
                 <label for="message">Pesan</label>
-                <input id="message" class="input" placeholder="Pesan oto post">
+                <textarea id="message" class="input" placeholder="Tulis pesan..."></textarea>
             </div>
         </div>
         <div class="form-row">
@@ -226,8 +246,16 @@
         };
         const confirmAction = (title, text, onYes) => {
             if (typeof Swal !== 'undefined') {
-                Swal.fire({ title, text, icon:'warning', showCancelButton:true, confirmButtonColor:'#5865f2',
-                    cancelButtonColor:'#d33', confirmButtonText:'Ya', background:'#1e1f22', color:'#dbdee1'
+                Swal.fire({
+                    title, text, icon:'warning',
+                    showCancelButton:true, confirmButtonColor:'#5865f2',
+                    cancelButtonColor:'#d33', confirmButtonText:'Batal', cancelButtonText:'Batal',
+                    background:'#1e1f22', color:'#dbdee1',
+                    customClass: { popup: 'custom-swal' },
+                    didOpen: (p) => {
+                        const confirmBtn = p.querySelector('.swal2-confirm');
+                        if (confirmBtn) confirmBtn.textContent = 'Hapus';
+                    }
                 }).then(r => { if (r.isConfirmed) onYes(); });
             } else if (confirm(`${title}\n${text}`)) onYes();
         };
@@ -237,15 +265,18 @@
         };
 
         // ===== Token validation =====
-        function setTokenStatus(state, label) {
-            const el = document.getElementById('tokenStatus');
-            el.className = 'token-status ' + (state === 'valid' ? 'token-valid' : state === 'invalid' ? 'token-invalid' : 'token-checking');
-            el.innerHTML = (state === 'valid' ? ICONS.check : state === 'invalid' ? ICONS.x : '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" class="spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>') + ' ' + label;
+        function setTokenStatus(state) {
+            const el = document.getElementById('tokenStatusInline');
+            if (!el) return;
+            const suffix = state === 'valid' ? 'Token Valid' : state === 'invalid' ? 'Token Invalid' : 'Cek token...';
+            const icon = state === 'valid' ? ICONS.check : state === 'invalid' ? ICONS.x : '<svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" class="spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>';
+            el.className = 'token-status-inline ' + (state === 'valid' ? 'token-valid' : state === 'invalid' ? 'token-invalid' : 'token-checking');
+            el.innerHTML = icon + ' ' + suffix;
         }
 
         async function checkToken(tk) {
-            if (!tk) { setTokenStatus('invalid', 'Token kosong'); return false; }
-            setTokenStatus('checking', 'Cek token...');
+            if (!tk) { setTokenStatus('invalid'); return false; }
+            setTokenStatus('checking');
             try {
                 const res = await fetch('/check-token', {
                     method:'POST', headers:{'Content-Type':'application/json'},
@@ -253,14 +284,14 @@
                 });
                 const data = await res.json();
                 if (data.success && data.valid) {
-                    setTokenStatus('valid', 'Token valid');
+                    setTokenStatus('valid');
                     return true;
                 } else {
-                    setTokenStatus('invalid', 'Token invalid');
+                    setTokenStatus('invalid');
                     return false;
                 }
             } catch(e) {
-                setTokenStatus('invalid', 'Gagal cek');
+                setTokenStatus('invalid');
                 return false;
             }
         }
@@ -281,7 +312,7 @@
 
                 const tdMsg = document.createElement('td');
                 tdMsg.title = cfg.message;
-                tdMsg.textContent = truncate(cfg.message, 30);
+                tdMsg.textContent = truncate((cfg.message||'').split('\n')[0], 30);
                 tdMsg.style.maxWidth = '200px';
                 tr.appendChild(tdMsg);
 
@@ -394,10 +425,11 @@
             const cfg = botConfigs[i];
             const r = await Swal.fire({
                 title:'Edit Config', background:'#1e1f22', color:'#dbdee1',
+                customClass: { popup: 'custom-swal' },
                 html:`
-                    <input id="m" class="swal2-input" value="${cfg.message}" placeholder="Pesan">
-                    <input id="c" class="swal2-input" value="${cfg.channelID}" placeholder="Channel ID" type="text">
-                    <input id="d" class="swal2-input" value="${cfg.delay}" placeholder="Delay (ms)" type="number" min="5">
+                    <input id="m" class="swal2-input" placeholder="Pesan" value="${cfg.message}">
+                    <input id="c" class="swal2-input" placeholder="Channel ID" type="text" value="${cfg.channelID}">
+                    <input id="d" class="swal2-input" placeholder="Delay (ms)" type="number" min="5" value="${cfg.delay}">
                 `,
                 focusConfirm:false, showCancelButton:true, confirmButtonText:'Simpan',
                 preConfirm:() => {
@@ -473,8 +505,22 @@
                 if (data && data.ok) {
                     logMessage(cfg.message, cfg.channelID, 'success');
                 } else {
-                    const detail = (data && data.data && (data.data.message || JSON.stringify(data.data))) || `HTTP ${r.status}`;
-                    logMessage(cfg.message, cfg.channelID, 'failed', `${data && data.status ? data.status + ': ' : ''}${detail}`.slice(0,120));
+                    let status = 'failed';
+                    let label = 'FAILED';
+                    let detail = (data && data.data && (data.data.message || JSON.stringify(data.data))) || `HTTP ${r.status}`;
+
+                    // Categorize common Discord errors
+                    if (data && data.status === 401) {
+                        status = 'warning';
+                        label = 'WARNING';
+                        detail = 'TOKEN INVALID';
+                    } else if (data && data.status === 404) {
+                        status = 'warning';
+                        label = 'WARNING';
+                        detail = 'CHANNEL NOT FOUND';
+                    }
+
+                    logMessage(cfg.message, cfg.channelID, status, detail);
                 }
             }).catch((err) => {
                 logMessage(cfg.message, cfg.channelID, 'failed', err.message || 'Network error');
@@ -491,32 +537,45 @@
             if (!row) {
                 row = document.createElement('div');
                 row.className = 'log-row';
+                // Map status to badge label
+                const statusLabels = { success: 'SUCCESS', failed: 'FAILED', sending: 'SENDING', warning: 'WARNING', info: 'INFO' };
+                const statusClass = { success: 'SUCCESS', failed: 'FAILED', sending: 'sending', warning: 'WARNING', info: 'INFO' };
+                const badgeLabel = statusLabels[status] || status;
+                const badgeClass = statusClass[status] || 'INFO';
                 row.innerHTML = `
-                    <span class="log-status dot-pending"></span>
+                    <span class="log-dot dot-pending"></span>
                     <div class="log-msg" title="${message||''}"></div>
-                    <div class="log-meta">#${truncate(channelID,8)}</div>
-                    <div class="log-time" style="color:var(--muted);font-size:.72rem"></div>
-                    <span class="badge badge-log" data-s="pending">pending</span>`;
+                    <div class="log-time" style="color:var(--muted);font-size:.72rem">${new Date().toLocaleTimeString()}</div>
+                    <span class="badge badge-log" data-s="${badgeClass}">${badgeLabel}</span>`;
                 box.prepend(row);
                 logMap.set(key, row);
             }
-            const dot = row.querySelector('.log-status');
+            const dot = row.querySelector('.log-dot');
             const badge = row.querySelector('.badge-log');
             const timeEl = row.querySelector('.log-time');
             const msgDiv = row.querySelector('.log-msg');
-            if (status === 'sending') {
-                dot.className='log-status dot-pending'; badge.textContent='sending'; badge.dataset.s='sending';
-                msgDiv.textContent=truncate(message,60); timeEl.textContent=new Date().toLocaleTimeString();
-            } else if (status === 'success') {
-                dot.className='log-status dot-success'; badge.textContent='Sent'; badge.dataset.s='success';
-                msgDiv.textContent=truncate(message,60); timeEl.textContent=new Date().toLocaleTimeString();
-                setTimeout(()=>{ if(row.parentNode){box.removeChild(row);} logMap.delete(key); }, 3500);
-            } else {
-                dot.className='log-status dot-error'; badge.textContent='Failed'; badge.dataset.s='failed';
-                msgDiv.textContent=truncate(message + (detail ? ' | ' + detail : ''), 60); timeEl.textContent=new Date().toLocaleTimeString();
+            // Set proper classes and content based on status
+            const statusOrder = ['success', 'failed', 'sending', 'warning', 'info'];
+            const statusNames = ['SUCCESS', 'FAILED', 'SENDING', 'WARNING', 'INFO'];
+            const statusColors = { success: 'var(--success)', failed: 'var(--danger)', sending: 'var(--warn)', warning: 'var(--warn)', info: 'var(--accent)' };
+            const statusBg = { success: 'rgba(87,243,156,.15)', failed: 'rgba(218,55,62,.15)', sending: 'rgba(245,166,35,.15)', warning: 'rgba(245,166,35,.15)', info: 'rgba(88,101,242,.15)' };
+            const statusTextColor = { success: 'var(--success)', failed: '#ff7875', sending: 'var(--warn)', warning: 'var(--warn)', info: 'var(--text)' };
+            if (statusOrder.includes(status)) {
+                const idx = statusOrder.indexOf(status);
+                dot.className = `log-dot dot-${status}`;
+                badge.textContent = statusNames[idx];
+                badge.dataset.s = status;
+                badge.style.background = statusBg[status];
+                badge.style.color = statusTextColor[status];
+            }
+            msgDiv.textContent = truncate(message, 60);
+            timeEl.textContent = new Date().toLocaleTimeString();
+            // Auto-remove on success after timeout
+            if (status === 'success') {
+                setTimeout(()=>{ if(row.parentNode){box.removeChild(row);} logMap.delete(key); }, 4000);
             }
             const rows = box.children;
-            if (rows.length > 40) { const last = rows[rows.length-1]; box.removeChild(last); }
+            if (rows.length > 50) { const last = rows[rows.length-1]; box.removeChild(last); }
         }
 
         document.getElementById('clearLogsBtn').addEventListener('click', () => {
