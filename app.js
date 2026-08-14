@@ -98,6 +98,25 @@ app.post('/check-token', handleRequest(async (req) => {
     return { valid: false };
 }));
 
+app.post('/send-message', handleRequest(async (req) => {
+    const { token, channelID, message } = req.body;
+    if (!token) throw { status: 400, message: 'Token kosong' };
+    if (!channelID) throw { status: 400, message: 'Channel ID kosong' };
+    if (!message) throw { status: 400, message: 'Pesan kosong' };
+    const resp = await fetch(`https://discord.com/api/v10/channels/${channelID}/messages`, {
+        method: 'POST',
+        headers: { 'Authorization': token, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content: message })
+    });
+    let data = {};
+    try { data = await resp.json(); } catch (e) { data = {}; }
+    if (resp.ok) {
+        return { ok: true, data };
+    } else {
+        return { ok: false, status: resp.status, data };
+    }
+}));
+
 app.post('/save-configs', handleRequest(async (req) => {
     const { token, configs } = req.body;
     if (!token) throw { status: 400, message: 'Token kosong' };

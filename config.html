@@ -97,6 +97,10 @@
         .dot-pending{background:var(--warn)}
         .log-msg{flex:1;word-break:break-word;color:var(--muted);min-width:0}
         .log-meta{color:var(--muted);font-size:.72rem;flex-shrink:0}
+.badge-log{margin-left:.2rem;padding:.15rem .5rem;border-radius:6px;font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.3px;flex-shrink:0}
+.badge-log[data-s="sending"]{background:rgba(245,166,35,.15);color:var(--warn)}
+.badge-log[data-s="success"]{background:rgba(87,243,156,.15);color:var(--success)}
+.badge-log[data-s="failed"]{background:rgba(218,55,62,.15);color:#ff7875}
         .empty-state{color:var(--muted);text-align:center;padding:1.25rem;font-size:.82rem}
         .empty-state svg{width:36px;height:36px;margin-bottom:.5rem;color:var(--border)}
         .toast-custom{background:var(--card);border:1px solid var(--border);border-left:4px solid var(--accent)}
@@ -441,7 +445,7 @@
             }
         }
 
-        // ===== Send message =====
+        // ===== Send message (via server proxy to bypass CORS) =====
         function sendNow(cfg, tk) {
             const auth = tk || token;
             if (!auth) {
@@ -453,10 +457,10 @@
                 return;
             }
             logMessage(cfg.message, cfg.channelID, 'sending');
-            fetch(`https://discord.com/api/v10/channels/${cfg.channelID}/messages`, {
+            fetch('/send-message', {
                 method:'POST',
-                headers:{'Authorization':auth,'Content-Type':'application/json'},
-                body:JSON.stringify({content:cfg.message})
+                headers:{'Content-Type':'application/json'},
+                body:JSON.stringify({ token: auth, channelID: cfg.channelID, message: cfg.message })
             }).then(async (r) => {
                 let data = {};
                 try { data = await r.json(); } catch(e) {}
@@ -485,7 +489,7 @@
                     <div class="log-msg" title="${message||''}"></div>
                     <div class="log-meta">#${truncate(channelID,8)}</div>
                     <div class="log-time" style="color:var(--muted);font-size:.72rem"></div>
-                    <span class="badge badge-log">pending</span>`;
+                    <span class="badge badge-log" data-s="pending">pending</span>`;
                 box.prepend(row);
                 logMap.set(key, row);
             }
@@ -494,14 +498,14 @@
             const timeEl = row.querySelector('.log-time');
             const msgDiv = row.querySelector('.log-msg');
             if (status === 'sending') {
-                dot.className='log-status dot-pending'; badge.textContent='sending'; badge.className='badge badge-log';
+                dot.className='log-status dot-pending'; badge.textContent='sending'; badge.dataset.s='sending';
                 msgDiv.textContent=truncate(message,60); timeEl.textContent=new Date().toLocaleTimeString();
             } else if (status === 'success') {
-                dot.className='log-status dot-success'; badge.textContent='Sent'; badge.className='badge badge-log';
+                dot.className='log-status dot-success'; badge.textContent='Sent'; badge.dataset.s='success';
                 msgDiv.textContent=truncate(message,60); timeEl.textContent=new Date().toLocaleTimeString();
                 setTimeout(()=>{ if(row.parentNode){box.removeChild(row);} logMap.delete(key); }, 3500);
             } else {
-                dot.className='log-status dot-error'; badge.textContent='Failed'; badge.className='badge badge-log';
+                dot.className='log-status dot-error'; badge.textContent='Failed'; badge.dataset.s='failed';
                 msgDiv.textContent=truncate(message + (detail ? ' | ' + detail : ''), 60); timeEl.textContent=new Date().toLocaleTimeString();
             }
             const rows = box.children;
@@ -510,7 +514,7 @@
 
         document.getElementById('clearLogsBtn').addEventListener('click', () => {
             const box = document.getElementById('logTableBody');
-            if (!box || box.children.length < 2) return showToast.fire({icon:'info',title:'Tidak ada log'});
+            if (!box) return showToast.fire({icon:'info',title:'Tidak ada log'});
             confirmAction('Clear Logs', 'Hapus semua log?', () => {
                 box.innerHTML = '<div class="empty-state"><svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg><div>Belum ada log.</div></div>';
                 logMap.clear();
