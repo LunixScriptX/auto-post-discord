@@ -20,7 +20,7 @@
             --muted:#949ba4;
             --accent:#5865f2;
             --accent-hover:#4752c4;
-            --success:#57fefa;
+            --success:#57f39c;
             --danger:#da373c;
             --gradient:linear-gradient(135deg,var(--accent),#7983f5);
         }
@@ -36,13 +36,14 @@
             padding:1.5rem;
         }
         .container{max-width:960px;margin:0 auto}
-        header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem}
+        header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem}
         header h1{font-size:1.25rem;font-weight:700;display:flex;align-items:center;gap:.6rem}
         header .logo{width:36px;height:36px;border-radius:10px;background:var(--gradient);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(88,101,242,.35)}
         header .logo svg{width:20px;height:20px;color:#fff}
-        .account-info{color:var(--muted);font-size:.85rem}
+        .account-info{color:var(--muted);font-size:.85rem;display:flex;align-items:center;gap:.6rem;flex-wrap:wrap}
         .account-info span{color:var(--accent);font-weight:600}
-        .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.1rem;margin-bottom:1.25rem}
+        .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.1rem;margin-bottom:1.25rem;animation:fadeUp .3s ease}
+        @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
         .card.compact{padding:.85rem}
         .card h3{font-size:1rem;font-weight:600;margin-bottom:.75rem;display:flex;align-items:center;gap:.5rem}
         .card h3 svg{width:18px;height:18px;color:var(--accent)}
@@ -50,18 +51,21 @@
         table{width:100%;border-collapse:collapse;font-size:.87rem}
         th,td{padding:.7rem .9rem;text-align:left;border-bottom:1px solid var(--border)}
         thead th{color:var(--muted);font-weight:600;font-size:.8rem;text-transform:uppercase;letter-spacing:.3px}
+        tbody tr{animation:fadeUp .25s ease}
         tbody tr:hover{background:rgba(88,101,242,.06)}
-        .form-label{font-size:.8rem;font-weight:500;color:var(--muted);margin-bottom:.3rem}
-        .input,select{width:100%;padding:.55rem .8rem;border:1px solid var(--border);border-radius:8px;background:var(--bg-2);color:var(--text);font-size:.87rem;font-family:inherit;transition:border-color .15s}
-        .input:focus,select:focus{outline:none;border-color:var(--accent);background:var(--card)}
+        .form-label{font-size:.8rem;font-weight:500;color:var(--muted);margin-bottom:.3rem;display:block}
+        .input,select{width:100%;padding:.55rem .8rem;border:1px solid var(--border);border-radius:8px;background:var(--bg-2);color:var(--text);font-size:.87rem;font-family:inherit;transition:border-color .15s,box-shadow .15s}
+        .input:focus,select:focus{outline:none;border-color:var(--accent);background:var(--card);box-shadow:0 0 0 3px rgba(88,101,242,.2)}
         textarea.input{width:100%;min-height:70px;resize:vertical;font-family:inherit}
-        .row-gap{gap:.75rem}
-        .toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem}
+        .row{display:flex;gap:.75rem;flex-wrap:wrap}
+        .row > div{flex:1;min-width:160px}
+        .toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;flex-wrap:wrap;gap:.5rem}
         .btn{
             display:inline-flex;align-items:center;justify-content:center;gap:.4rem;
             padding:.5rem .9rem;border:none;border-radius:8px;font-size:.85rem;font-weight:600;
-            cursor:pointer;transition:all .15s;
+            cursor:pointer;transition:all .15s;user-select:none;
         }
+        .btn:active{transform:scale(.94)}
         .btn svg{width:16px;height:16px}
         .btn-primary{background:var(--accent);color:#fff}
         .btn-primary:hover{background:var(--accent-hover);box-shadow:0 4px 14px rgba(88,101,242,.35)}
@@ -70,46 +74,38 @@
         .btn-danger{background:rgba(218,55,62,.12);color:#ff7875;border:1px solid #ff7875}
         .btn-danger:hover{background:rgba(218,55,62,.24)}
         .btn-success{background:var(--success);color:#0a0a12}
-        .btn-success:hover{filter:brightness(1.1)}
-        .btn-icon{width:32px;height:32px;padding:0;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.85rem}
+        .btn-success:hover{filter:brightness(1.08)}
+        .btn-icon{
+            width:34px;height:34px;padding:0;border-radius:8px;border:1px solid var(--border);
+            background:transparent;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;
+            transition:all .15s;margin:0 .15rem;
+        }
+        .btn-icon:active{transform:scale(.88)}
         .btn-icon:hover{border-color:var(--accent);color:var(--accent);background:rgba(88,101,242,.1)}
-        .toggle-wrapper{
-            display:flex;align-items:center;gap:.7rem;
-            cursor:pointer;user-select:none;
+        .btn-icon.danger:hover{border-color:var(--danger);color:var(--danger);background:rgba(218,55,62,.1)}
+        .toggle-wrapper{display:flex;align-items:center;gap:.6rem;cursor:pointer;user-select:none}
+        .switch{position:relative;display:inline-flex;align-items:center;width:46px;height:26px;background:var(--border);border-radius:999px;cursor:pointer;transition:background .25s}
+        .switch.checked{background:var(--accent)}
+        .switch .knob{position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .25s cubic-bezier(.4,0,.2,1);box-shadow:0 1px 3px rgba(0,0,0,.3)}
+        .switch.checked .knob{transform:translateX(20px)}
+        .check-btn{
+            width:38px;height:38px;border-radius:10px;border:2px solid var(--border);
+            background:var(--bg-2);cursor:pointer;display:flex;align-items:center;justify-content:center;
+            color:var(--muted);transition:all .2s;
         }
-        .toggle{
-            position:relative;display:inline-flex;align-items:center;width:44px;height:24px;
-            background:var(--border);border-radius:999px;cursor:pointer;transition:background .2s;
-        }
-        .toggle.checked{background:var(--accent)}
-        .toggle .knob{
-            position:absolute;top:3px;left:3px;width:18px;height:18px;
-            border-radius:50%;background:#fff;transition:transform .2s;
-        }
-        .toggle.checked .knob{transform:translateX(20px)}
-        .badge{
-            display:inline-flex;align-items:center;gap:.25rem;
-            padding:.25rem .6rem;border-radius:6px;font-size:.72rem;font-weight:600;
-        }
+        .check-btn:active{transform:scale(.85)}
+        .check-btn.on{border-color:var(--accent);background:rgba(88,101,242,.18);color:var(--accent)}
+        .check-btn svg{width:20px;height:20px}
+        .badge{display:inline-flex;align-items:center;gap:.25rem;padding:.25rem .6rem;border-radius:6px;font-size:.72rem;font-weight:600}
         .badge-active{background:rgba(88,101,242,.15);color:var(--accent)}
         .badge-inactive{background:rgba(148,155,164,.1);color:var(--muted);border:1px solid var(--border)}
-        .toast-custom{
-            background:var(--card);border:1px solid var(--border);
-            border-left:4px solid var(--accent);
-        }
-        .controls{margin-top:.75rem;display:flex;justify-content:space-between;align-items:center}
-        #toggleBtn{width:100%;max-width:180px}
-        .status-badge{
-            display:inline-flex;align-items:center;gap:.4rem;
-            padding:.4rem .8rem;border-radius:20px;font-size:.8rem;font-weight:600;
-        }
-        .status-running{background:rgba(87,254,173,.1);color:var(--success);border:1px solid var(--success)}
+        .controls{margin-top:.75rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.75rem}
+        #toggleBtn{width:100%;max-width:200px}
+        .status-badge{display:inline-flex;align-items:center;gap:.4rem;padding:.4rem .8rem;border-radius:20px;font-size:.8rem;font-weight:600;transition:all .2s}
+        .status-running{background:rgba(87,243,156,.12);color:var(--success);border:1px solid var(--success)}
         .status-stopped{background:rgba(148,155,164,.1);color:var(--muted);border:1px solid var(--border)}
-        .logs-card{max-height:300px;overflow-y:auto}
-        .log-row{
-            display:flex;align-items:center;gap:.6rem;padding:.5rem .7rem;
-            border-bottom:1px solid var(--border);font-size:.8rem;
-        }
+        .logs-card{max-height:320px;overflow-y:auto}
+        .log-row{display:flex;align-items:center;gap:.6rem;padding:.5rem .7rem;border-bottom:1px solid var(--border);font-size:.8rem;animation:fadeUp .2s ease}
         .log-row:last-child{border-bottom:none}
         .log-status{width:10px;height:10px;border-radius:50%;flex-shrink:0}
         .status-dot-success{background:var(--success)}
@@ -117,60 +113,56 @@
         .status-dot-pending{background:#f5a623}
         .log-msg{flex:1;word-break:break-word;color:var(--muted)}
         .log-meta{color:var(--muted);font-size:.75rem}
-        .empty-state{color:var(--muted);text-align:center;padding:1.25rem;font-size:.85rem}
-        .empty-state svg{width:32px;height:32px;margin-bottom:.5rem}
-        @media(max-width:768px){.container{padding:0 .5rem}}
+        .empty-state{color:var(--muted);text-align:center;padding:1.5rem;font-size:.85rem}
+        .empty-state svg{width:36px;height:36px;margin-bottom:.5rem;color:var(--border)}
+        .toast-custom{background:var(--card);border:1px solid var(--border);border-left:4px solid var(--accent)}
+        @media(max-width:768px){.container{padding:0 .5rem}.row > div{flex:1 1 100%}}
     </style>
 </head>
 <body>
 <div class="container">
-    <!-- Header -->
     <header>
         <h1><span class="logo"><i data-lucide="send"></i></span>Auto Post Discord</h1>
         <div class="account-info">
             Akun: <span id="accountInfo">...</span>
             <span id="statusBadge" class="status-badge status-stopped">
-                <span class="dot" style="width:8px;height:8px;border-radius:50%;background:var(--muted)"></span>
+                <span style="width:8px;height:8px;border-radius:50%;background:var(--muted)"></span>
                 <span>Stopped</span>
             </span>
         </div>
     </header>
 
-    <!-- Config Form -->
     <form id="configForm">
     <div class="card">
         <h3><i data-lucide="settings-2"></i> Tambah Konfigurasi</h3>
-        <div class="row-gap">
-            <div style="flex:2">
+        <div class="row">
+            <div style="flex:2;min-width:200px">
                 <label class="form-label">Pesan</label>
                 <textarea id="message" class="input" placeholder="Pesan yang akan diposting"></textarea>
             </div>
-            <div style="flex:1" class="row-gap">
-                <div>
-                    <label class="form-label">Channel ID</label>
-                    <input id="channelID" class="input" type="number" placeholder="ID channel">
-                </div>
-                <div>
-                    <label class="form-label">Delay (ms)</label>
-                    <input id="delay" class="input" type="number" min="5" placeholder="min 5ms">
-                </div>
+            <div style="flex:1;min-width:140px">
+                <label class="form-label">Channel ID</label>
+                <input id="channelID" class="input" type="number" placeholder="ID channel">
+            </div>
+            <div style="flex:1;min-width:140px">
+                <label class="form-label">Delay (ms)</label>
+                <input id="delay" class="input" type="number" min="5" placeholder="min 5ms">
             </div>
         </div>
         <div class="controls">
             <button type="button" id="addConfigBtn" class="btn btn-secondary"><i data-lucide="plus"></i> Tambah</button>
             <div class="toggle-wrapper" id="toggleAll">
-                <span class="toggle checked" id="toggleAllSwitch"><span class="knob"></span></span>
-                <label class="form-label" style="margin:0">Aktifkan semua</label>
+                <span class="switch checked" id="toggleAllSwitch"><span class="knob"></span></span>
+                <label class="form-label" style="margin:0;cursor:pointer">Aktifkan semua</label>
             </div>
         </div>
     </div>
     </form>
 
-    <!-- Config List -->
     <div class="card">
         <div class="toolbar">
             <h3 style="margin:0"><i data-lucide="layers"></i> Daftar Konfigurasi</h3>
-            <span class="badge badge-secondary" id="configCount">0 config</span>
+            <span class="badge badge-inactive" id="configCount">0 config</span>
         </div>
         <div class="table-wrap">
             <table>
@@ -189,15 +181,13 @@
         </div>
     </div>
 
-    <!-- Start/Stop -->
-    <div class="card compact" style="display:flex;justify-content:space-between;align-items:center">
-        <div id="startHint" class="account-info" style="margin:0">
+    <div class="card compact" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem">
+        <div class="account-info" style="margin:0">
             Pilih minimal <span style="color:var(--accent)">1 konfigurasi aktif</span> lalu klik Mulai.
         </div>
         <button id="toggleBtn" class="btn btn-success"><i data-lucide="play"></i> Mulai Otomatis</button>
     </div>
 
-    <!-- Logs -->
     <div class="card logs-card">
         <div class="toolbar">
             <h3 style="margin:0"><i data-lucide="clipboard-list"></i> Log Kirim</h3>
@@ -209,353 +199,320 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.0/dist/sweetalert2.all.min.js"></script>
 <script>
-    // Global helper: aman jika lucide belum load
-    function safeIcons() { if (typeof lucide !== 'undefined') lucide.createIcons(); }
+    function safeIcons(){ if (typeof lucide !== 'undefined') lucide.createIcons(); }
 
     document.addEventListener('DOMContentLoaded', () => {
+        let botConfigs = [];
+        let activeConfigs = [];
+        let postInterval = null;
+        let currentAuthToken = '';
+        let allEnabled = true;
 
-    // State
-    let botConfigs = [];
-    let activeConfigs = [];
-    let postInterval = null;
-    let currentAuthToken = '';
-    let allConfigsEnabled = true;
+        const showToast = (typeof Swal !== 'undefined') ? Swal.mixin({
+            toast: true, position: 'top-end', showConfirmButton: false, timer: 2200, timerProgressBar: true,
+            background: '#1e1f22', color: '#dbdee1', iconColor: '#5865f2',
+            customClass: { popup: 'toast-custom' },
+            didOpen: (t) => { t.onmouseenter = Swal.stopTimer; t.onmouseleave = Swal.resumeTimer; }
+        }) : { fire: (o) => alert(`${o.title}: ${o.text||''}`) };
 
-    const showToast = (typeof Swal !== 'undefined') ? Swal.mixin({
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 2500,
-        timerProgressBar: true,
-        customClass: { popup: 'toast-custom' },
-        didOpen: (toast) => {
-            toast.onmouseenter = Swal.stopTimer;
-            toast.onmouseleave = Swal.resumeTimer;
-        }
-    }) : { fire: (o) => alert(`${o.title}: ${o.text || ''}`) };
+        const notify = (type, title, html='') => {
+            if (typeof Swal !== 'undefined') Swal.fire({ icon:type, title, html, background:'#1e1f22', color:'#dbdee1', confirmButtonColor: type==='error'?'#da373c':'#5865f2' });
+            else alert(`${type.toUpperCase()}: ${title}`);
+        };
 
-    const confirmAction = (title, text) => Swal.fire({
-        title, text, icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#5865f2',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Ya',
-        background: '#1e1f22',
-        color: '#dbdee1',
-        customClass: { popup: 'toast-custom' }
-    });
+        const confirmAction = (title, text, onYes) => {
+            if (typeof Swal !== 'undefined') {
+                Swal.fire({ title, text, icon:'warning', showCancelButton:true, confirmButtonColor:'#5865f2', cancelButtonColor:'#d33', confirmButtonText:'Ya', background:'#1e1f22', color:'#dbdee1' }).then(r => { if (r.isConfirmed) onYes(); });
+            } else if (confirm(`${title}\n${text}`)) onYes();
+        };
 
-    document.getElementById('clearLogsBtn').addEventListener('click', clearLogs);
-    document.getElementById('toggleAll').addEventListener('click', toggleAllConfigs);
-
-    // ---- Config CRUD ----
-    document.getElementById('addConfigBtn').addEventListener('click', async (e) => {
-        e.preventDefault();
-        const { value: config } = await Swal.fire({
-            title: 'Tambah Konfigurasi',
-            background: '#1e1f22',
-            color: '#dbdee1',
-            html: `
-                <textarea id="message" class="swal2-textarea" placeholder="Pesan"></textarea>
-                <input id="channelID" class="swal2-input" placeholder="Channel ID" type="number">
-                <input id="delay" class="swal2-input" placeholder="Delay (ms)" type="number" min="5">
-            `,
-            focusConfirm: false,
-            showCancelButton: true,
-            confirmButtonText: 'Simpan',
-            preConfirm: () => validateConfig()
-        });
-        if (config) {
-            botConfigs.push(config);
-            activeConfigs.push(config);
-            saveConfigs();
-            updateConfigTable();
-            updateConfigCount();
-        }
-    });
-
-    function validateConfig() {
-        const message = document.getElementById('message').value.trim();
-        const channelID = document.getElementById('channelID').value.trim();
-        const delay = document.getElementById('delay').value.trim();
-        if (!message || !channelID || !delay) { Swal.showValidationMessage('Semua field wajib diisi'); return false; }
-        if (parseInt(delay) < 5) { Swal.showValidationMessage('Delay minimal 5ms'); return false; }
-        return { message, channelID: parseInt(channelID), delay: parseInt(delay) };
-    }
-
-    function updateConfigTable() {
-        const tbody = document.getElementById('configTableBody');
-        if (botConfigs.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><i data-lucide="inbox"></i><div>Belum ada konfigurasi. Tambahkan di atas.</div></div></td></tr>`;
-            return;
-        }
-        tbody.innerHTML = botConfigs.map((config, index) => `
-            <tr>
-                <td class="text-center">
-                    <button class="btn-icon" onclick="toggleConfig(${index})" title="${config.active ? 'Nonaktifkan' : 'Aktifkan'}">
-                        <i data-lucide="${config.active !== false ? 'check-square' : 'square'}"></i>
-                    </button>
-                </td>
-                <td title="${config.message}">${truncateText(config.message, 40)}</td>
-                <td>${config.channelID}</td>
-                <td>${config.delay}</td>
-                <td>${config.active === false ? `<span class="badge badge-inactive">Off</span>` : `<span class="badge badge-active">On</span>`}</td>
-                <td class="text-center">
-                    <button class="btn-icon" onclick="editConfig(${index})" title="Edit"><i data-lucide="edit-2"></i></button>
-                    <button class="btn-icon btn-danger" onclick="deleteConfig(${index})" title="Hapus"><i data-lucide="trash-2"></i></button>
-                </td>
-            </tr>
-        `).join('');
-        safeIcons();
-    }
-
-    window.toggleConfig = function(index) {
-        botConfigs[index].active = botConfigs[index].active !== false ? false : true;
-        syncActiveConfigs();
-        saveConfigs();
-        updateConfigTable();
-    };
-
-    function syncActiveConfigs() {
-        activeConfigs = botConfigs.filter(c => c.active !== false);
-    }
-
-    function toggleAllConfigs() {
-        allConfigsEnabled = !allConfigsEnabled;
-        botConfigs.forEach((c, i) => botConfigs[i].active = allConfigsEnabled);
-        document.getElementById('toggleAllSwitch').classList.toggle('checked', allConfigsEnabled);
-        syncActiveConfigs();
-        saveConfigs();
-        updateConfigTable();
-    }
-
-    window.editConfig = async function(index) {
-        const config = botConfigs[index];
-        const { value: newConfig } = await Swal.fire({
-            title: 'Edit Konfigurasi',
-            background: '#1e1f22',
-            color: '#dbdee1',
-            html: `
-                <input id="edit-message" class="swal2-input" value="${config.message}" placeholder="Pesan">
-                <input id="edit-channelID" class="swal2-input" value="${config.channelID}" placeholder="Channel ID" type="number">
-                <input id="edit-delay" class="swal2-input" value="${config.delay}" placeholder="Delay (ms)" type="number" min="5">
-            `,
-            focusConfirm: false,
-            showCancelButton: true,
-            confirmButtonText: 'Simpan',
-            preConfirm: () => validateEditConfig()
-        });
-        if (newConfig) {
-            const wasActive = config.active !== false;
-            botConfigs[index] = newConfig;
-            botConfigs[index].active = wasActive;
-            syncActiveConfigs();
-            saveConfigs();
-            updateConfigTable();
-            showToast.fire({ icon: 'success', title: 'Diperbarui' });
-        }
-    };
-
-    function validateEditConfig() {
-        const message = document.getElementById('edit-message').value.trim();
-        const channelID = document.getElementById('edit-channelID').value.trim();
-        const delay = document.getElementById('edit-delay').value.trim();
-        if (!message || !channelID || !delay) { Swal.showValidationMessage('Semua field wajib diisi'); return false; }
-        if (parseInt(delay) < 5) { Swal.showValidationMessage('Delay minimal 5ms'); return false; }
-        return { message, channelID: parseInt(channelID), delay: parseInt(delay) };
-    }
-
-    window.deleteConfig = function(index) {
-        confirmAction('Hapus Konfigurasi', 'Yakin menghapus konfigurasi ini?').then((result) => {
-            if (result.isConfirmed) {
-                const wasActive = botConfigs[index].active !== false;
-                botConfigs.splice(index, 1);
-                activeConfigs = [];
-                syncActiveConfigs();
-                saveConfigs();
-                updateConfigTable();
-                updateConfigCount();
-                showToast.fire({ icon: 'success', title: 'Dihapus' });
-            }
-        });
-    };
-
-    function updateConfigCount() {
-        document.getElementById('configCount').textContent = botConfigs.length + ' config';
-    }
-
-    // ---- Auto Post ----
-    document.getElementById('toggleBtn').addEventListener('click', toggleAutoPost);
-
-    function toggleAutoPost() {
-        const toggleBtn = document.getElementById('toggleBtn');
-        const badge = document.getElementById('statusBadge');
-        const isStarted = postInterval === null;
-
-        if (isStarted) {
-            if (activeConfigs.length === 0) {
-                Swal.fire({ icon: 'error', title: 'Pilih minimal 1 config', background: '#1e1f22', color: '#dbdee1' });
+        // ---- Render table via DOM (no innerHTML → listeners persist) ----
+        function renderTable() {
+            const tbody = document.getElementById('configTableBody');
+            tbody.innerHTML = '';
+            if (botConfigs.length === 0) {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td colspan="6"><div class="empty-state"><i data-lucide="inbox"></i><div>Belum ada konfigurasi. Tambahkan di atas.</div></div></td>`;
+                tbody.appendChild(tr);
+                safeIcons();
                 return;
             }
-            startAutoPost();
-            toggleBtn.innerHTML = '<i data-lucide="pause"></i> Hentikan';
-            toggleBtn.className = 'btn btn-danger';
-            badge.innerHTML = '<span style="width:8px;height:8px;border-radius:50%;background:var(--success)"></span><span>Running</span>';
-            badge.className = 'status-badge status-running';
-            showToast.fire({ icon: 'success', title: 'Auto post dimulai' });
-        } else {
-            stopAutoPost();
-            toggleBtn.innerHTML = '<i data-lucide="play"></i> Mulai Otomatis';
-            toggleBtn.className = 'btn btn-success';
-            badge.innerHTML = '<span style="width:8px;height:8px;border-radius:50%;background:var(--muted)"></span><span>Stopped</span>';
-            badge.className = 'status-badge status-stopped';
-            showToast.fire({ icon: 'success', title: 'Auto post dihentikan' });
+            botConfigs.forEach((cfg, i) => {
+                const tr = document.createElement('tr');
+
+                // checkbox cell
+                const tdCheck = document.createElement('td');
+                const btn = document.createElement('button');
+                btn.className = 'check-btn' + (cfg.active !== false ? ' on' : '');
+                btn.title = cfg.active !== false ? 'Nonaktifkan' : 'Aktifkan';
+                btn.innerHTML = `<i data-lucide="${cfg.active !== false ? 'check-square' : 'square'}"></i>`;
+                btn.addEventListener('click', () => toggleConfig(i));
+                tdCheck.appendChild(btn);
+                tr.appendChild(tdCheck);
+
+                // message
+                const tdMsg = document.createElement('td');
+                tdMsg.title = cfg.message;
+                tdMsg.textContent = truncate(cfg.message, 40);
+                tr.appendChild(tdMsg);
+
+                // channel
+                const tdCh = document.createElement('td');
+                tdCh.textContent = cfg.channelID;
+                tr.appendChild(tdCh);
+
+                // delay
+                const tdDelay = document.createElement('td');
+                tdDelay.textContent = cfg.delay;
+                tr.appendChild(tdDelay);
+
+                // status
+                const tdStatus = document.createElement('td');
+                tdStatus.innerHTML = cfg.active === false
+                    ? `<span class="badge badge-inactive">Off</span>`
+                    : `<span class="badge badge-active">On</span>`;
+                tr.appendChild(tdStatus);
+
+                // actions
+                const tdAct = document.createElement('td');
+                const editBtn = document.createElement('button');
+                editBtn.className = 'btn-icon';
+                editBtn.title = 'Edit';
+                editBtn.innerHTML = '<i data-lucide="edit-2"></i>';
+                editBtn.addEventListener('click', () => editConfig(i));
+                const delBtn = document.createElement('button');
+                delBtn.className = 'btn-icon danger';
+                delBtn.title = 'Hapus';
+                delBtn.innerHTML = '<i data-lucide="trash-2"></i>';
+                delBtn.addEventListener('click', () => deleteConfig(i));
+                tdAct.appendChild(editBtn);
+                tdAct.appendChild(delBtn);
+                tr.appendChild(tdAct);
+
+                tbody.appendChild(tr);
+            });
+            safeIcons();
+            document.getElementById('configCount').textContent = botConfigs.length + ' config';
         }
-        safeIcons();
 
-        const state = isStarted ? 'started' : 'stopped';
-        saveAutoPostState(state);
-    }
+        function toggleConfig(i) {
+            botConfigs[i].active = botConfigs[i].active !== false ? false : true;
+            syncActive();
+            saveConfigs();
+            renderTable();
+            const on = botConfigs[i].active !== false;
+            showToast.fire({ icon: on ? 'success' : 'info', title: on ? 'Diaktifkan' : 'Dimatikan' });
+        }
 
-    function saveAutoPostState(state) {
-        fetch(`/conf/${currentAuthToken}/save-auto-post-state`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ state })
-        }).catch(e => console.error('Error saving state:', e));
-    }
+        function syncActive() {
+            activeConfigs = botConfigs.filter(c => c.active !== false);
+            allEnabled = activeConfigs.length === botConfigs.length;
+            document.getElementById('toggleAllSwitch').classList.toggle('checked', allEnabled);
+        }
 
-    function startAutoPost() {
-        if (activeConfigs.length === 0) return;
-        let index = 0;
-        const config = activeConfigs[index];
-        sendMessage(currentAuthToken, config.channelID, config.message);
-        index = (index + 1) % activeConfigs.length;
-        postInterval = setInterval(() => {
-            const config = activeConfigs[index];
-            sendMessage(currentAuthToken, config.channelID, config.message);
-            index = (index + 1) % activeConfigs.length;
-        }, activeConfigs[0].delay);
-    }
+        function toggleAll() {
+            allEnabled = !allEnabled;
+            botConfigs.forEach((c, i) => c.active = allEnabled);
+            document.getElementById('toggleAllSwitch').classList.toggle('checked', allEnabled);
+            syncActive();
+            saveConfigs();
+            renderTable();
+            showToast.fire({ icon: allEnabled ? 'success' : 'info', title: allEnabled ? 'Semua aktif' : 'Semua mati' });
+        }
 
-    function stopAutoPost() {
-        clearInterval(postInterval);
-        postInterval = null;
-    }
+        // ---- Add config ----
+        document.getElementById('addConfigBtn').addEventListener('click', async () => {
+            const r = await Swal.fire({
+                title:'Tambah Konfigurasi', background:'#1e1f22', color:'#dbdee1',
+                html:`<textarea id="m" class="swal2-textarea" placeholder="Pesan"></textarea>
+                      <input id="c" class="swal2-input" placeholder="Channel ID" type="number">
+                      <input id="d" class="swal2-input" placeholder="Delay (ms)" type="number" min="5">`,
+                focusConfirm:false, showCancelButton:true, confirmButtonText:'Simpan',
+                preConfirm:() => {
+                    const m=document.getElementById('m').value.trim();
+                    const c=document.getElementById('c').value.trim();
+                    const d=document.getElementById('d').value.trim();
+                    if(!m||!c||!d){Swal.showValidationMessage('Semua field wajib diisi');return false;}
+                    if(parseInt(d)<5){Swal.showValidationMessage('Delay minimal 5ms');return false;}
+                    return {message:m, channelID:parseInt(c), delay:parseInt(d)};
+                }
+            });
+            if (r.value) {
+                botConfigs.push(r.value);
+                syncActive();
+                saveConfigs();
+                renderTable();
+                showToast.fire({ icon:'success', title:'Ditambahkan' });
+            }
+        });
 
-    // ---- Save/Load configs ----
-    function saveConfigs() {
-        fetch(`/conf/${currentAuthToken}/save-configs`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ configs: botConfigs })
-        }).catch(e => console.error('Error:', e));
-    }
+        // ---- Edit ----
+        async function editConfig(i) {
+            const cfg = botConfigs[i];
+            const r = await Swal.fire({
+                title:'Edit Konfigurasi', background:'#1e1f22', color:'#dbdee1',
+                html:`<input id="m" class="swal2-input" value="${cfg.message}" placeholder="Pesan">
+                      <input id="c" class="swal2-input" value="${cfg.channelID}" placeholder="Channel ID" type="number">
+                      <input id="d" class="swal2-input" value="${cfg.delay}" placeholder="Delay (ms)" type="number" min="5">`,
+                focusConfirm:false, showCancelButton:true, confirmButtonText:'Simpan',
+                preConfirm:() => {
+                    const m=document.getElementById('m').value.trim();
+                    const c=document.getElementById('c').value.trim();
+                    const d=document.getElementById('d').value.trim();
+                    if(!m||!c||!d){Swal.showValidationMessage('Semua field wajib diisi');return false;}
+                    if(parseInt(d)<5){Swal.showValidationMessage('Delay minimal 5ms');return false;}
+                    return {message:m, channelID:parseInt(c), delay:parseInt(d)};
+                }
+            });
+            if (r.value) {
+                const wasActive = cfg.active !== false;
+                botConfigs[i] = r.value;
+                botConfigs[i].active = wasActive;
+                syncActive();
+                saveConfigs();
+                renderTable();
+                showToast.fire({ icon:'success', title:'Diperbarui' });
+            }
+        }
 
-    async function loadConfigs() {
-        try {
-            const response = await fetch(`/conf/${currentAuthToken}/load-configs`);
-            const data = await response.json();
-            if (data.success) {
-                botConfigs = Array.isArray(data.configs) ? data.configs : [];
-                syncActiveConfigs();
-                updateConfigTable();
-                updateConfigCount();
-                allConfigsEnabled = activeConfigs.length === botConfigs.length;
-                document.getElementById('toggleAllSwitch').classList.toggle('checked', allConfigsEnabled);
+        // ---- Delete ----
+        function deleteConfig(i) {
+            confirmAction('Hapus Konfigurasi', 'Yakin menghapus konfigurasi ini?', () => {
+                botConfigs.splice(i, 1);
+                syncActive();
+                saveConfigs();
+                renderTable();
+                showToast.fire({ icon:'success', title:'Dihapus' });
+            });
+        }
 
-                document.getElementById('accountInfo').textContent = 'Terhubung';
-                document.getElementById('accountInfo').style.color = 'var(--success)';
+        document.getElementById('toggleAll').addEventListener('click', toggleAll);
 
-                if (data.autoPostState === 'started') {
-                    syncActiveConfigs();
-                    if (activeConfigs.length > 0) {
+        // ---- Auto post ----
+        document.getElementById('toggleBtn').addEventListener('click', () => {
+            const btn = document.getElementById('toggleBtn');
+            const badge = document.getElementById('statusBadge');
+            const isStarted = postInterval === null;
+
+            if (isStarted) {
+                if (activeConfigs.length === 0) {
+                    notify('error', 'Pilih minimal 1 config');
+                    return;
+                }
+                startAutoPost();
+                btn.innerHTML = '<i data-lucide="pause"></i> Hentikan';
+                btn.className = 'btn btn-danger';
+                badge.innerHTML = '<span style="width:8px;height:8px;border-radius:50%;background:var(--success)"></span><span>Running</span>';
+                badge.className = 'status-badge status-running';
+                safeIcons();
+                showToast.fire({ icon:'success', title:'Auto post dimulai' });
+            } else {
+                stopAutoPost();
+                btn.innerHTML = '<i data-lucide="play"></i> Mulai Otomatis';
+                btn.className = 'btn btn-success';
+                badge.innerHTML = '<span style="width:8px;height:8px;border-radius:50%;background:var(--muted)"></span><span>Stopped</span>';
+                badge.className = 'status-badge status-stopped';
+                safeIcons();
+                showToast.fire({ icon:'success', title:'Auto post dihentikan' });
+            }
+            saveAutoPostState(isStarted ? 'started' : 'stopped');
+        });
+
+        function startAutoPost() {
+            if (activeConfigs.length === 0) return;
+            let idx = 0;
+            sendMessage(currentAuthToken, activeConfigs[idx].channelID, activeConfigs[idx].message);
+            idx = (idx + 1) % activeConfigs.length;
+            postInterval = setInterval(() => {
+                sendMessage(currentAuthToken, activeConfigs[idx].channelID, activeConfigs[idx].message);
+                idx = (idx + 1) % activeConfigs.length;
+            }, activeConfigs[0].delay);
+        }
+        function stopAutoPost() { clearInterval(postInterval); postInterval = null; }
+
+        function saveAutoPostState(state) {
+            fetch(`/conf/${currentAuthToken}/save-auto-post-state`, {
+                method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({state})
+            }).catch(e => console.error('save state error', e));
+        }
+
+        function saveConfigs() {
+            fetch(`/conf/${currentAuthToken}/save-configs`, {
+                method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({configs:botConfigs})
+            }).catch(e => console.error('save configs error', e));
+        }
+
+        async function loadConfigs() {
+            try {
+                const res = await fetch(`/conf/${currentAuthToken}/load-configs`);
+                const data = await res.json();
+                if (data.success) {
+                    botConfigs = Array.isArray(data.configs) ? data.configs : [];
+                    syncActive();
+                    renderTable();
+                    document.getElementById('accountInfo').textContent = 'Terhubung';
+                    document.getElementById('accountInfo').style.color = 'var(--success)';
+                    if (data.autoPostState === 'started' && activeConfigs.length > 0) {
                         startAutoPost();
-                        document.getElementById('toggleBtn').innerHTML = '<i data-lucide="pause"></i> Hentikan';
-                        document.getElementById('toggleBtn').className = 'btn btn-danger';
+                        const btn = document.getElementById('toggleBtn');
+                        btn.innerHTML = '<i data-lucide="pause"></i> Hentikan';
+                        btn.className = 'btn btn-danger';
                         const badge = document.getElementById('statusBadge');
                         badge.innerHTML = '<span style="width:8px;height:8px;border-radius:50%;background:var(--success)"></span><span>Running</span>';
                         badge.className = 'status-badge status-running';
+                        safeIcons();
                     }
                 }
+            } catch (e) { console.error('load error', e); }
+        }
+
+        function sendMessage(token, channelID, message) {
+            fetch(`https://discord.com/api/v10/channels/${channelID}/messages`, {
+                method:'POST', headers:{'Authorization':token,'Content-Type':'application/json'},
+                body:JSON.stringify({content:message})
+            }).then(r => r.json()).then(d => {
+                logMessage(message, channelID, d.id ? 'Success' : 'Failed');
+            }).catch(() => logMessage(message, channelID, 'Error'));
+        }
+
+        function logMessage(message, channelID, response) {
+            const box = document.getElementById('logTableBody');
+            if (box.querySelector('.empty-state')) box.innerHTML = '';
+            const row = document.createElement('div');
+            row.className = 'log-row';
+            const ok = response === 'Success';
+            row.innerHTML = `
+                <span class="log-status status-dot-${ok?'success':'error'}"></span>
+                <div class="log-msg" title="${message}">${truncate(message,60)}</div>
+                <div class="log-meta">#${truncate(channelID,8)}</div>
+                <div class="log-meta">${new Date().toLocaleTimeString()}</div>
+                <span class="badge ${ok?'badge-active':'badge-inactive'}">${response}</span>`;
+            box.prepend(row);
+            if (box.children.length > 50) box.lastChild.remove();
+        }
+
+        document.getElementById('clearLogsBtn').addEventListener('click', () => {
+            const box = document.getElementById('logTableBody');
+            if (!box || box.children.length < 2) { showToast.fire({icon:'info',title:'Tidak ada log'}); return; }
+            confirmAction('Clear Logs', 'Hapus semua log?', () => {
+                box.innerHTML = '<div class="empty-state"><i data-lucide="terminal"></i><div>Belum ada log.</div></div>';
                 safeIcons();
-            }
-        } catch (error) {
-            console.error('Error loading configs:', error);
-        }
-    }
-
-    // ---- Discord message ----
-    function sendMessage(authToken, channelID, message) {
-        fetch(`https://discord.com/api/v10/channels/${channelID}/messages`, {
-            method: 'POST',
-            headers: { 'Authorization': authToken, 'Content-Type': 'application/json' },
-            body: JSON.stringify({ content: message })
-        }).then(r => r.json()).then(data => {
-            logMessage(message, channelID, activeConfigs[0]?.delay, data.id ? 'Success' : 'Failed');
-        }).catch(error => {
-            logMessage(message, channelID, activeConfigs[0]?.delay, 'Error');
+                showToast.fire({icon:'success',title:'Logs cleared'});
+            });
         });
-    }
 
-    // ---- Logs ----
-    function logMessage(message, channelID, delay, response) {
-        const container = document.getElementById('logTableBody');
-        // Remove empty placeholder
-        if (container.querySelector('.empty-state')) {
-            container.innerHTML = '';
-        }
-        const row = document.createElement('div');
-        row.className = 'log-row';
-        const isSuccess = response === 'Success';
-        row.innerHTML = `
-            <span class="log-status status-dot-${isSuccess ? 'success' : 'error'}"></span>
-            <div class="log-msg" title="${message}">${truncateText(message, 60)}</div>
-            <div class="log-meta">#${truncateText(channelID, 8)}</div>
-            <div class="log-meta">${new Date().toLocaleTimeString()}</div>
-            <span class="badge ${isSuccess ? 'badge-active' : 'badge-inactive'}">${response}</span>
-        `;
-        container.prepend(row);
-        // Limit logs
-        const children = container.children;
-        if (children.length > 50) children[children.length - 1].remove();
-    }
+        function truncate(t, n) { return t.length <= n ? t : t.substring(0, n-3) + '...'; }
 
-    function clearLogs() {
-        const logTableBody = document.getElementById('logTableBody');
-        if (!logTableBody || logTableBody.children.length < 2) {
-            showToast.fire({ icon: 'info', title: 'Tidak ada log untuk dihapus' });
-            return;
-        }
-        confirmAction('Clear Logs', 'Ini akan menghapus semua log!').then((result) => {
-            if (result.isConfirmed) {
-                logTableBody.innerHTML = '<div class="empty-state"><i data-lucide="terminal"></i><div>Belum ada log.</div></div>';
-                showToast.fire({ icon: 'success', title: 'Logs cleared' });
-            }
-        });
-    }
-
-    const truncateText = (text, maxLength) => {
-        return text.length <= maxLength ? text : text.substring(0, maxLength - 3) + '...';
-    };
-
-    // ---- Init ----
-    const urlParts = window.location.pathname.split('/');
-    currentAuthToken = urlParts[urlParts.length - 1];
-    if (!currentAuthToken) {
-        if (typeof Swal !== 'undefined') {
-            Swal.fire({
-                icon: 'error', title: 'Invalid Auth Token',
-                text: 'Redirecting...', timer: 2000, timerProgressBar: true,
-                background: '#1e1f22', color: '#dbdee1'
-            }).then(() => window.location.href = '/');
+        // init
+        const parts = window.location.pathname.split('/');
+        currentAuthToken = parts[parts.length - 1];
+        if (!currentAuthToken) {
+            notify('error', 'Invalid Auth Token');
+            setTimeout(() => window.location.href = '/', 1500);
         } else {
-            window.location.href = '/';
+            loadConfigs();
         }
-    } else {
-        loadConfigs();
-    }
-    }); // end DOMContentLoaded
+    });
     safeIcons();
 </script>
 </body>
