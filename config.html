@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Auto Post Discord — Konfigurasi</title>
+    <title>Auto Post Discord — Setup</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -22,7 +22,7 @@
             --accent-hover:#4752c4;
             --success:#57f39c;
             --danger:#da373c;
-            --gradient:linear-gradient(135deg,var(--accent),#7983f5);
+            --warn:#f5a623;
         }
         *{box-sizing:border-box;margin:0;padding:0}
         body{
@@ -35,37 +35,51 @@
             min-height:100vh;
             padding:1.5rem;
         }
-        .container{max-width:960px;margin:0 auto}
-        header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem}
-        header h1{font-size:1.25rem;font-weight:700;display:flex;align-items:center;gap:.6rem}
-        header .logo{width:36px;height:36px;border-radius:10px;background:var(--gradient);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(88,101,242,.35)}
-        header .logo svg{width:20px;height:20px;color:#fff}
-        .account-info{color:var(--muted);font-size:.85rem;display:flex;align-items:center;gap:.6rem;flex-wrap:wrap}
-        .account-info span{color:var(--accent);font-weight:600}
-        .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.1rem;margin-bottom:1.25rem;animation:fadeUp .3s ease}
+        .container{max-width:1000px;margin:0 auto}
+        header{
+            display:flex;align-items:center;justify-content:space-between;
+            margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem;
+        }
+        header h1{
+            font-size:1.25rem;font-weight:700;
+            display:flex;align-items:center;gap:.6rem;
+        }
+        header h1 .logo{width:34px;height:34px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#7983f5);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(88,101,242,.35)}
+        header h1 .logo svg{width:20px;height:20px;color:#fff}
+        .status-badge{
+            display:inline-flex;align-items:center;gap:.4rem;
+            padding:.35rem .8rem;border-radius:20px;font-size:.8rem;font-weight:600;
+        }
+        .status-running{background:rgba(87,243,156,.12);color:var(--success);border:1px solid var(--success)}
+        .status-stopped{background:rgba(148,155,164,.1);color:var(--muted);border:1px solid var(--border)}
+        .card{
+            background:var(--card);border:1px solid var(--border);
+            border-radius:14px;padding:1.25rem;margin-bottom:1.25rem;
+            animation:fadeUp .3s ease;
+        }
         @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-        .card.compact{padding:.85rem}
-        .card h3{font-size:1rem;font-weight:600;margin-bottom:.75rem;display:flex;align-items:center;gap:.5rem}
+        .card h2,.card h3{font-weight:600;margin-bottom:.7rem;display:flex;align-items:center;gap:.5rem}
+        .card h2{font-size:1.1rem}
+        .card h3{font-size:.95rem}
         .card h3 svg{width:18px;height:18px;color:var(--accent)}
-        .table-wrap{border:1px solid var(--border);border-radius:8px;overflow:hidden}
-        table{width:100%;border-collapse:collapse;font-size:.87rem}
-        th,td{padding:.7rem .9rem;text-align:left;border-bottom:1px solid var(--border)}
-        thead th{color:var(--muted);font-weight:600;font-size:.8rem;text-transform:uppercase;letter-spacing:.3px}
-        tbody tr{animation:fadeUp .25s ease}
-        tbody tr:hover{background:rgba(88,101,242,.06)}
-        .form-label{font-size:.8rem;font-weight:500;color:var(--muted);margin-bottom:.3rem;display:block}
-        .input,select{width:100%;padding:.55rem .8rem;border:1px solid var(--border);border-radius:8px;background:var(--bg-2);color:var(--text);font-size:.87rem;font-family:inherit;transition:border-color .15s,box-shadow .15s}
+        .card .sub{color:var(--muted);font-size:.82rem;line-height:1.5}
+        label{font-size:.8rem;font-weight:500;color:var(--muted);margin-bottom:.3rem;display:block}
+        .form-row{display:flex;gap:.75rem;flex-wrap:wrap}
+        .form-row > div{flex:1;min-width:160px}
+        .input,select{
+            width:100%;padding:.6rem .8rem;border:1px solid var(--border);
+            border-radius:8px;background:var(--bg-2);color:var(--text);
+            font-size:.87rem;font-family:inherit;transition:border-color .15s,box-shadow .15s;
+        }
         .input:focus,select:focus{outline:none;border-color:var(--accent);background:var(--card);box-shadow:0 0 0 3px rgba(88,101,242,.2)}
+        .input.is-invalid{border-color:var(--danger);box-shadow:0 0 0 3px rgba(218,55,62,.25)}
         textarea.input{width:100%;min-height:70px;resize:vertical;font-family:inherit}
-        .row{display:flex;gap:.75rem;flex-wrap:wrap}
-        .row > div{flex:1;min-width:160px}
-        .toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;flex-wrap:wrap;gap:.5rem}
         .btn{
             display:inline-flex;align-items:center;justify-content:center;gap:.4rem;
-            padding:.5rem .9rem;border:none;border-radius:8px;font-size:.85rem;font-weight:600;
-            cursor:pointer;transition:all .15s;user-select:none;
+            padding:.6rem 1.1rem;border:none;border-radius:8px;font-size:.85rem;
+            font-weight:600;cursor:pointer;transition:all .15s;user-select:none;
         }
-        .btn:active{transform:scale(.94)}
+        .btn:active{transform:scale(.96)}
         .btn svg{width:16px;height:16px}
         .btn-primary{background:var(--accent);color:#fff}
         .btn-primary:hover{background:var(--accent-hover);box-shadow:0 4px 14px rgba(88,101,242,.35)}
@@ -73,96 +87,132 @@
         .btn-secondary:hover{border-color:var(--accent);color:var(--accent)}
         .btn-danger{background:rgba(218,55,62,.12);color:#ff7875;border:1px solid #ff7875}
         .btn-danger:hover{background:rgba(218,55,62,.24)}
-        .btn-success{background:var(--success);color:#0a0a12}
-        .btn-success:hover{filter:brightness(1.08)}
-        .btn-icon{
-            width:34px;height:34px;padding:0;border-radius:8px;border:1px solid var(--border);
-            background:transparent;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;
-            transition:all .15s;margin:0 .15rem;
+        .btn-toggle{background:var(--success);color:#0a0a12}
+        .btn-toggle.active{background:var(--accent);color:#fff}
+        .btn-toggle:hover{filter:brightness(1.05)}
+        .toolbar{
+            display:flex;justify-content:space-between;align-items:center;
+            margin-bottom:.5rem;flex-wrap:wrap;gap:.5rem;
         }
-        .btn-icon:active{transform:scale(.88)}
+        .toggle-wrapper{
+            display:flex;align-items:center;gap:.5rem;cursor:pointer;user-select:none;
+        }
+        .switch{
+            position:relative;display:inline-flex;align-items:center;
+            width:46px;height:26px;background:var(--border);border-radius:999px;
+            cursor:pointer;transition:background .25s;
+        }
+        .switch.on{background:var(--accent)}
+        .switch .knob{
+            position:absolute;top:3px;left:3px;width:20px;height:20px;
+            border-radius:50%;background:#fff;
+            transition:transform .25s cubic-bezier(.4,0,.2,1);
+            box-shadow:0 1px 3px rgba(0,0,0,.3);
+        }
+        .switch.on .knob{transform:translateX(20px)}
+        .table-wrap{border:1px solid var(--border);border-radius:8px;overflow:hidden}
+        table{width:100%;border-collapse:collapse;font-size:.87rem}
+        th,td{padding:.7rem .9rem;text-align:left;border-bottom:1px solid var(--border)}
+        thead th{color:var(--muted);font-weight:600;font-size:.78rem;text-transform:uppercase;letter-spacing:.3px}
+        tbody tr:hover{background:rgba(88,101,242,.06)}
+        .check-cell{text-align:center}
+        .chk{
+            width:18px;height:18px;border:2px solid var(--border);
+            border-radius:4px;cursor:pointer;display:inline-block;
+            position:relative;top:0;left:0;transition:all .2s;
+            background:var(--bg-2);
+        }
+        .chk.checked{
+            border-color:var(--accent);
+            background:var(--accent);
+        }
+        .chk.checked::after{
+            content:'';
+            position:absolute;top:1px;left:5px;
+            width:5px;height:10px;
+            border:solid #fff;border-width:0 2px 2px 0;
+            transform:rotate(45deg);
+        }
+        .btn-icon{
+            width:30px;height:30px;padding:0;border-radius:6px;
+            border:1px solid var(--border);background:transparent;
+            color:var(--muted);cursor:pointer;display:flex;
+            align-items:center;justify-content:center;
+            transition:all .15s;
+        }
+        .btn-icon:active{transform:scale(.85)}
         .btn-icon:hover{border-color:var(--accent);color:var(--accent);background:rgba(88,101,242,.1)}
         .btn-icon.danger:hover{border-color:var(--danger);color:var(--danger);background:rgba(218,55,62,.1)}
-        .toggle-wrapper{display:flex;align-items:center;gap:.6rem;cursor:pointer;user-select:none}
-        .switch{position:relative;display:inline-flex;align-items:center;width:46px;height:26px;background:var(--border);border-radius:999px;cursor:pointer;transition:background .25s}
-        .switch.checked{background:var(--accent)}
-        .switch .knob{position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .25s cubic-bezier(.4,0,.2,1);box-shadow:0 1px 3px rgba(0,0,0,.3)}
-        .switch.checked .knob{transform:translateX(20px)}
-        .check-btn{
-            width:38px;height:38px;border-radius:10px;border:2px solid var(--border);
-            background:var(--bg-2);cursor:pointer;display:flex;align-items:center;justify-content:center;
-            color:var(--muted);transition:all .2s;
+        .badge{display:inline-flex;align-items:center;gap:.25rem;padding:.2rem .55rem;border-radius:6px;font-size:.72rem;font-weight:600}
+        .badge-on{background:rgba(88,101,242,.15);color:var(--accent)}
+        .badge-off{background:rgba(148,155,164,.1);color:var(--muted);border:1px solid var(--border)}
+        .logs-card{max-height:340px;overflow-y:auto}
+        .log-row{
+            display:flex;align-items:center;gap:.6rem;
+            padding:.5rem .7rem;border-bottom:1px solid var(--border);
+            font-size:.8rem;animation:fadeUp .2s ease;
         }
-        .check-btn:active{transform:scale(.85)}
-        .check-btn.on{border-color:var(--accent);background:rgba(88,101,242,.18);color:var(--accent)}
-        .check-btn svg{width:20px;height:20px}
-        .badge{display:inline-flex;align-items:center;gap:.25rem;padding:.25rem .6rem;border-radius:6px;font-size:.72rem;font-weight:600}
-        .badge-active{background:rgba(88,101,242,.15);color:var(--accent)}
-        .badge-inactive{background:rgba(148,155,164,.1);color:var(--muted);border:1px solid var(--border)}
-        .controls{margin-top:.75rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.75rem}
-        #toggleBtn{width:100%;max-width:200px}
-        .status-badge{display:inline-flex;align-items:center;gap:.4rem;padding:.4rem .8rem;border-radius:20px;font-size:.8rem;font-weight:600;transition:all .2s}
-        .status-running{background:rgba(87,243,156,.12);color:var(--success);border:1px solid var(--success)}
-        .status-stopped{background:rgba(148,155,164,.1);color:var(--muted);border:1px solid var(--border)}
-        .logs-card{max-height:320px;overflow-y:auto}
-        .log-row{display:flex;align-items:center;gap:.6rem;padding:.5rem .7rem;border-bottom:1px solid var(--border);font-size:.8rem;animation:fadeUp .2s ease}
         .log-row:last-child{border-bottom:none}
-        .log-status{width:10px;height:10px;border-radius:50%;flex-shrink:0}
-        .status-dot-success{background:var(--success)}
-        .status-dot-error{background:var(--danger)}
-        .status-dot-pending{background:#f5a623}
+        .log-status{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+        .dot-success{background:var(--success)}
+        .dot-error{background:var(--danger)}
+        .dot-pending{background:var(--warn)}
         .log-msg{flex:1;word-break:break-word;color:var(--muted)}
-        .log-meta{color:var(--muted);font-size:.75rem}
-        .empty-state{color:var(--muted);text-align:center;padding:1.5rem;font-size:.85rem}
+        .log-meta{color:var(--muted);font-size:.72rem}
+        .badge-log{padding:.15rem .5rem;font-size:.7rem}
+        .empty-state{color:var(--muted);text-align:center;padding:1.25rem;font-size:.82rem}
         .empty-state svg{width:36px;height:36px;margin-bottom:.5rem;color:var(--border)}
         .toast-custom{background:var(--card);border:1px solid var(--border);border-left:4px solid var(--accent)}
-        @media(max-width:768px){.container{padding:0 .5rem}.row > div{flex:1 1 100%}}
+        @media(max-width:768px){.container{padding:0 .3rem}.form-row > div{flex:1 1 100%}}
     </style>
 </head>
 <body>
 <div class="container">
     <header>
-        <h1><span class="logo"><i data-lucide="send"></i></span>Auto Post Discord</h1>
-        <div class="account-info">
-            Akun: <span id="accountInfo">...</span>
-            <span id="statusBadge" class="status-badge status-stopped">
-                <span style="width:8px;height:8px;border-radius:50%;background:var(--muted)"></span>
-                <span>Stopped</span>
-            </span>
-        </div>
+        <h1><span class="logo"><i data-lucide="send"></i></span> Auto Post Discord — Setup</h1>
+        <span id="statusBadge" class="status-badge status-stopped">
+            <span style="width:8px;height:8px;border-radius:50%;background:var(--muted);display:inline-block"></span>
+            Stopped
+        </span>
     </header>
 
-    <form id="configForm">
+    <!-- Form Setup -->
     <div class="card">
-        <h3><i data-lucide="settings-2"></i> Tambah Konfigurasi</h3>
-        <div class="row">
-            <div style="flex:2;min-width:200px">
-                <label class="form-label">Pesan</label>
-                <textarea id="message" class="input" placeholder="Pesan yang akan diposting"></textarea>
+        <h2><i data-lucide="settings-2"></i> Setup Bot</h2>
+        <p class="sub">Masukkan auth token Discord beserta pesan, channel, dan delay. Config tersimpan per token.</p>
+
+        <div class="form-row" style="margin-bottom:.75rem">
+            <div>
+                <label>Auth Token Discord</label>
+                <input type="password" id="authToken" class="input" placeholder="token...">
+                <div class="hint" style="color:var(--muted);font-size:.72rem;margin-top:.2rem">Dapatkan via browser extension / inspect element.</div>
             </div>
-            <div style="flex:1;min-width:140px">
-                <label class="form-label">Channel ID</label>
-                <input id="channelID" class="input" type="number" placeholder="ID channel">
+            <div>
+                <label>Pesan</label>
+                <input id="message" class="input" placeholder="Pesan oto post">
             </div>
-            <div style="flex:1;min-width:140px">
-                <label class="form-label">Delay (ms)</label>
+        </div>
+        <div class="form-row">
+            <div>
+                <label>Channel ID</label>
+                <input id="channelID" class="input" type="number" placeholder="id channel">
+            </div>
+            <div>
+                <label>Delay (ms)</label>
                 <input id="delay" class="input" type="number" min="5" placeholder="min 5ms">
             </div>
         </div>
-        <div class="controls">
-            <button type="button" id="addConfigBtn" class="btn btn-secondary"><i data-lucide="plus"></i> Tambah</button>
-            <div class="toggle-wrapper" id="toggleAll">
-                <span class="switch checked" id="toggleAllSwitch"><span class="knob"></span></span>
-                <label class="form-label" style="margin:0;cursor:pointer">Aktifkan semua</label>
-            </div>
+        <div style="margin-top:.9rem;display:flex;gap:.6rem">
+            <button id="addConfigBtn" class="btn btn-secondary"><i data-lucide="plus"></i> Save Config</button>
+            <button id="toggleAllConfigs" class="btn btn-secondary"><i data-lucide-layers></i> Pilih Semua</button>
         </div>
     </div>
-    </form>
 
+    <!-- Config List -->
     <div class="card">
         <div class="toolbar">
-            <h3 style="margin:0"><i data-lucide="layers"></i> Daftar Konfigurasi</h3>
-            <span class="badge badge-inactive" id="configCount">0 config</span>
+            <h3><i data-lucide="layers"></i> Config List</h3>
+            <span class="badge badge-on" id="configCount">0 selected</span>
         </div>
         <div class="table-wrap">
             <table>
@@ -170,30 +220,29 @@
                     <tr>
                         <th style="width:50px"></th>
                         <th>Pesan</th>
-                        <th style="width:120px">Channel ID</th>
+                        <th style="width:130px">Channel ID</th>
                         <th style="width:90px">Delay (ms)</th>
                         <th style="width:80px">Status</th>
-                        <th style="width:120px">Aksi</th>
+                        <th style="width:95px">Aksi</th>
                     </tr>
                 </thead>
                 <tbody id="configTableBody"></tbody>
             </table>
         </div>
-    </div>
-
-    <div class="card compact" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem">
-        <div class="account-info" style="margin:0">
-            Pilih minimal <span style="color:var(--accent)">1 konfigurasi aktif</span> lalu klik Mulai.
+        <div style="margin-top:.7rem">
+            <button id="toggleBtn" class="btn btn-toggle"><i data-lucide="play"></i> Start Selected (<span id="selectedCount">0</span>)</button>
         </div>
-        <button id="toggleBtn" class="btn btn-success"><i data-lucide="play"></i> Mulai Otomatis</button>
     </div>
 
+    <!-- Logs -->
     <div class="card logs-card">
         <div class="toolbar">
-            <h3 style="margin:0"><i data-lucide="clipboard-list"></i> Log Kirim</h3>
+            <h3><i data-lucide="clipboard-list"></i> Realtime Logs</h3>
             <button id="clearLogsBtn" class="btn btn-secondary btn-sm"><i data-lucide="trash-2"></i> Clear</button>
         </div>
-        <div id="logTableBody"><div class="empty-state"><i data-lucide="terminal"></i><div>Belum ada log.</div></div></div>
+        <div id="logTableBody">
+            <div class="empty-state"><i data-lucide="terminal"></i><div>Belum ada log.</div></div>
+        </div>
     </div>
 </div>
 
@@ -205,315 +254,388 @@
         let botConfigs = [];
         let activeConfigs = [];
         let postInterval = null;
-        let currentAuthToken = '';
-        let allEnabled = true;
+        let token = '';
 
+        // Toast: hanya pakai Swal bila tersedia, fallback alert
         const showToast = (typeof Swal !== 'undefined') ? Swal.mixin({
-            toast: true, position: 'top-end', showConfirmButton: false, timer: 2200, timerProgressBar: true,
+            toast: true, position: 'top-end', showConfirmButton: false,
+            timer: 2200, timerProgressBar: true,
             background: '#1e1f22', color: '#dbdee1', iconColor: '#5865f2',
             customClass: { popup: 'toast-custom' },
-            didOpen: (t) => { t.onmouseenter = Swal.stopTimer; t.onmouseleave = Swal.resumeTimer; }
-        }) : { fire: (o) => alert(`${o.title}: ${o.text||''}`) };
+            didOpen: (t)=>{ t.onmouseenter=Swal.stopTimer; t.onmouseleave=Swal.resumeTimer; }
+        }) : { fire: (o)=>alert(`${o.title||''} ${o.text||''}`) };
 
         const notify = (type, title, html='') => {
-            if (typeof Swal !== 'undefined') Swal.fire({ icon:type, title, html, background:'#1e1f22', color:'#dbdee1', confirmButtonColor: type==='error'?'#da373c':'#5865f2' });
-            else alert(`${type.toUpperCase()}: ${title}`);
+            if (typeof Swal !== 'undefined') Swal.fire({
+                icon:type, title, html, background:'#1e1f22', color:'#dbdee1',
+                confirmButtonColor: type==='error'?'#da373c':'#5865f2'
+            }); else alert(`${type.toUpperCase()}: ${title}`);
         };
 
         const confirmAction = (title, text, onYes) => {
             if (typeof Swal !== 'undefined') {
-                Swal.fire({ title, text, icon:'warning', showCancelButton:true, confirmButtonColor:'#5865f2', cancelButtonColor:'#d33', confirmButtonText:'Ya', background:'#1e1f22', color:'#dbdee1' }).then(r => { if (r.isConfirmed) onYes(); });
+                Swal.fire({ title, text, icon:'warning', showCancelButton:true, confirmButtonColor:'#5865f2',
+                    cancelButtonColor:'#d33', confirmButtonText:'Ya', background:'#1e1f22', color:'#dbdee1'
+                }).then(r => { if (r.isConfirmed) onYes(); });
             } else if (confirm(`${title}\n${text}`)) onYes();
         };
 
-        // ---- Render table via DOM (no innerHTML → listeners persist) ----
+        function truncate(t,n){ return t&&t.length<=n ? t : (t||'').substring(0,n-3)+'...'; }
+
+        // ===== Render table via DOM (listeners persist) =====
         function renderTable() {
             const tbody = document.getElementById('configTableBody');
             tbody.innerHTML = '';
             if (botConfigs.length === 0) {
                 const tr = document.createElement('tr');
-                tr.innerHTML = `<td colspan="6"><div class="empty-state"><i data-lucide="inbox"></i><div>Belum ada konfigurasi. Tambahkan di atas.</div></div></td>`;
+                tr.innerHTML = `<td colspan="6"><div class="empty-state"><i data-lucide="inbox"></i><div>Belum ada config. Tambahkan di atas.</div></div></td>`;
                 tbody.appendChild(tr);
-                safeIcons();
-                return;
+                safeIcons(); return;
             }
+            const frag = document.createDocumentFragment();
             botConfigs.forEach((cfg, i) => {
                 const tr = document.createElement('tr');
 
-                // checkbox cell
-                const tdCheck = document.createElement('td');
-                const btn = document.createElement('button');
-                btn.className = 'check-btn' + (cfg.active !== false ? ' on' : '');
-                btn.title = cfg.active !== false ? 'Nonaktifkan' : 'Aktifkan';
-                btn.innerHTML = `<i data-lucide="${cfg.active !== false ? 'check-square' : 'square'}"></i>`;
-                btn.addEventListener('click', () => toggleConfig(i));
-                tdCheck.appendChild(btn);
-                tr.appendChild(tdCheck);
+                // checkbox
+                const tdC = document.createElement('td');
+                tdC.className = 'check-cell';
+                const chk = document.createElement('span');
+                chk.className = 'chk' + (cfg.selected ? ' checked' : '');
+                chk.dataset.idx = i;
+                chk.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    cfg.selected = !cfg.selected;
+                    chk.className = 'chk' + (cfg.selected ? ' checked' : '');
+                    syncActive();
+                    updateSelectedCount();
+                });
+                tdC.appendChild(chk);
+                tr.appendChild(tdC);
 
-                // message
                 const tdMsg = document.createElement('td');
                 tdMsg.title = cfg.message;
-                tdMsg.textContent = truncate(cfg.message, 40);
+                tdMsg.textContent = truncate(cfg.message, 30);
                 tr.appendChild(tdMsg);
 
-                // channel
                 const tdCh = document.createElement('td');
                 tdCh.textContent = cfg.channelID;
                 tr.appendChild(tdCh);
 
-                // delay
                 const tdDelay = document.createElement('td');
                 tdDelay.textContent = cfg.delay;
                 tr.appendChild(tdDelay);
 
-                // status
                 const tdStatus = document.createElement('td');
-                tdStatus.innerHTML = cfg.active === false
-                    ? `<span class="badge badge-inactive">Off</span>`
-                    : `<span class="badge badge-active">On</span>`;
+                tdStatus.innerHTML = cfg.active
+                    ? `<span class="badge badge-on">On</span>`
+                    : `<span class="badge badge-off">Off</span>`;
                 tr.appendChild(tdStatus);
 
-                // actions
                 const tdAct = document.createElement('td');
                 const editBtn = document.createElement('button');
-                editBtn.className = 'btn-icon';
-                editBtn.title = 'Edit';
+                editBtn.className = 'btn-icon'; editBtn.title = 'Edit';
                 editBtn.innerHTML = '<i data-lucide="edit-2"></i>';
                 editBtn.addEventListener('click', () => editConfig(i));
                 const delBtn = document.createElement('button');
-                delBtn.className = 'btn-icon danger';
-                delBtn.title = 'Hapus';
+                delBtn.className = 'btn-icon danger'; delBtn.title = 'Hapus';
                 delBtn.innerHTML = '<i data-lucide="trash-2"></i>';
                 delBtn.addEventListener('click', () => deleteConfig(i));
-                tdAct.appendChild(editBtn);
-                tdAct.appendChild(delBtn);
+                tdAct.append(editBtn, delBtn);
                 tr.appendChild(tdAct);
 
-                tbody.appendChild(tr);
+                frag.appendChild(tr);
             });
+            tbody.appendChild(frag);
             safeIcons();
-            document.getElementById('configCount').textContent = botConfigs.length + ' config';
-        }
-
-        function toggleConfig(i) {
-            botConfigs[i].active = botConfigs[i].active !== false ? false : true;
-            syncActive();
-            saveConfigs();
-            renderTable();
-            const on = botConfigs[i].active !== false;
-            showToast.fire({ icon: on ? 'success' : 'info', title: on ? 'Diaktifkan' : 'Dimatikan' });
         }
 
         function syncActive() {
-            activeConfigs = botConfigs.filter(c => c.active !== false);
-            allEnabled = activeConfigs.length === botConfigs.length;
-            document.getElementById('toggleAllSwitch').classList.toggle('checked', allEnabled);
+            activeConfigs = botConfigs.filter(c => c.selected && c.active);
         }
 
-        function toggleAll() {
-            allEnabled = !allEnabled;
-            botConfigs.forEach((c, i) => c.active = allEnabled);
-            document.getElementById('toggleAllSwitch').classList.toggle('checked', allEnabled);
+        function updateSelectedCount() {
+            document.getElementById('selectedCount').textContent = activeConfigs.length;
+            document.getElementById('configCount').textContent = activeConfigs.length + ' selected';
+            document.getElementById('configCount').className = activeConfigs.length > 0 ? 'badge badge-on' : 'badge badge-off';
+        }
+
+        // ===== Save configs (to server db.json via token) =====
+        function saveConfigs() {
+            fetch('/save-configs', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ token, configs: botConfigs })
+            }).catch(e => console.error('save configs error', e));
+        }
+
+        // ===== Load configs =====
+        async function loadConfigs() {
+            if (!token) return;
+            try {
+                const res = await fetch(`/load-configs?token=${encodeURIComponent(token)}`);
+                const data = await res.json();
+                if (data.success) {
+                    botConfigs = Array.isArray(data.configs) ? data.configs : [];
+                    syncActive();
+                    renderTable();
+                    updateSelectedCount();
+                }
+            } catch(e) { console.error('Load error:', e); }
+        }
+
+        // ===== Add config =====
+        document.getElementById('addConfigBtn').addEventListener('click', async () => {
+            const t = document.getElementById('authToken').value.trim();
+            const m = document.getElementById('message').value.trim();
+            const c = document.getElementById('channelID').value.trim();
+            const d = document.getElementById('delay').value.trim();
+
+            if (!t || !m || !c || !d) {
+                return notify('error', 'Validasi Gagal', 'Isi semua field (token, message, channel, delay).');
+            }
+            if (parseInt(d) < 5) {
+                return notify('error', 'Delay minimal 5ms');
+            }
+
+            const cfg = { message:m, channelID:parseInt(c), delay:parseInt(d), selected:true, active:true };
+            botConfigs.push(cfg);
+            token = t;
             syncActive();
             saveConfigs();
             renderTable();
-            showToast.fire({ icon: allEnabled ? 'success' : 'info', title: allEnabled ? 'Semua aktif' : 'Semua mati' });
-        }
-
-        // ---- Add config ----
-        document.getElementById('addConfigBtn').addEventListener('click', async () => {
-            const r = await Swal.fire({
-                title:'Tambah Konfigurasi', background:'#1e1f22', color:'#dbdee1',
-                html:`<textarea id="m" class="swal2-textarea" placeholder="Pesan"></textarea>
-                      <input id="c" class="swal2-input" placeholder="Channel ID" type="number">
-                      <input id="d" class="swal2-input" placeholder="Delay (ms)" type="number" min="5">`,
-                focusConfirm:false, showCancelButton:true, confirmButtonText:'Simpan',
-                preConfirm:() => {
-                    const m=document.getElementById('m').value.trim();
-                    const c=document.getElementById('c').value.trim();
-                    const d=document.getElementById('d').value.trim();
-                    if(!m||!c||!d){Swal.showValidationMessage('Semua field wajib diisi');return false;}
-                    if(parseInt(d)<5){Swal.showValidationMessage('Delay minimal 5ms');return false;}
-                    return {message:m, channelID:parseInt(c), delay:parseInt(d)};
-                }
-            });
-            if (r.value) {
-                botConfigs.push(r.value);
-                syncActive();
-                saveConfigs();
-                renderTable();
-                showToast.fire({ icon:'success', title:'Ditambahkan' });
-            }
+            updateSelectedCount();
+            // clear inputs
+            document.getElementById('message').value = '';
+            document.getElementById('channelID').value = '';
+            document.getElementById('delay').value = '';
+            showToast.fire({ icon:'success', title:'Config disimpan' });
         });
 
-        // ---- Edit ----
+        // ===== Select all toggle =====
+        document.getElementById('toggleAllConfigs').addEventListener('click', () => {
+            const allSelected = activeConfigs.length === botConfigs.length;
+            botConfigs.forEach(c => c.selected = allSelected ? false : true);
+            syncActive();
+            renderTable();
+            updateSelectedCount();
+            showToast.fire({ icon:'info', title: allSelected ? 'Deselect all' : 'Select all' });
+        });
+
+        // ===== Edit config =====
         async function editConfig(i) {
             const cfg = botConfigs[i];
             const r = await Swal.fire({
-                title:'Edit Konfigurasi', background:'#1e1f22', color:'#dbdee1',
-                html:`<input id="m" class="swal2-input" value="${cfg.message}" placeholder="Pesan">
-                      <input id="c" class="swal2-input" value="${cfg.channelID}" placeholder="Channel ID" type="number">
-                      <input id="d" class="swal2-input" value="${cfg.delay}" placeholder="Delay (ms)" type="number" min="5">`,
+                title:'Edit Config', background:'#1e1f22', color:'#dbdee1',
+                html:`
+                    <input id="m" class="swal2-input" value="${cfg.message}" placeholder="Pesan">
+                    <input id="c" class="swal2-input" value="${cfg.channelID}" placeholder="Channel ID" type="number">
+                    <input id="d" class="swal2-input" value="${cfg.delay}" placeholder="Delay (ms)" type="number" min="5">
+                `,
                 focusConfirm:false, showCancelButton:true, confirmButtonText:'Simpan',
                 preConfirm:() => {
                     const m=document.getElementById('m').value.trim();
                     const c=document.getElementById('c').value.trim();
                     const d=document.getElementById('d').value.trim();
-                    if(!m||!c||!d){Swal.showValidationMessage('Semua field wajib diisi');return false;}
+                    if(!m||!c||!d){Swal.showValidationMessage('Isi semua field');return false;}
                     if(parseInt(d)<5){Swal.showValidationMessage('Delay minimal 5ms');return false;}
                     return {message:m, channelID:parseInt(c), delay:parseInt(d)};
                 }
             });
             if (r.value) {
-                const wasActive = cfg.active !== false;
-                botConfigs[i] = r.value;
-                botConfigs[i].active = wasActive;
+                botConfigs[i].message = r.value.message;
+                botConfigs[i].channelID = r.value.channelID;
+                botConfigs[i].delay = r.value.delay;
                 syncActive();
                 saveConfigs();
                 renderTable();
+                updateSelectedCount();
                 showToast.fire({ icon:'success', title:'Diperbarui' });
             }
         }
 
-        // ---- Delete ----
+        // ===== Delete config =====
         function deleteConfig(i) {
-            confirmAction('Hapus Konfigurasi', 'Yakin menghapus konfigurasi ini?', () => {
-                botConfigs.splice(i, 1);
-                syncActive();
-                saveConfigs();
-                renderTable();
-                showToast.fire({ icon:'success', title:'Dihapus' });
-            });
+            confirmAction(
+                'Hapus Config',
+                'Yakin hapus config ini?',
+                () => {
+                    botConfigs.splice(i, 1);
+                    syncActive();
+                    saveConfigs();
+                    renderTable();
+                    updateSelectedCount();
+                    showToast.fire({ icon:'success', title:'Dihapus' });
+                }
+            );
         }
 
-        document.getElementById('toggleAll').addEventListener('click', toggleAll);
+        // ===== Start / Stop =====
+        document.getElementById('toggleBtn').addEventListener('click', toggleAutoPost);
 
-        // ---- Auto post ----
-        document.getElementById('toggleBtn').addEventListener('click', () => {
+        function toggleAutoPost() {
             const btn = document.getElementById('toggleBtn');
             const badge = document.getElementById('statusBadge');
             const isStarted = postInterval === null;
 
             if (isStarted) {
                 if (activeConfigs.length === 0) {
-                    notify('error', 'Pilih minimal 1 config');
-                    return;
+                    return notify('error', 'Pilih minimal 1 config dulu');
                 }
                 startAutoPost();
-                btn.innerHTML = '<i data-lucide="pause"></i> Hentikan';
+                btn.innerHTML = '<i data-lucide="pause"></i> Stop';
                 btn.className = 'btn btn-danger';
-                badge.innerHTML = '<span style="width:8px;height:8px;border-radius:50%;background:var(--success)"></span><span>Running</span>';
+                badge.innerHTML = '<span style="width:8px;height:8px;border-radius:50%;background:var(--success);display:inline-block"></span> Running';
                 badge.className = 'status-badge status-running';
-                safeIcons();
-                showToast.fire({ icon:'success', title:'Auto post dimulai' });
             } else {
                 stopAutoPost();
-                btn.innerHTML = '<i data-lucide="play"></i> Mulai Otomatis';
-                btn.className = 'btn btn-success';
-                badge.innerHTML = '<span style="width:8px;height:8px;border-radius:50%;background:var(--muted)"></span><span>Stopped</span>';
+                btn.innerHTML = '<i data-lucide="play"></i> Start Selected (<span id="selectedCount">0</span>)';
+                btn.className = 'btn btn-toggle';
+                badge.innerHTML = '<span style="width:8px;height:8px;border-radius:50%;background:var(--muted);display:inline-block"></span> Stopped';
                 badge.className = 'status-badge status-stopped';
-                safeIcons();
-                showToast.fire({ icon:'success', title:'Auto post dihentikan' });
             }
+            safeIcons();
+            showToast.fire({
+                icon:'success',
+                title: isStarted ? 'Bot berjalan' : 'Bot dihentikan'
+            });
             saveAutoPostState(isStarted ? 'started' : 'stopped');
-        });
+        }
 
         function startAutoPost() {
             if (activeConfigs.length === 0) return;
             let idx = 0;
-            sendMessage(currentAuthToken, activeConfigs[idx].channelID, activeConfigs[idx].message);
+            // Immediate first send
+            sendNow(activeConfigs[idx]);
             idx = (idx + 1) % activeConfigs.length;
             postInterval = setInterval(() => {
-                sendMessage(currentAuthToken, activeConfigs[idx].channelID, activeConfigs[idx].message);
+                sendNow(activeConfigs[idx]);
                 idx = (idx + 1) % activeConfigs.length;
             }, activeConfigs[0].delay);
         }
-        function stopAutoPost() { clearInterval(postInterval); postInterval = null; }
+
+        function stopAutoPost() {
+            clearInterval(postInterval);
+            postInterval = null;
+        }
 
         function saveAutoPostState(state) {
-            fetch(`/conf/${currentAuthToken}/save-auto-post-state`, {
-                method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({state})
-            }).catch(e => console.error('save state error', e));
+            fetch('/save-auto-post-state', {
+                method:'POST', headers:{'Content-Type':'application/json'},
+                body:JSON.stringify({ token, state })
+            }).catch(() => {});
         }
 
-        function saveConfigs() {
-            fetch(`/conf/${currentAuthToken}/save-configs`, {
-                method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({configs:botConfigs})
-            }).catch(e => console.error('save configs error', e));
+        // ===== Send message to Discord =====
+        function sendNow(cfg) {
+            logMessage(cfg.message, cfg.channelID, 'sending');
+            fetch(`https://discord.com/api/v10/channels/${cfg.channelID}/messages`, {
+                method:'POST',
+                headers:{'Authorization':token,'Content-Type':'application/json'},
+                body:JSON.stringify({content:cfg.message})
+            }).then(r => {
+                const ok = r.ok;
+                return r.json().then(data => ({ ok, data }));
+            }).then(({ok, data}) => {
+                logMessage(cfg.message, cfg.channelID, ok ? 'success' : 'failed');
+            }).catch(() => {
+                logMessage(cfg.message, cfg.channelID, 'failed');
+            });
         }
 
-        async function loadConfigs() {
-            try {
-                const res = await fetch(`/conf/${currentAuthToken}/load-configs`);
-                const data = await res.json();
-                if (data.success) {
-                    botConfigs = Array.isArray(data.configs) ? data.configs : [];
-                    syncActive();
-                    renderTable();
-                    document.getElementById('accountInfo').textContent = 'Terhubung';
-                    document.getElementById('accountInfo').style.color = 'var(--success)';
-                    if (data.autoPostState === 'started' && activeConfigs.length > 0) {
-                        startAutoPost();
-                        const btn = document.getElementById('toggleBtn');
-                        btn.innerHTML = '<i data-lucide="pause"></i> Hentikan';
-                        btn.className = 'btn btn-danger';
-                        const badge = document.getElementById('statusBadge');
-                        badge.innerHTML = '<span style="width:8px;height:8px;border-radius:50%;background:var(--success)"></span><span>Running</span>';
-                        badge.className = 'status-badge status-running';
-                        safeIcons();
-                    }
-                }
-            } catch (e) { console.error('load error', e); }
-        }
-
-        function sendMessage(token, channelID, message) {
-            fetch(`https://discord.com/api/v10/channels/${channelID}/messages`, {
-                method:'POST', headers:{'Authorization':token,'Content-Type':'application/json'},
-                body:JSON.stringify({content:message})
-            }).then(r => r.json()).then(d => {
-                logMessage(message, channelID, d.id ? 'Success' : 'Failed');
-            }).catch(() => logMessage(message, channelID, 'Error'));
-        }
-
-        function logMessage(message, channelID, response) {
+        // ===== Logs (realtime) =====
+        const logMap = new Map();
+        function logMessage(message, channelID, status) {
             const box = document.getElementById('logTableBody');
             if (box.querySelector('.empty-state')) box.innerHTML = '';
-            const row = document.createElement('div');
-            row.className = 'log-row';
-            const ok = response === 'Success';
-            row.innerHTML = `
-                <span class="log-status status-dot-${ok?'success':'error'}"></span>
-                <div class="log-msg" title="${message}">${truncate(message,60)}</div>
-                <div class="log-meta">#${truncate(channelID,8)}</div>
-                <div class="log-meta">${new Date().toLocaleTimeString()}</div>
-                <span class="badge ${ok?'badge-active':'badge-inactive'}">${response}</span>`;
-            box.prepend(row);
-            if (box.children.length > 50) box.lastChild.remove();
+
+            // Update or create row by message+channel
+            const key = channelID + '|' + (message||'');
+            let row = logMap.get(key);
+            if (!row) {
+                row = document.createElement('div');
+                row.className = 'log-row';
+                row.innerHTML = `
+                    <span class="log-status dot-pending"></span>
+                    <div class="log-msg" title="${message||''}"></div>
+                    <div class="log-meta">#${truncate(channelID,8)}</div>
+                    <div class="log-time" style="color:var(--muted);font-size:.72rem"></div>
+                    <span class="badge badge-log">pending</span>
+                `;
+                box.prepend(row);
+                logMap.set(key, row);
+            }
+
+            const dot = row.querySelector('.log-status');
+            const badge = row.querySelector('.badge-log');
+            const timeEl = row.querySelector('.log-time');
+            const msgDiv = row.querySelector('.log-msg');
+
+            if (status === 'sending') {
+                dot.className = 'log-status dot-pending';
+                badge.textContent = 'sending';
+                badge.className = 'badge badge-log';
+                msgDiv.textContent = truncate(message, 60);
+                timeEl.textContent = new Date().toLocaleTimeString();
+            } else if (status === 'success') {
+                dot.className = 'log-status dot-success';
+                badge.textContent = 'Sent';
+                badge.className = 'badge badge-log';
+                timeEl.textContent = new Date().toLocaleTimeString();
+                setTimeout(() => { box.removeChild(row); logMap.delete(key); }, 3500);
+            } else {
+                dot.className = 'log-status dot-error';
+                badge.textContent = 'Failed';
+                badge.className = 'badge badge-log';
+                timeEl.textContent = new Date().toLocaleTimeString();
+            }
+
+            // Limit
+            const rows = box.children;
+            if (rows.length > 40) {
+                const last = rows[rows.length - 1];
+                box.removeChild(last);
+                // remove from map
+                const k = (last.querySelector('.log-meta')?.textContent||'').slice(1);
+                logMap.delete(k);
+            }
         }
 
         document.getElementById('clearLogsBtn').addEventListener('click', () => {
             const box = document.getElementById('logTableBody');
-            if (!box || box.children.length < 2) { showToast.fire({icon:'info',title:'Tidak ada log'}); return; }
+            if (!box || box.children.length < 2) return showToast.fire({icon:'info',title:'Tidak ada log'});
             confirmAction('Clear Logs', 'Hapus semua log?', () => {
                 box.innerHTML = '<div class="empty-state"><i data-lucide="terminal"></i><div>Belum ada log.</div></div>';
+                logMap.clear();
                 safeIcons();
                 showToast.fire({icon:'success',title:'Logs cleared'});
             });
         });
 
-        function truncate(t, n) { return t.length <= n ? t : t.substring(0, n-3) + '...'; }
-
-        // init
-        const parts = window.location.pathname.split('/');
-        currentAuthToken = parts[parts.length - 1];
-        if (!currentAuthToken) {
-            notify('error', 'Invalid Auth Token');
-            setTimeout(() => window.location.href = '/', 1500);
-        } else {
-            loadConfigs();
+        // ===== Init =====
+        // Cek login flag (index.html login)
+        let loggedIn = true;
+        try { loggedIn = localStorage.getItem('apd_logged') === '1'; } catch(e){}
+        if (!loggedIn) {
+            window.location.href = '/';
+            return;
         }
+
+        // Load token dari localStorage (jika pernah disimpan)
+        try { token = localStorage.getItem('apd_token') || ''; } catch(e){}
+
+        // Bind token input listener: setiap kali ketik, update localStorage & reload configs
+        const tokenInput = document.getElementById('authToken');
+        tokenInput.value = token;
+        tokenInput.addEventListener('change', () => {
+            token = tokenInput.value.trim();
+            try { localStorage.setItem('apd_token', token); } catch(e){}
+            loadConfigs();
+        });
+
+        loadConfigs();
+        updateSelectedCount();
+        safeIcons();
     });
-    safeIcons();
 </script>
 </body>
 </html>
