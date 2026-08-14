@@ -7,7 +7,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/lucide@latest"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.0/dist/sweetalert2.min.css">
     <style>
         :root{
@@ -44,7 +43,7 @@
         .card h2,.card h3{font-weight:600;margin-bottom:.7rem;display:flex;align-items:center;gap:.5rem}
         .card h2{font-size:1.1rem}
         .card h3{font-size:.95rem}
-        .card h3 svg{width:18px;height:18px;color:var(--accent)}
+        .card h3 svg{width:18px;height:18px;color:var(--accent);flex-shrink:0}
         .card .sub{color:var(--muted);font-size:.82rem;line-height:1.5}
         label{font-size:.8rem;font-weight:500;color:var(--muted);margin-bottom:.3rem;display:block}
         .form-row{display:flex;gap:.75rem;flex-wrap:wrap}
@@ -71,15 +70,17 @@
         .token-checking{background:rgba(245,166,35,.12);color:var(--warn);border:1px solid var(--warn)}
         .table-wrap{border:1px solid var(--border);border-radius:8px;overflow:hidden}
         table{width:100%;border-collapse:collapse;font-size:.87rem}
-        th,td{padding:.7rem .9rem;text-align:left;border-bottom:1px solid var(--border)}
+        th,td{padding:.7rem .9rem;text-align:left;border-bottom:1px solid var(--border);vertical-align:middle}
         thead th{color:var(--muted);font-weight:600;font-size:.78rem;text-transform:uppercase;letter-spacing:.3px}
         tbody tr:hover{background:rgba(88,101,242,.06)}
-        .btn-icon{width:30px;height:30px;padding:0;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s}
+        .btn-icon{width:32px;height:32px;padding:0;border-radius:7px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:all .15s;margin:0 .15rem}
         .btn-icon:active{transform:scale(.85)}
         .btn-icon:hover{border-color:var(--accent);color:var(--accent);background:rgba(88,101,242,.1)}
         .btn-icon.danger:hover{border-color:var(--danger);color:var(--danger);background:rgba(218,55,62,.1)}
-        .btn-mini{display:inline-flex;align-items:center;gap:.3rem;padding:.35rem .7rem;border-radius:7px;font-size:.75rem;font-weight:600;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--text);transition:all .15s}
+        .btn-icon svg{width:16px;height:16px}
+        .btn-mini{display:inline-flex;align-items:center;gap:.3rem;padding:.35rem .8rem;border-radius:7px;font-size:.75rem;font-weight:600;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--text);transition:all .15s}
         .btn-mini:active{transform:scale(.94)}
+        .btn-mini svg{width:14px;height:14px}
         .btn-mini.start{border-color:var(--success);color:var(--success)}
         .btn-mini.start:hover{background:rgba(87,243,156,.12)}
         .btn-mini.stop{border-color:var(--danger);color:#ff7875}
@@ -94,8 +95,8 @@
         .dot-success{background:var(--success)}
         .dot-error{background:var(--danger)}
         .dot-pending{background:var(--warn)}
-        .log-msg{flex:1;word-break:break-word;color:var(--muted)}
-        .log-meta{color:var(--muted);font-size:.72rem}
+        .log-msg{flex:1;word-break:break-word;color:var(--muted);min-width:0}
+        .log-meta{color:var(--muted);font-size:.72rem;flex-shrink:0}
         .empty-state{color:var(--muted);text-align:center;padding:1.25rem;font-size:.82rem}
         .empty-state svg{width:36px;height:36px;margin-bottom:.5rem;color:var(--border)}
         .toast-custom{background:var(--card);border:1px solid var(--border);border-left:4px solid var(--accent)}
@@ -104,9 +105,8 @@
             .form-row{flex-direction:column}
             .form-row > div{flex:1 1 100%}
             .table-wrap{overflow-x:auto}
-            table{min-width:600px}
+            table{min-width:640px}
             header h1{font-size:1.05rem}
-            .btn{padding:.55rem .9rem;font-size:.8rem}
             .token-status{margin-left:0;width:100%;justify-content:center;margin-top:.5rem}
         }
     </style>
@@ -114,15 +114,15 @@
 <body>
 <div class="container">
     <header>
-        <h1><span class="logo"><i data-lucide="send"></i></span> Auto Post Discord — Setup</h1>
+        <h1><span class="logo"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.369a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.249a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.036A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.009c.12.099.246.198.373.292a.077.077 0 0 1-.006.127 12.3 12.3 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.029ZM8.02 15.331c-1.182 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418Zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418Z"/></svg></span> Auto Post Discord — Setup</h1>
         <span id="tokenStatus" class="token-status token-checking">
-            <i data-lucide="loader-2" class="spin"></i> Cek token...
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" class="spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg> Cek token...
         </span>
     </header>
 
     <!-- Form Setup -->
     <div class="card">
-        <h2><i data-lucide="settings-2"></i> Setup Bot</h2>
+        <h2><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> Setup Bot</h2>
         <p class="sub">Isi auth token Discord, pesan, channel, &amp; delay. Lalu klik Save Config.</p>
 
         <div class="form-row" style="margin-bottom:.75rem">
@@ -146,14 +146,14 @@
             </div>
         </div>
         <div style="margin-top:.9rem">
-            <button id="addConfigBtn" class="btn btn-primary"><i data-lucide="plus"></i> Save Config</button>
+            <button id="addConfigBtn" class="btn btn-primary"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg> Save Config</button>
         </div>
     </div>
 
     <!-- Config List -->
     <div class="card">
         <div class="toolbar">
-            <h3><i data-lucide="layers"></i> Config List</h3>
+            <h3><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg> Config List</h3>
             <span class="badge badge-off" id="configCount">0 config</span>
         </div>
         <div class="table-wrap">
@@ -176,26 +176,35 @@
     <!-- Logs -->
     <div class="card logs-card">
         <div class="toolbar">
-            <h3><i data-lucide="clipboard-list"></i> Realtime Logs</h3>
+            <h3><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg> Realtime Logs</h3>
             <div style="display:flex;gap:.4rem">
-                <button id="copyLogsBtn" class="btn btn-secondary btn-sm"><i data-lucide="copy"></i> Copy</button>
-                <button id="clearLogsBtn" class="btn btn-secondary btn-sm"><i data-lucide="trash-2"></i> Clear</button>
+                <button id="copyLogsBtn" class="btn btn-secondary btn-sm"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> Copy</button>
+                <button id="clearLogsBtn" class="btn btn-secondary btn-sm"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg> Clear</button>
             </div>
         </div>
         <div id="logTableBody">
-            <div class="empty-state"><i data-lucide="terminal"></i><div>Belum ada log.</div></div>
+            <div class="empty-state"><svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg><div>Belum ada log.</div></div>
         </div>
     </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.0/dist/sweetalert2.all.min.js"></script>
 <script>
-    function safeIcons(){ if (typeof lucide !== 'undefined') lucide.createIcons(); }
+    // Inline SVG icon helper — no external CDN dependency
+    const ICONS = {
+        edit: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>',
+        trash: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>',
+        play: '<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>',
+        pause: '<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>',
+        check: '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>',
+        x: '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>',
+        alert: '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>'
+    };
 
     document.addEventListener('DOMContentLoaded', () => {
-        let botConfigs = [];   // { message, channelID, delay, running:false, selected:true, active:true }
+        let botConfigs = [];
         let token = '';
-        const timers = {};     // index -> interval id
+        const timers = {};
 
         const showToast = (typeof Swal !== 'undefined') ? Swal.mixin({
             toast: true, position: 'top-end', showConfirmButton: false,
@@ -224,10 +233,7 @@
         function setTokenStatus(state, label) {
             const el = document.getElementById('tokenStatus');
             el.className = 'token-status ' + (state === 'valid' ? 'token-valid' : state === 'invalid' ? 'token-invalid' : 'token-checking');
-            el.innerHTML = (state === 'valid' ? '<i data-lucide="check-circle"></i>' :
-                            state === 'invalid' ? '<i data-lucide="x-circle"></i>' :
-                            '<i data-lucide="loader-2" class="spin"></i>') + ' ' + label;
-            safeIcons();
+            el.innerHTML = (state === 'valid' ? ICONS.check : state === 'invalid' ? ICONS.x : '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" class="spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>') + ' ' + label;
         }
 
         async function checkToken(tk) {
@@ -240,10 +246,10 @@
                 });
                 const data = await res.json();
                 if (data.success && data.valid) {
-                    setTokenStatus('valid', 'Token valid ✓');
+                    setTokenStatus('valid', 'Token valid');
                     return true;
                 } else {
-                    setTokenStatus('invalid', 'Token invalid ✗');
+                    setTokenStatus('invalid', 'Token invalid');
                     return false;
                 }
             } catch(e) {
@@ -258,9 +264,9 @@
             tbody.innerHTML = '';
             if (botConfigs.length === 0) {
                 const tr = document.createElement('tr');
-                tr.innerHTML = `<td colspan="6"><div class="empty-state"><i data-lucide="inbox"></i><div>Belum ada config. Tambahkan di atas.</div></div></td>`;
+                tr.innerHTML = `<td colspan="6"><div class="empty-state"><svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg><div>Belum ada config. Tambahkan di atas.</div></div></td>`;
                 tbody.appendChild(tr);
-                safeIcons(); return;
+                return;
             }
             const frag = document.createDocumentFragment();
             botConfigs.forEach((cfg, i) => {
@@ -269,6 +275,7 @@
                 const tdMsg = document.createElement('td');
                 tdMsg.title = cfg.message;
                 tdMsg.textContent = truncate(cfg.message, 30);
+                tdMsg.style.maxWidth = '200px';
                 tr.appendChild(tdMsg);
 
                 const tdCh = document.createElement('td');
@@ -289,9 +296,7 @@
                 const tdCtrl = document.createElement('td');
                 const ctrlBtn = document.createElement('button');
                 ctrlBtn.className = 'btn-mini ' + (cfg.running ? 'stop' : 'start');
-                ctrlBtn.innerHTML = cfg.running
-                    ? '<i data-lucide="pause"></i> Stop'
-                    : '<i data-lucide="play"></i> Start';
+                ctrlBtn.innerHTML = (cfg.running ? ICONS.pause : ICONS.play) + (cfg.running ? ' Stop' : ' Start');
                 ctrlBtn.addEventListener('click', () => toggleConfig(i));
                 tdCtrl.appendChild(ctrlBtn);
                 tr.appendChild(tdCtrl);
@@ -300,11 +305,11 @@
                 const tdAct = document.createElement('td');
                 const editBtn = document.createElement('button');
                 editBtn.className = 'btn-icon'; editBtn.title = 'Edit';
-                editBtn.innerHTML = '<i data-lucide="edit-2"></i>';
+                editBtn.innerHTML = ICONS.edit;
                 editBtn.addEventListener('click', () => editConfig(i));
                 const delBtn = document.createElement('button');
                 delBtn.className = 'btn-icon danger'; delBtn.title = 'Hapus';
-                delBtn.innerHTML = '<i data-lucide="trash-2"></i>';
+                delBtn.innerHTML = ICONS.trash;
                 delBtn.addEventListener('click', () => deleteConfig(i));
                 tdAct.append(editBtn, delBtn);
                 tr.appendChild(tdAct);
@@ -312,11 +317,6 @@
                 frag.appendChild(tr);
             });
             tbody.appendChild(frag);
-            // Force re-render Lucide icons for newly added SVG elements
-            if (typeof lucide !== 'undefined') {
-                // Use requestAnimationFrame to ensure DOM is fully painted
-                requestAnimationFrame(() => { if (typeof lucide !== 'undefined') lucide.createIcons(); });
-            }
         }
 
         function updateCount() {
@@ -364,7 +364,6 @@
                 return notify('error', 'Delay minimal 5ms');
             }
             token = t;
-            // cek token
             const ok = await checkToken(t);
             if (!ok) {
                 return notify('error', 'Token Invalid', 'Token Discord tidak valid. Cek kembali.');
@@ -412,7 +411,6 @@
         // ===== Delete config =====
         function deleteConfig(i) {
             confirmAction('Hapus Config', 'Yakin hapus config ini?', () => {
-                // stop if running
                 if (botConfigs[i].running && timers[i]) { clearInterval(timers[i]); delete timers[i]; }
                 botConfigs.splice(i, 1);
                 saveConfigs();
@@ -426,17 +424,14 @@
         function toggleConfig(i) {
             const cfg = botConfigs[i];
             if (cfg.running) {
-                // Stop
                 if (timers[i]) { clearInterval(timers[i]); delete timers[i]; }
                 cfg.running = false;
                 renderTable();
                 showToast.fire({ icon:'info', title:'Dihentikan' });
             } else {
-                // Start
                 if (!token) return notify('error', 'Token belum diisi');
                 cfg.running = true;
                 renderTable();
-                // kirim token explicitly biar selalu up-to-date
                 sendNow(cfg, token);
                 timers[i] = setInterval(() => sendNow(cfg, token), cfg.delay);
                 showToast.fire({ icon:'success', title:'Started' });
@@ -445,17 +440,13 @@
 
         // ===== Send message =====
         function sendNow(cfg, tk) {
-            const auth = tk || token; // fallback ke global
+            const auth = tk || token;
             if (!auth) {
-                const msg = 'ERROR: Token kosong saat send';
-                console.error(msg, { cfg });
-                logMessage(cfg.message, cfg.channelID, 'failed', msg);
+                logMessage(cfg.message, cfg.channelID, 'failed', 'Token kosong');
                 return;
             }
             if (!cfg.channelID) {
-                const msg = 'ERROR: Channel ID kosong';
-                console.error(msg, { cfg });
-                logMessage(cfg.message, cfg.channelID, 'failed', msg);
+                logMessage(cfg.message, cfg.channelID, 'failed', 'Channel ID kosong');
                 return;
             }
             logMessage(cfg.message, cfg.channelID, 'sending');
@@ -465,12 +456,13 @@
                 body:JSON.stringify({content:cfg.message})
             }).then(async (r) => {
                 let data = {};
-                try { data = await r.json(); } catch(e) { data = {}; }
-                console.log('Discord response:', r.status, data);
-                logMessage(cfg.message, cfg.channelID, r.ok ? 'success' : 'failed', r.ok ? '' : JSON.stringify(data).slice(0,120));
-                return null;
+                try { data = await r.json(); } catch(e) {}
+                if (r.ok) {
+                    logMessage(cfg.message, cfg.channelID, 'success');
+                } else {
+                    logMessage(cfg.message, cfg.channelID, 'failed', `${r.status}: ${JSON.stringify(data).slice(0,100)}`);
+                }
             }).catch((err) => {
-                console.error('Fetch error:', err);
                 logMessage(cfg.message, cfg.channelID, 'failed', err.message || 'Network error');
             });
         }
@@ -508,8 +500,6 @@
             } else {
                 dot.className='log-status dot-error'; badge.textContent='Failed'; badge.className='badge badge-log';
                 msgDiv.textContent=truncate(message + (detail ? ' | ' + detail : ''), 60); timeEl.textContent=new Date().toLocaleTimeString();
-                dot.className='log-status dot-error'; badge.textContent='Failed'; badge.className='badge badge-log';
-                timeEl.textContent=new Date().toLocaleTimeString();
             }
             const rows = box.children;
             if (rows.length > 40) { const last = rows[rows.length-1]; box.removeChild(last); }
@@ -519,8 +509,8 @@
             const box = document.getElementById('logTableBody');
             if (!box || box.children.length < 2) return showToast.fire({icon:'info',title:'Tidak ada log'});
             confirmAction('Clear Logs', 'Hapus semua log?', () => {
-                box.innerHTML = '<div class="empty-state"><i data-lucide="terminal"></i><div>Belum ada log.</div></div>';
-                logMap.clear(); safeIcons();
+                box.innerHTML = '<div class="empty-state"><svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg><div>Belum ada log.</div></div>';
+                logMap.clear();
                 showToast.fire({icon:'success',title:'Logs cleared'});
             });
         });
@@ -535,16 +525,12 @@
                 const status = r.querySelector('.badge-log')?.textContent || '';
                 return `[${time}] ${status.toUpperCase()} - ${msg}`;
             }).join('\n');
-            navigator.clipboard.writeText(text).then(() => {
-                showToast.fire({icon:'success', title:'Logs disalin'});
-            }).catch(() => {
-                // fallback
-                const ta = document.createElement('textarea');
-                ta.value = text; document.body.appendChild(ta); ta.select();
-                try { document.execCommand('copy'); showToast.fire({icon:'success',title:'Logs disalin'}); }
-                catch(e){ showToast.fire({icon:'error',title:'Gagal salin'}); }
-                document.body.removeChild(ta);
-            });
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => showToast.fire({icon:'success', title:'Logs disalin'}))
+                    .catch(() => showToast.fire({icon:'error', title:'Gagal salin'}));
+            } else {
+                showToast.fire({icon:'error', title:'Clipboard tidak didukung'});
+            }
         });
 
         // ===== Init =====
@@ -570,8 +556,8 @@
         if (token) checkToken(token);
         loadConfigs();
         updateCount();
-        safeIcons();
     });
 </script>
+<style>.spin{animation:spin 1s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}</style>
 </body>
 </html>
