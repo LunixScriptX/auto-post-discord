@@ -1,396 +1,553 @@
 <!DOCTYPE html>
-<html lang="en">
-   <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Auto Post Discord Configuration</title>
-      <link href="https://cdn.jsdelivr.net/npm/@tabler/core@latest/dist/css/tabler.min.css" rel="stylesheet">
-      <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.0/dist/sweetalert2.min.css" rel="stylesheet">
-      <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-      <style>
-         body {
-         background-color: #f8f9fa;
-         font-family: Arial, sans-serif;
-         }
-         .truncate {
-         max-width: 150px;
-         white-space: nowrap;
-         overflow: hidden;
-         text-overflow: ellipsis;
-         }
-         #pageTitle {
-         text-align: center;
-         font-family: 'Montserrat', sans-serif;
-         font-weight: 700;
-         }
-         .btn-stop,
-         .btn-success,
-         .saveAuth {
-         margin-top: 1.5rem;
-         }
-      </style>
-   </head>
-   <body>
-      <div class="container my-4" id="bodys">
-         <h3 id="pageTitle">Auto Post Discord Configuration</h3>
-      </div>
-      <div class="card mb-4">
-         <div class="card-body">
-            <h4>Account Information: <span id="accountInfo"></span></h4>
-            <h3>Config List</h3>
-            <div class="card mb-4">
-               <div class="card-header d-flex justify-content-between align-items-center">
-                  <h4 class="card-title">Configs</h4>
-                  <button class="btn btn-outline-primary" onclick="addConfig()">Add Config</button>
-               </div>
-               <div class="card-body">
-                  <div class="table-responsive">
-                     <table class="table table-striped">
-                        <thead>
-                           <tr>
-                              <th>Select</th>
-                              <th>Message</th>
-                              <th>Channel ID</th>
-                              <th>Delay (ms)</th>
-                              <th>Action</th>
-                           </tr>
-                        </thead>
-                        <tbody id="configTableBody">
-                           <!-- Configs will be dynamically added here -->
-                        </tbody>
-                     </table>
-                  </div>
-               </div>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto Post Discord — Konfigurasi</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/lucide@latest"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.0/dist/sweetalert2.min.css">
+    <style>
+        :root{
+            --bg:#313338;
+            --bg-2:#2b2d31;
+            --card:#1e1f22;
+            --card-2:#2b2d31;
+            --border:#3f4147;
+            --text:#dbdee1;
+            --muted:#949ba4;
+            --accent:#5865f2;
+            --accent-hover:#4752c4;
+            --success:#57fefa;
+            --danger:#da373c;
+            --gradient:linear-gradient(135deg,var(--accent),#7983f5);
+        }
+        *{box-sizing:border-box;margin:0;padding:0}
+        body{
+            font-family:'Inter',system-ui,-apple-system,sans-serif;
+            background:
+                radial-gradient(1200px 600px at 80% -10%, rgba(88,101,242,.12), transparent 60%),
+                radial-gradient(900px 500px at -10% 110%, rgba(88,101,242,.08), transparent 55%),
+                var(--bg);
+            color:var(--text);
+            min-height:100vh;
+            padding:1.5rem;
+        }
+        .container{max-width:960px;margin:0 auto}
+        header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem}
+        header h1{font-size:1.25rem;font-weight:700;display:flex;align-items:center;gap:.6rem}
+        header .logo{width:36px;height:36px;border-radius:10px;background:var(--gradient);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(88,101,242,.35)}
+        header .logo svg{width:20px;height:20px;color:#fff}
+        .account-info{color:var(--muted);font-size:.85rem}
+        .account-info span{color:var(--accent);font-weight:600}
+        .card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.1rem;margin-bottom:1.25rem}
+        .card.compact{padding:.85rem}
+        .card h3{font-size:1rem;font-weight:600;margin-bottom:.75rem;display:flex;align-items:center;gap:.5rem}
+        .card h3 svg{width:18px;height:18px;color:var(--accent)}
+        .table-wrap{border:1px solid var(--border);border-radius:8px;overflow:hidden}
+        table{width:100%;border-collapse:collapse;font-size:.87rem}
+        th,td{padding:.7rem .9rem;text-align:left;border-bottom:1px solid var(--border)}
+        thead th{color:var(--muted);font-weight:600;font-size:.8rem;text-transform:uppercase;letter-spacing:.3px}
+        tbody tr:hover{background:rgba(88,101,242,.06)}
+        .form-label{font-size:.8rem;font-weight:500;color:var(--muted);margin-bottom:.3rem}
+        .input,select{width:100%;padding:.55rem .8rem;border:1px solid var(--border);border-radius:8px;background:var(--bg-2);color:var(--text);font-size:.87rem;font-family:inherit;transition:border-color .15s}
+        .input:focus,select:focus{outline:none;border-color:var(--accent);background:var(--card)}
+        textarea.input{width:100%;min-height:70px;resize:vertical;font-family:inherit}
+        .row-gap{gap:.75rem}
+        .toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem}
+        .btn{
+            display:inline-flex;align-items:center;justify-content:center;gap:.4rem;
+            padding:.5rem .9rem;border:none;border-radius:8px;font-size:.85rem;font-weight:600;
+            cursor:pointer;transition:all .15s;
+        }
+        .btn svg{width:16px;height:16px}
+        .btn-primary{background:var(--accent);color:#fff}
+        .btn-primary:hover{background:var(--accent-hover);box-shadow:0 4px 14px rgba(88,101,242,.35)}
+        .btn-secondary{background:var(--card-2);color:var(--text);border:1px solid var(--border)}
+        .btn-secondary:hover{border-color:var(--accent);color:var(--accent)}
+        .btn-danger{background:rgba(218,55,62,.12);color:#ff7875;border:1px solid #ff7875}
+        .btn-danger:hover{background:rgba(218,55,62,.24)}
+        .btn-success{background:var(--success);color:#0a0a12}
+        .btn-success:hover{filter:brightness(1.1)}
+        .btn-icon{width:32px;height:32px;padding:0;border-radius:6px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.85rem}
+        .btn-icon:hover{border-color:var(--accent);color:var(--accent);background:rgba(88,101,242,.1)}
+        .toggle-wrapper{
+            display:flex;align-items:center;gap:.7rem;
+            cursor:pointer;user-select:none;
+        }
+        .toggle{
+            position:relative;display:inline-flex;align-items:center;width:44px;height:24px;
+            background:var(--border);border-radius:999px;cursor:pointer;transition:background .2s;
+        }
+        .toggle.checked{background:var(--accent)}
+        .toggle .knob{
+            position:absolute;top:3px;left:3px;width:18px;height:18px;
+            border-radius:50%;background:#fff;transition:transform .2s;
+        }
+        .toggle.checked .knob{transform:translateX(20px)}
+        .badge{
+            display:inline-flex;align-items:center;gap:.25rem;
+            padding:.25rem .6rem;border-radius:6px;font-size:.72rem;font-weight:600;
+        }
+        .badge-active{background:rgba(88,101,242,.15);color:var(--accent)}
+        .badge-inactive{background:rgba(148,155,164,.1);color:var(--muted);border:1px solid var(--border)}
+        .toast-custom{
+            background:var(--card);border:1px solid var(--border);
+            border-left:4px solid var(--accent);
+        }
+        .controls{margin-top:.75rem;display:flex;justify-content:space-between;align-items:center}
+        #toggleBtn{width:100%;max-width:180px}
+        .status-badge{
+            display:inline-flex;align-items:center;gap:.4rem;
+            padding:.4rem .8rem;border-radius:20px;font-size:.8rem;font-weight:600;
+        }
+        .status-running{background:rgba(87,254,173,.1);color:var(--success);border:1px solid var(--success)}
+        .status-stopped{background:rgba(148,155,164,.1);color:var(--muted);border:1px solid var(--border)}
+        .logs-card{max-height:300px;overflow-y:auto}
+        .log-row{
+            display:flex;align-items:center;gap:.6rem;padding:.5rem .7rem;
+            border-bottom:1px solid var(--border);font-size:.8rem;
+        }
+        .log-row:last-child{border-bottom:none}
+        .log-status{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+        .status-dot-success{background:var(--success)}
+        .status-dot-error{background:var(--danger)}
+        .status-dot-pending{background:#f5a623}
+        .log-msg{flex:1;word-break:break-word;color:var(--muted)}
+        .log-meta{color:var(--muted);font-size:.75rem}
+        .empty-state{color:var(--muted);text-align:center;padding:1.25rem;font-size:.85rem}
+        .empty-state svg{width:32px;height:32px;margin-bottom:.5rem}
+        @media(max-width:768px){.container{padding:0 .5rem}}
+    </style>
+</head>
+<body>
+<div class="container">
+    <!-- Header -->
+    <header>
+        <h1><span class="logo"><i data-lucide="send"></i></span>Auto Post Discord</h1>
+        <div class="account-info">
+            Akun: <span id="accountInfo">...</span>
+            <span id="statusBadge" class="status-badge status-stopped">
+                <span class="dot" style="width:8px;height:8px;border-radius:50%;background:var(--muted)"></span>
+                <span>Stopped</span>
+            </span>
+        </div>
+    </header>
+
+    <!-- Config Form -->
+    <form id="configForm">
+    <div class="card">
+        <h3><i data-lucide="settings-2"></i> Tambah Konfigurasi</h3>
+        <div class="row-gap">
+            <div style="flex:2">
+                <label class="form-label">Pesan</label>
+                <textarea id="message" class="input" placeholder="Pesan yang akan diposting"></textarea>
             </div>
-            <h3>Logs</h3>
-            <div class="card">
-               <div class="card-header d-flex justify-content-between align-items-center">
-                  <h4 class="card-title">Log Entries</h4>
-                  <button id="clearLogsBtn" class="btn btn-secondary">Clear Logs</button>
-               </div>
-               <div class="card-body">
-                  <div class="table-responsive">
-                     <table class="table table-striped">
-                        <thead>
-                           <tr>
-                              <th>Time</th>
-                              <th>Channel ID</th>
-                              <th>Delay (ms)</th>
-                              <th>Response</th>
-                           </tr>
-                        </thead>
-                        <tbody id="logTableBody">
-                           <!-- Logs will be dynamically added here -->
-                        </tbody>
-                     </table>
-                  </div>
-               </div>
+            <div style="flex:1" class="row-gap">
+                <div>
+                    <label class="form-label">Channel ID</label>
+                    <input id="channelID" class="input" type="number" placeholder="ID channel">
+                </div>
+                <div>
+                    <label class="form-label">Delay (ms)</label>
+                    <input id="delay" class="input" type="number" min="5" placeholder="min 5ms">
+                </div>
             </div>
-            <button id="toggleBtn" class="btn btn-success" onclick="toggleAutoPost()">Start</button>
-         </div>
-      </div>
-      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.0/dist/sweetalert2.all.min.js"></script>
-      <script>
-         let botConfigs = [];
-         let activeConfigs = [];
-         let postInterval = null;
-         let currentAuthToken = '';
-         
-         const showToast = Swal.mixin({
-             toast: true,
-             position: 'top-end',
-             showConfirmButton: false,
-             timer: 3000,
-             timerProgressBar: true,
-             didOpen: (toast) => {
-                 toast.onmouseenter = Swal.stopTimer;
-                 toast.onmouseleave = Swal.resumeTimer;
-             }
-         });
-         
-         const confirmAction = (title, text) => Swal.fire({
-             title,
-             text,
-             icon: 'warning',
-             showCancelButton: true,
-             confirmButtonColor: '#3085d6',
-             cancelButtonColor: '#d33',
-             confirmButtonText: 'Yes'
-         });
-         
-         document.getElementById('clearLogsBtn').addEventListener('click', clearLogs);
-         
-         async function addConfig() {
-             const { value: config } = await Swal.fire({
-                 title: 'Add Config',
-                 html: `
-                     <textarea id="message" class="swal2-textarea" placeholder="Message"></textarea>
-                     <input id="channelID" class="swal2-input" placeholder="Channel ID" type="number">
-                     <input id="delay" class="swal2-input" placeholder="Delay (ms)" type="number">
-                 `,
-                 focusConfirm: false,
-                 preConfirm: () => validateConfig()
-             });
-         
-             if (config) {
-                 botConfigs.push(config);
-                 updateConfigTable();
-                 saveConfigs();
-                 showToast.fire({ icon: "success", title: "Config added" });
-             }
-         }
-         
-         function updateConfigTable() {
-             const tbody = document.getElementById('configTableBody');
-             tbody.innerHTML = botConfigs.map((config, index) => `
-                 <tr>
-                     <td><input type="checkbox" onchange="toggleConfigSelection(${index}, this.checked)"></td>
-                     <td title="${config.message}">${truncateText(config.message, 20)}</td>
-                     <td>${config.channelID}</td>
-                     <td>${config.delay}</td>
-                     <td>
-                         <button class="btn btn-info btn-sm me-2" onclick="editConfig(${index})">Edit</button>
-                         <button class="btn btn-danger btn-sm" onclick="deleteConfig(${index})"><i class="fas fa-trash-alt"></i></button>
-                     </td>
-                 </tr>
-             `).join('');
-         }
-         
-         async function editConfig(index) {
-             const config = botConfigs[index];
-             const { value: newConfig } = await Swal.fire({
-                 title: 'Edit Config',
-                 html: `
-                     <input id="edit-message" class="swal2-input" value="${config.message}" placeholder="Message">
-                     <input id="edit-channelID" class="swal2-input" value="${config.channelID}" placeholder="Channel ID" type="number">
-                     <input id="edit-delay" class="swal2-input" value="${config.delay}" placeholder="Delay (ms)" type="number">
-                 `,
-                 focusConfirm: false,
-                 showCancelButton: true,
-                 confirmButtonText: 'Save Changes',
-                 preConfirm: () => validateConfig('edit-')
-             });
-         
-             if (newConfig) {
-                 botConfigs[index] = newConfig;
-                 updateConfigTable();
-                 saveConfigs();
-                 showToast.fire({ icon: "success", title: "Config updated" });
-             }
-         }
-         
-         function deleteConfig(index) {
-             confirmAction('Delete Config', 'Are you sure?').then((result) => {
-                 if (result.isConfirmed) {
-                     botConfigs.splice(index, 1);
-                     activeConfigs = activeConfigs.filter(c => c !== botConfigs[index]);
-                     updateConfigTable();
-                     saveConfigs();
-                     showToast.fire({ icon: "success", title: "Config deleted" });
-                 }
-             });
-         }
-         
-         function toggleConfigSelection(index, isSelected) {
-             if (isSelected) {
-                 activeConfigs.push(botConfigs[index]);
-             } else {
-                 activeConfigs = activeConfigs.filter(c => c !== botConfigs[index]);
-             }
-         }
-         
-         async function toggleAutoPost() {
-         const toggleBtn = document.getElementById('toggleBtn');
-         const isStarted = postInterval === null;
-         
-         if (isStarted) {
-         if (!validateAutoPostStart()) return;
-         
-         startAutoPost();
-         toggleBtn.textContent = 'Stop';
-         toggleBtn.className = 'btn btn-danger btn-stop';
-         showToast.fire({ icon: 'success', title: 'Auto post started' });
-         } else {
-         stopAutoPost();
-         toggleBtn.textContent = 'Start';
-         toggleBtn.className = 'btn btn-success';
-         showToast.fire({ icon: 'success', title: 'Auto post stopped' });
-         }
-         
-         const state = isStarted ? 'started' : 'stopped';
-         saveAutoPostState(state);
-         }
-         
-         function saveAutoPostState(state) {
-         fetch(`/conf/${currentAuthToken}/save-auto-post-state`, {
-         method: 'POST',
-         headers: { 'Content-Type': 'application/json' },
-         body: JSON.stringify({ state })
-         })
-         .then(response => response.json())
-         .then(data => {
-         if (!data.success) {
-             console.error('Failed to save auto-post state');
-         }
-         })
-         .catch(error => console.error('Error:', error));
-         }
-         
-         function startAutoPost() {
-         	if (activeConfigs.length === 0) return;
-             let index = 0;
-             
-             const config = activeConfigs[index];
-             sendMessage(currentAuthToken, config.channelID, config.message);
-             index = (index + 1) % activeConfigs.length;
-         
-             postInterval = setInterval(() => {
-                 const config = activeConfigs[index];
-                 sendMessage(currentAuthToken, config.channelID, config.message);
-                 index = (index + 1) % activeConfigs.length;
-             }, activeConfigs[0].delay);
-         }
-         
-         function stopAutoPost() {
-             clearInterval(postInterval);
-             postInterval = null;
-         }
-         
-         function validateConfig(prefix = '') {
-             const message = document.getElementById(prefix + 'message').value;
-             const channelID = document.getElementById(prefix + 'channelID').value;
-             const delay = document.getElementById(prefix + 'delay').value;
-         
-             if (!message || !channelID || !delay) {
-                 Swal.showValidationMessage('All fields are required');
-                 return false;
-             }
-             if (delay < 5) {
-                 Swal.showValidationMessage('Delay must be at least 5ms');
-                 return false;
-             }
-             return { message, channelID, delay };
-         }
-         
-         function validateAutoPostStart() {
-             if (activeConfigs.length === 0) {
-                 Swal.fire('Error', 'Select at least one config', 'error');
-                 return false;
-             }
-             return true;
-         }
-         
-         function truncateText(text, maxLength) {
-             return text.length <= maxLength ? text : text.substr(0, maxLength - 3) + '...';
-         }
-         
-         function saveConfigs() {
-             fetch(`/conf/${currentAuthToken}/save-configs`, {
-                 method: 'POST',
-                 headers: { 'Content-Type': 'application/json' },
-                 body: JSON.stringify({ configs: botConfigs })
-             })
-                 .then(response => response.json())
-                 .then(data => {
-                     if (!data.success) console.error('Failed to save configs');
-                 })
-                 .catch(error => console.error('Error:', error));
-         }
-         
-         async function loadConfigs() {
-         try {
-         const response = await fetch(`/conf/${currentAuthToken}/load-configs`);
-         const data = await response.json();
-         
-         if (data.success) {
-             botConfigs = Array.isArray(data.configs) ? data.configs : [];
-             updateConfigTable();
-         
-             const autoPostState = data.autoPostState;
-         
-             if (autoPostState === 'started') {
-                 activeConfigs = [...botConfigs];
-                 
-                 if (activeConfigs.length > 0) {
-                     startAutoPost();
-                     const toggleBtn = document.getElementById('toggleBtn');
-                     toggleBtn.textContent = 'Stop';
-                     toggleBtn.className = 'btn btn-danger btn-stop';
-                     showToast.fire({ icon: 'success', title: 'Auto post started automatically' });
-                 } else {
-                     console.log('No active configs to start auto post.');
-                 }
-             }
-         } else {
-             console.error('Failed to load configs:', data.message || 'Unknown error');
-         }
-         } catch (error) {
-         console.error('Error loading configs:', error);
-         }
-         }
-         
-         function sendMessage(authToken, channelID, message) {
-         fetch(`https://discord.com/api/v10/channels/${channelID}/messages`, {
-         method: 'POST',
-         headers: {
-             'Authorization': authToken,
-             'Content-Type': 'application/json'
-         },
-         body: JSON.stringify({ content: message })
-         })
-         .then(response => response.json())
-         .then(data => {
-             logMessage(message, channelID, activeConfigs[0].delay, data.id ? 'Success' : 'Failed');
-         })
-         .catch(error => {
-             console.error('Error:', error);
-             logMessage(message, channelID, activeConfigs[0].delay, 'Error');
-         });
-         }
-         
-         function logMessage(message, channelID, delay, response) {
-         const row = document.createElement('tr');
-         row.innerHTML = `
-         <td>${new Date().toLocaleTimeString()}</td>
-         <td title="${channelID}">${truncateText(channelID, 10)}</td>
-         <td>${delay}</td>
-         <td>${response}</td>
-         `;
-         document.getElementById('logTableBody').appendChild(row);
-         }
-         
-         function clearLogs() {
-             const logTableBody = document.getElementById('logTableBody');
-         
-             if (!logTableBody || logTableBody.children.length < 1) {
-                 showToast.fire({ icon: 'info', title: "No logs to clear" });
-                 return;
-             }
-         
-             confirmAction('Clear Logs', 'This will clear all logs!').then((result) => {
-                 if (result.isConfirmed) {
-                     logTableBody.innerHTML = '';
-                     showToast.fire({ icon: 'success', title: "Logs cleared" });
-                 }
-             });
-         }
-         
-         const urlParts = window.location.pathname.split('/');
-         currentAuthToken = urlParts[urlParts.length - 1];
-         if (!currentAuthToken) {
-             Swal.fire({
-                 icon: 'error',
-                 title: 'Invalid Auth Token',
-                 text: 'Redirecting to main page...',
-                 timer: 2000,
-                 timerProgressBar: true
-             }).then(() => {
-                 window.location.href = '/';
-             });
-         } else {
-             loadConfigs();
-         }
-      </script>
-   </body>
+        </div>
+        <div class="controls">
+            <button type="button" id="addConfigBtn" class="btn btn-secondary"><i data-lucide="plus"></i> Tambah</button>
+            <div class="toggle-wrapper" id="toggleAll">
+                <span class="toggle checked" id="toggleAllSwitch"><span class="knob"></span></span>
+                <label class="form-label" style="margin:0">Aktifkan semua</label>
+            </div>
+        </div>
+    </div>
+    </form>
+
+    <!-- Config List -->
+    <div class="card">
+        <div class="toolbar">
+            <h3 style="margin:0"><i data-lucide="layers"></i> Daftar Konfigurasi</h3>
+            <span class="badge badge-secondary" id="configCount">0 config</span>
+        </div>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width:50px"></th>
+                        <th>Pesan</th>
+                        <th style="width:120px">Channel ID</th>
+                        <th style="width:90px">Delay (ms)</th>
+                        <th style="width:80px">Status</th>
+                        <th style="width:120px">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="configTableBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Start/Stop -->
+    <div class="card compact" style="display:flex;justify-content:space-between;align-items:center">
+        <div id="startHint" class="account-info" style="margin:0">
+            Pilih minimal <span style="color:var(--accent)">1 konfigurasi aktif</span> lalu klik Mulai.
+        </div>
+        <button id="toggleBtn" class="btn btn-success"><i data-lucide="play"></i> Mulai Otomatis</button>
+    </div>
+
+    <!-- Logs -->
+    <div class="card logs-card">
+        <div class="toolbar">
+            <h3 style="margin:0"><i data-lucide="clipboard-list"></i> Log Kirim</h3>
+            <button id="clearLogsBtn" class="btn btn-secondary btn-sm"><i data-lucide="trash-2"></i> Clear</button>
+        </div>
+        <div id="logTableBody"><div class="empty-state"><i data-lucide="terminal"></i><div>Belum ada log.</div></div></div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.0/dist/sweetalert2.all.min.js"></script>
+<script>
+    lucide.createIcons();
+
+    // State
+    let botConfigs = [];
+    let activeConfigs = [];
+    let postInterval = null;
+    let currentAuthToken = '';
+    let allConfigsEnabled = true;
+
+    const showToast = Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 2500,
+        timerProgressBar: true,
+        customClass: { popup: 'toast-custom' },
+        didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+        }
+    });
+
+    const confirmAction = (title, text) => Swal.fire({
+        title, text, icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#5865f2',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya',
+        background: '#1e1f22',
+        color: '#dbdee1',
+        customClass: { popup: 'toast-custom' }
+    });
+
+    document.getElementById('clearLogsBtn').addEventListener('click', clearLogs);
+    document.getElementById('toggleAll').addEventListener('click', toggleAllConfigs);
+
+    // ---- Config CRUD ----
+    document.getElementById('addConfigBtn').addEventListener('click', async (e) => {
+        e.preventDefault();
+        const { value: config } = await Swal.fire({
+            title: 'Tambah Konfigurasi',
+            background: '#1e1f22',
+            color: '#dbdee1',
+            html: `
+                <textarea id="message" class="swal2-textarea" placeholder="Pesan"></textarea>
+                <input id="channelID" class="swal2-input" placeholder="Channel ID" type="number">
+                <input id="delay" class="swal2-input" placeholder="Delay (ms)" type="number" min="5">
+            `,
+            focusConfirm: false,
+            showCancelButton: true,
+            confirmButtonText: 'Simpan',
+            preConfirm: () => validateConfig()
+        });
+        if (config) {
+            botConfigs.push(config);
+            activeConfigs.push(config);
+            saveConfigs();
+            updateConfigTable();
+            updateConfigCount();
+        }
+    });
+
+    function validateConfig() {
+        const message = document.getElementById('message').value.trim();
+        const channelID = document.getElementById('channelID').value.trim();
+        const delay = document.getElementById('delay').value.trim();
+        if (!message || !channelID || !delay) { Swal.showValidationMessage('Semua field wajib diisi'); return false; }
+        if (parseInt(delay) < 5) { Swal.showValidationMessage('Delay minimal 5ms'); return false; }
+        return { message, channelID: parseInt(channelID), delay: parseInt(delay) };
+    }
+
+    function updateConfigTable() {
+        const tbody = document.getElementById('configTableBody');
+        if (botConfigs.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state"><i data-lucide="inbox"></i><div>Belum ada konfigurasi. Tambahkan di atas.</div></div></td></tr>`;
+            return;
+        }
+        tbody.innerHTML = botConfigs.map((config, index) => `
+            <tr>
+                <td class="text-center">
+                    <button class="btn-icon" onclick="toggleConfig(${index})" title="${config.active ? 'Nonaktifkan' : 'Aktifkan'}">
+                        <i data-lucide="${config.active !== false ? 'check-square' : 'square'}"></i>
+                    </button>
+                </td>
+                <td title="${config.message}">${truncateText(config.message, 40)}</td>
+                <td>${config.channelID}</td>
+                <td>${config.delay}</td>
+                <td>${config.active === false ? `<span class="badge badge-inactive">Off</span>` : `<span class="badge badge-active">On</span>`}</td>
+                <td class="text-center">
+                    <button class="btn-icon" onclick="editConfig(${index})" title="Edit"><i data-lucide="edit-2"></i></button>
+                    <button class="btn-icon btn-danger" onclick="deleteConfig(${index})" title="Hapus"><i data-lucide="trash-2"></i></button>
+                </td>
+            </tr>
+        `).join('');
+        lucide.createIcons();
+    }
+
+    window.toggleConfig = function(index) {
+        botConfigs[index].active = botConfigs[index].active !== false ? false : true;
+        syncActiveConfigs();
+        saveConfigs();
+        updateConfigTable();
+    };
+
+    function syncActiveConfigs() {
+        activeConfigs = botConfigs.filter(c => c.active !== false);
+    }
+
+    function toggleAllConfigs() {
+        allConfigsEnabled = !allConfigsEnabled;
+        botConfigs.forEach((c, i) => botConfigs[i].active = allConfigsEnabled);
+        document.getElementById('toggleAllSwitch').classList.toggle('checked', allConfigsEnabled);
+        syncActiveConfigs();
+        saveConfigs();
+        updateConfigTable();
+    }
+
+    window.editConfig = async function(index) {
+        const config = botConfigs[index];
+        const { value: newConfig } = await Swal.fire({
+            title: 'Edit Konfigurasi',
+            background: '#1e1f22',
+            color: '#dbdee1',
+            html: `
+                <input id="edit-message" class="swal2-input" value="${config.message}" placeholder="Pesan">
+                <input id="edit-channelID" class="swal2-input" value="${config.channelID}" placeholder="Channel ID" type="number">
+                <input id="edit-delay" class="swal2-input" value="${config.delay}" placeholder="Delay (ms)" type="number" min="5">
+            `,
+            focusConfirm: false,
+            showCancelButton: true,
+            confirmButtonText: 'Simpan',
+            preConfirm: () => validateEditConfig()
+        });
+        if (newConfig) {
+            const wasActive = config.active !== false;
+            botConfigs[index] = newConfig;
+            botConfigs[index].active = wasActive;
+            syncActiveConfigs();
+            saveConfigs();
+            updateConfigTable();
+            showToast.fire({ icon: 'success', title: 'Diperbarui' });
+        }
+    };
+
+    function validateEditConfig() {
+        const message = document.getElementById('edit-message').value.trim();
+        const channelID = document.getElementById('edit-channelID').value.trim();
+        const delay = document.getElementById('edit-delay').value.trim();
+        if (!message || !channelID || !delay) { Swal.showValidationMessage('Semua field wajib diisi'); return false; }
+        if (parseInt(delay) < 5) { Swal.showValidationMessage('Delay minimal 5ms'); return false; }
+        return { message, channelID: parseInt(channelID), delay: parseInt(delay) };
+    }
+
+    window.deleteConfig = function(index) {
+        confirmAction('Hapus Konfigurasi', 'Yakin menghapus konfigurasi ini?').then((result) => {
+            if (result.isConfirmed) {
+                const wasActive = botConfigs[index].active !== false;
+                botConfigs.splice(index, 1);
+                activeConfigs = [];
+                syncActiveConfigs();
+                saveConfigs();
+                updateConfigTable();
+                updateConfigCount();
+                showToast.fire({ icon: 'success', title: 'Dihapus' });
+            }
+        });
+    };
+
+    function updateConfigCount() {
+        document.getElementById('configCount').textContent = botConfigs.length + ' config';
+    }
+
+    // ---- Auto Post ----
+    document.getElementById('toggleBtn').addEventListener('click', toggleAutoPost);
+
+    function toggleAutoPost() {
+        const toggleBtn = document.getElementById('toggleBtn');
+        const badge = document.getElementById('statusBadge');
+        const isStarted = postInterval === null;
+
+        if (isStarted) {
+            if (activeConfigs.length === 0) {
+                Swal.fire({ icon: 'error', title: 'Pilih minimal 1 config', background: '#1e1f22', color: '#dbdee1' });
+                return;
+            }
+            startAutoPost();
+            toggleBtn.innerHTML = '<i data-lucide="pause"></i> Hentikan';
+            toggleBtn.className = 'btn btn-danger';
+            badge.innerHTML = '<span style="width:8px;height:8px;border-radius:50%;background:var(--success)"></span><span>Running</span>';
+            badge.className = 'status-badge status-running';
+            showToast.fire({ icon: 'success', title: 'Auto post dimulai' });
+        } else {
+            stopAutoPost();
+            toggleBtn.innerHTML = '<i data-lucide="play"></i> Mulai Otomatis';
+            toggleBtn.className = 'btn btn-success';
+            badge.innerHTML = '<span style="width:8px;height:8px;border-radius:50%;background:var(--muted)"></span><span>Stopped</span>';
+            badge.className = 'status-badge status-stopped';
+            showToast.fire({ icon: 'success', title: 'Auto post dihentikan' });
+        }
+        lucide.createIcons();
+
+        const state = isStarted ? 'started' : 'stopped';
+        saveAutoPostState(state);
+    }
+
+    function saveAutoPostState(state) {
+        fetch(`/conf/${currentAuthToken}/save-auto-post-state`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ state })
+        }).catch(e => console.error('Error saving state:', e));
+    }
+
+    function startAutoPost() {
+        if (activeConfigs.length === 0) return;
+        let index = 0;
+        const config = activeConfigs[index];
+        sendMessage(currentAuthToken, config.channelID, config.message);
+        index = (index + 1) % activeConfigs.length;
+        postInterval = setInterval(() => {
+            const config = activeConfigs[index];
+            sendMessage(currentAuthToken, config.channelID, config.message);
+            index = (index + 1) % activeConfigs.length;
+        }, activeConfigs[0].delay);
+    }
+
+    function stopAutoPost() {
+        clearInterval(postInterval);
+        postInterval = null;
+    }
+
+    // ---- Save/Load configs ----
+    function saveConfigs() {
+        fetch(`/conf/${currentAuthToken}/save-configs`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ configs: botConfigs })
+        }).catch(e => console.error('Error:', e));
+    }
+
+    async function loadConfigs() {
+        try {
+            const response = await fetch(`/conf/${currentAuthToken}/load-configs`);
+            const data = await response.json();
+            if (data.success) {
+                botConfigs = Array.isArray(data.configs) ? data.configs : [];
+                syncActiveConfigs();
+                updateConfigTable();
+                updateConfigCount();
+                allConfigsEnabled = activeConfigs.length === botConfigs.length;
+                document.getElementById('toggleAllSwitch').classList.toggle('checked', allConfigsEnabled);
+
+                document.getElementById('accountInfo').textContent = 'Terhubung';
+                document.getElementById('accountInfo').style.color = 'var(--success)';
+
+                if (data.autoPostState === 'started') {
+                    syncActiveConfigs();
+                    if (activeConfigs.length > 0) {
+                        startAutoPost();
+                        document.getElementById('toggleBtn').innerHTML = '<i data-lucide="pause"></i> Hentikan';
+                        document.getElementById('toggleBtn').className = 'btn btn-danger';
+                        const badge = document.getElementById('statusBadge');
+                        badge.innerHTML = '<span style="width:8px;height:8px;border-radius:50%;background:var(--success)"></span><span>Running</span>';
+                        badge.className = 'status-badge status-running';
+                    }
+                }
+                lucide.createIcons();
+            }
+        } catch (error) {
+            console.error('Error loading configs:', error);
+        }
+    }
+
+    // ---- Discord message ----
+    function sendMessage(authToken, channelID, message) {
+        fetch(`https://discord.com/api/v10/channels/${channelID}/messages`, {
+            method: 'POST',
+            headers: { 'Authorization': authToken, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ content: message })
+        }).then(r => r.json()).then(data => {
+            logMessage(message, channelID, activeConfigs[0]?.delay, data.id ? 'Success' : 'Failed');
+        }).catch(error => {
+            logMessage(message, channelID, activeConfigs[0]?.delay, 'Error');
+        });
+    }
+
+    // ---- Logs ----
+    function logMessage(message, channelID, delay, response) {
+        const container = document.getElementById('logTableBody');
+        // Remove empty placeholder
+        if (container.querySelector('.empty-state')) {
+            container.innerHTML = '';
+        }
+        const row = document.createElement('div');
+        row.className = 'log-row';
+        const isSuccess = response === 'Success';
+        row.innerHTML = `
+            <span class="log-status status-dot-${isSuccess ? 'success' : 'error'}"></span>
+            <div class="log-msg" title="${message}">${truncateText(message, 60)}</div>
+            <div class="log-meta">#${truncateText(channelID, 8)}</div>
+            <div class="log-meta">${new Date().toLocaleTimeString()}</div>
+            <span class="badge ${isSuccess ? 'badge-active' : 'badge-inactive'}">${response}</span>
+        `;
+        container.prepend(row);
+        // Limit logs
+        const children = container.children;
+        if (children.length > 50) children[children.length - 1].remove();
+    }
+
+    function clearLogs() {
+        const logTableBody = document.getElementById('logTableBody');
+        if (!logTableBody || logTableBody.children.length < 2) {
+            showToast.fire({ icon: 'info', title: 'Tidak ada log untuk dihapus' });
+            return;
+        }
+        confirmAction('Clear Logs', 'Ini akan menghapus semua log!').then((result) => {
+            if (result.isConfirmed) {
+                logTableBody.innerHTML = '<div class="empty-state"><i data-lucide="terminal"></i><div>Belum ada log.</div></div>';
+                showToast.fire({ icon: 'success', title: 'Logs cleared' });
+            }
+        });
+    }
+
+    const truncateText = (text, maxLength) => {
+        return text.length <= maxLength ? text : text.substring(0, maxLength - 3) + '...';
+    };
+
+    // ---- Init ----
+    const urlParts = window.location.pathname.split('/');
+    currentAuthToken = urlParts[urlParts.length - 1];
+    if (!currentAuthToken) {
+        Swal.fire({
+            icon: 'error', title: 'Invalid Auth Token',
+            text: 'Redirecting...', timer: 2000, timerProgressBar: true,
+            background: '#1e1f22', color: '#dbdee1'
+        }).then(() => window.location.href = '/');
+    } else {
+        loadConfigs();
+    }
+</script>
+</body>
 </html>

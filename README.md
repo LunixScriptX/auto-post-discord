@@ -1,74 +1,50 @@
-# Auto Post to Discord via Web as Configuration
+# Auto Post to Discord — Web UI
 
-This project allows you to automatically post updates to a Discord channel using a web-based approach. It requires Termux, Kiwi Browser, and an authentication token Discord. Follow the steps below to set up and use this system.
+Bot auto-post pesan ke channel Discord lewat antarmuka web modern. Tema gelap ala Discord, ikon **Lucide**, dan siap di-deploy gratis ke **Render**.
 
-## Prerequisites
+## Fitur
 
-1. **Termux**: A terminal emulator and Linux environment for Android. [Install Termux](https://f-droid.org/repo/com.termux_118.apk)
-2. **Kiwi Browser**: A browser for Android with support for extensions. [Install Kiwi Browser](https://play.google.com/store/apps/details?id=com.kiwibrowser.browser)
-3. **Auth Token**: Obtain an authentication token from the YouTube video [Watch](https://youtu.be/OvOKuKZwuwQ?si=TRTAIHzyMe13r6sI)
-4. **Repository**: Clone or download this repository to your device.
-5. **Join the Discord Server**:  
-   [![Join Discord](https://img.icons8.com/fluency/48/000000/discord-logo.png)](https://discord.gg/FKKUAsFWMt)
+- 🎨 UI modern dark ala Discord (`#313338` + blurple `#5865f2`), font Inter, glass card
+- 🧩 Ikon **Lucide** (send, plus, trash, edit, play/pause, settings, dll)
+- 📝 Kelola banyak konfigurasi (pesan + channel ID + delay)
+- ✅ Toggle per-config & "aktifkan semua"
+- 📜 Log kirim real-time dengan status sukses/gagal
+- 💾 Config tersimpan di server per token (bisa dibuka dari device mana pun)
+- ☁️ Deploy gratis ke Render (free tier)
 
-## Installation
+## Cara Lokal
 
-### 1. Set Up Termux
+```sh
+npm i
+node app
+```
 
-1. **Install Termux**:
-   - Download and install Termux from [F-Droid](https://f-droid.org/repo/com.termux_118.apk).
+Buka `http://localhost:3000`, masukkan auth token Discord, lalu atur konfigurasi.
 
-2. **Update Termux Packages**:
-   Open Termux and run the following commands to update and upgrade packages:
-   ```sh
-   pkg update
-   pkg upgrade
-   ```
+> **Catatan:** Auth token dikirim ke server dan disimpan di `db.json` per token. Jangan bagikan token ke siapa pun. Bot memposting dari sisi browser (client-side fetch ke Discord API), jadi posting berjalan selama tab terbuka.
 
-3. **Install Required Packages**:
-   Install `git` and `nodejs`:
-   ```sh
-   pkg install git nodejs
-   ```
+## Deploy Gratis ke Render
 
-4. **Clone the Repository**:
-   Clone this repository using Git:
-   ```sh
-   git clone https://github.com/fleurdefontaine/auto-post-discord.git
-   cd auto-post-discord
-   ```
+1. Fork/clone repo ini ke GitHub.
+2. Buka [dashboard.render.com](https://dashboard.render.com) → **New** → **Web Service** → hubungkan repo.
+3. Render otomatis mendeteksi `render.yaml` (plan: `free`, start: `node app.js`).
+4. Klik **Create Web Service**. Setelah build selesai, buka URL `https://<nama>.onrender.com`.
+5. Masukkan auth token → atur config → klik **Mulai Otomatis**.
 
-### 2. Set Up Kiwi Browser
+Render free tier akan tidur setelah ~15 menit tanpa traffic — buka ulang URL untuk membangunkannya.
 
-1. **Install Kiwi Browser**:
-   - Download and install Kiwi Browser from [Google Play Store](https://play.google.com/store/apps/details?id=com.kiwibrowser.browser).
+## Struktur
 
-2. **Install Required Extensions**:
-   - Use Kiwi Browser to obtain Discord Token.
+```
+index.html      # Halaman masuk (auth token)
+config.html     # Halaman konfigurasi + log
+app.js          # Express server (simpan config ke db.json)
+db.json         # Penyimpanan config per token
+Procfile        # web: node app.js
+render.yaml     # Konfigurasi deploy Render
+```
 
-### 3. Configure Authentication Token
+## Keamanan
 
-1. **Obtain Auth Token**:
-   - Watch the YouTube video [Watch](https://youtu.be/OvOKuKZwuwQ?si=TRTAIHzyMe13r6sI) to obtain the necessary authentication token for your Discord bot.
-
-### 4. Run the Application
-
-1. **Install NPM Dependencies**:
-   - Navigate to the project directory and install any required NPM packages:
-   ```sh
-   npm i
-   ```
-
-2. **Run the Script**:
-   - Execute the script to start auto-posting:
-   ```sh
-   node app
-   ```
-
-## Usage
-
-After setting up open localhost:3000
-
-## Contributing
-
-If you would like to contribute to this project, please submit a pull request or open an issue on the repository page.
+- Jangan commit `db.json` yang berisi token.
+- Token adalah kredensial akun Discord — jaga kerahasiaannya.

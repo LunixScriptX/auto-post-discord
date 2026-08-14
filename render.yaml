@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: auto-post-discord
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node app.js

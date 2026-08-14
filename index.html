@@ -1,85 +1,158 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enter Auth Token - Auto Post Discord</title>
-    <link href="https://cdn.jsdelivr.net/npm/@tabler/core@latest/dist/css/tabler.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.0/dist/sweetalert2.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <title>Auto Post Discord — Masuk</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/lucide@latest"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.0/dist/sweetalert2.min.css">
     <style>
-        body {
-            background-color: #f8f9fa;
-            font-family: Arial, sans-serif;
+        :root{
+            --bg:#313338;
+            --bg-2:#2b2d31;
+            --card:#1e1f22;
+            --border:#3f4147;
+            --text:#dbdee1;
+            --muted:#949ba4;
+            --accent:#5865f2;
+            --accent-hover:#4752c4;
+            --danger:#da373c;
         }
-        #pageTitle {
-            text-align: center;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 700;
+        *{box-sizing:border-box;margin:0;padding:0}
+        html,body{height:100%}
+        body{
+            font-family:'Inter',system-ui,-apple-system,sans-serif;
+            background:
+                radial-gradient(1200px 600px at 80% -10%, rgba(88,101,242,.18), transparent 60%),
+                radial-gradient(900px 500px at -10% 110%, rgba(88,101,242,.12), transparent 55%),
+                var(--bg);
+            color:var(--text);
+            min-height:100%;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            padding:1.5rem;
         }
+        .shell{width:100%;max-width:420px}
+        .brand{display:flex;align-items:center;gap:.65rem;justify-content:center;margin-bottom:1.25rem}
+        .brand .logo{
+            width:42px;height:42px;border-radius:12px;
+            background:linear-gradient(135deg,var(--accent),#7983f5);
+            display:flex;align-items:center;justify-content:center;
+            box-shadow:0 8px 24px rgba(88,101,242,.35);
+        }
+        .brand .logo svg{width:24px;height:24px;color:#fff}
+        .brand h1{font-size:1.15rem;font-weight:700;letter-spacing:.2px}
+        .card{
+            background:rgba(30,31,34,.72);
+            border:1px solid var(--border);
+            border-radius:16px;
+            padding:1.5rem;
+            backdrop-filter:blur(14px);
+            -webkit-backdrop-filter:blur(14px);
+            box-shadow:0 20px 50px rgba(0,0,0,.45);
+        }
+        .card h2{font-size:1.05rem;font-weight:600;margin-bottom:.35rem}
+        .card .sub{color:var(--muted);font-size:.85rem;margin-bottom:1.25rem;line-height:1.5}
+        label{display:block;font-size:.8rem;font-weight:500;color:var(--muted);margin-bottom:.4rem}
+        .field{position:relative;margin-bottom:1rem}
+        .field .icon{
+            position:absolute;left:12px;top:50%;transform:translateY(-50%);
+            color:var(--muted);width:18px;height:18px;pointer-events:none;
+        }
+        .input{
+            width:100%;padding:.7rem .9rem .7rem 2.4rem;
+            background:var(--bg-2);border:1px solid var(--border);border-radius:10px;
+            color:var(--text);font-size:.9rem;font-family:inherit;transition:border-color .15s,box-shadow .15s;
+        }
+        .input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(88,101,242,.25)}
+        .input::placeholder{color:var(--muted)}
+        .btn{
+            width:100%;padding:.7rem 1rem;border:none;border-radius:10px;
+            background:var(--accent);color:#fff;font-size:.92rem;font-weight:600;font-family:inherit;
+            cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.5rem;
+            transition:background .15s,transform .05s;
+        }
+        .btn:hover{background:var(--accent-hover)}
+        .btn:active{transform:translateY(1px)}
+        .btn svg{width:18px;height:18px}
+        .foot{margin-top:1rem;text-align:center;color:var(--muted);font-size:.78rem}
+        .foot a{color:var(--accent);text-decoration:none}
+        .foot a:hover{text-decoration:underline}
     </style>
 </head>
 <body>
-    <div class="container my-4">
-        <h3 id="pageTitle">Auto Post Discord</h3>
-        <div class="card">
-            <div class="card-body">
-                <h4 class="card-title">Enter Auth Token</h4>
-                <div class="mb-3">
-                    <label for="authToken" class="form-label">Auth Token</label>
-                    <input type="text" id="authToken" class="form-control">
-                </div>
-                <button id="saveAuthTokenBtn" class="btn btn-primary">Enter</button>
-            </div>
+    <div class="shell">
+        <div class="brand">
+            <div class="logo"><i data-lucide="send"></i></div>
+            <h1>Auto Post Discord</h1>
         </div>
+        <div class="card">
+            <h2>Masukkan Auth Token</h2>
+            <p class="sub">Token ini digunakan untuk mengirim pesan otomatis ke channel Discord kamu. Tidak disimpan di browser pihak ketiga.</p>
+            <div class="field">
+                <span class="icon"><i data-lucide="key-round"></i></span>
+                <input type="password" id="authToken" class="input" placeholder="Paste auth token di sini" autocomplete="off">
+            </div>
+            <button id="saveAuthTokenBtn" class="btn"><i data-lucide="arrow-right"></i> Lanjut</button>
+        </div>
+        <p class="foot">Butuh bantuan? <a href="https://discord.gg/FKKUAsFWMt">Join Discord</a></p>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.0/dist/sweetalert2.all.min.js"></script>
     <script>
-    	const showToast = Swal.mixin({
+        lucide.createIcons();
+
+        const showToast = Swal.mixin({
             toast: true,
             position: 'top-end',
             showConfirmButton: false,
             timer: 3000,
             timerProgressBar: true,
+            background: '#1e1f22',
+            color: '#dbdee1',
+            iconColor: '#5865f2',
             didOpen: (toast) => {
                 toast.onmouseenter = Swal.stopTimer;
                 toast.onmouseleave = Swal.resumeTimer;
             }
         });
-        
+
         document.getElementById('saveAuthTokenBtn').addEventListener('click', saveAuthToken);
 
-        function saveAuthToken() {
-            const authToken = document.getElementById('authToken').value;
+        async function saveAuthToken() {
+            const authToken = document.getElementById('authToken').value.trim();
             if (!authToken) {
-                Swal.fire({ icon: 'error', title: 'Error', text: 'Enter an auth token' });
+                Swal.fire({ icon: 'error', title: 'Oops', text: 'Masukkan auth token terlebih dahulu.', background:'#1e1f22', color:'#dbdee1' });
                 return;
             }
 
-            fetch('/save-auth-token', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ authToken })
-            })
-            .then(response => response.json())
-            .then(data => {
+            try {
+                const response = await fetch('/save-auth-token', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ authToken })
+                });
+                const data = await response.json();
+
                 if (data.success) {
                     showToast.fire({
                         icon: 'success',
-                        title: 'Auth token saved',
-                        text: 'Redirecting to configuration page...',
+                        title: 'Token tersimpan',
+                        text: 'Mengalihkan ke halaman konfigurasi...',
                     }).then(() => {
                         window.location.href = `/conf/${authToken}`;
                     });
                 } else {
-                    Swal.fire({ icon: 'error', title: 'Failed', text: 'Error saving auth token' });
+                    Swal.fire({ icon: 'error', title: 'Gagal', text: data.message || 'Gagal menyimpan token.', background:'#1e1f22', color:'#dbdee1' });
                 }
-            })
-            .catch(error => {
+            } catch (error) {
                 console.error('Error:', error);
-                Swal.fire({ icon: 'error', title: 'Error', text: 'Error saving auth token' });
-            });
+                Swal.fire({ icon: 'error', title: 'Error', text: 'Terjadi kesalahan saat menyimpan token.', background:'#1e1f22', color:'#dbdee1' });
+            }
         }
     </script>
 </body>

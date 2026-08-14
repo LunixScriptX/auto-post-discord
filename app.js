@@ -8,7 +8,15 @@ const DB_FILE = './db.json';
 
 app.use(express.json());
 
-const readDB = async () => JSON.parse(await fs.readFile(DB_FILE, 'utf8'));
+const readDB = async () => {
+    try {
+        const content = await fs.readFile(DB_FILE, 'utf8');
+        return content ? JSON.parse(content) : {};
+    } catch (e) {
+        if (e.code === 'ENOENT') return {};
+        throw e;
+    }
+};
 const writeDB = async (data) => fs.writeFile(DB_FILE, JSON.stringify(data, null, 2));
 
 const handleRequest = (handler) => async (req, res) => {
