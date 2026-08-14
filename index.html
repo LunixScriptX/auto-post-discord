@@ -113,83 +113,94 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.0/dist/sweetalert2.all.min.js"></script>
     <script>
-        lucide.createIcons();
+        // Guard jalankan hanya setelah DOM siap + lib sudah available
+        document.addEventListener('DOMContentLoaded', () => {
+            // Fallback toast/notification
+            const notify = (type, title, text = '') => {
+                if (typeof Swal !== 'undefined') {
+                    Swal.fire({
+                        icon: type,
+                        title: title,
+                        html: text || '',
+                        background:'#1e1f22',
+                        color:'#dbdee1',
+                        confirmButtonColor: type === 'error' ? '#da373c' : '#5865f2'
+                    });
+                } else {
+                    alert(`${type.toUpperCase()}: ${title}${text ? '\n' + text : ''}`);
+                }
+            };
 
-        const showToast = Swal.mixin({
-            toast: true,
-            position: 'top-end',
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            background: '#1e1f22',
-            color: '#dbdee1',
-            iconColor: '#5865f2',
-            didOpen: (toast) => {
-                toast.onmouseenter = Swal.stopTimer;
-                toast.onmouseleave = Swal.resumeTimer;
-            }
-        });
+            // Toast mixin (hanya bila Swal siap)
+            const showToast = (typeof Swal !== 'undefined') ? Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                background: '#1e1f22',
+                color: '#dbdee1',
+                iconColor: '#5865f2',
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            }) : { fire: (o) => notify('success', o.title, o.text) };
 
-        document.getElementById('saveAuthTokenBtn').addEventListener('click', saveAuthToken);
+            const authInput = document.getElementById('authToken');
+            const saveBtn   = document.getElementById('saveAuthTokenBtn');
 
-        const authInput = document.getElementById('authToken');
-        authInput.addEventListener('input', () => {
-            authInput.classList.remove('is-invalid');
-        });
-
-        async function saveAuthToken() {
-            const authToken = authInput.value.trim();
-            if (!authToken) {
-                authInput.classList.add('is-invalid');
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Token Kosong',
-                    html: '<div style="text-align:left">Masukkan auth token Discord terlebih dahulu.<br>Token biasanya diawali <code>MFA...</code> atau <code>.</code>.</div>',
-                    background:'#1e1f22',
-                    color:'#dbdee1',
-                    confirmButtonColor:'#5865f2'
-                });
+            if (!saveBtn) {
+                console.error('Btn #saveAuthTokenBtn tidak ditemukan');
                 return;
             }
 
-            try {
-                const response = await fetch('/save-auth-token', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ authToken })
-                });
-                const data = await response.json();
+            authInput.addEventListener('input', () => authInput.classList.remove('is-invalid'));
 
-                if (data.success) {
-                    showToast.fire({
-                        icon: 'success',
-                        title: 'Token tersimpan',
-                        text: 'Mengalihkan ke halaman konfigurasi...',
-                    }).then(() => {
-                        window.location.href = `/conf/${encodeURIComponent(authToken)}`;
-                    });
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Gagal Simpan',
-                        html: `<div style="text-align:left">Server menolak token:<br><code style="background:#2b2d31;padding:.4rem .6rem;border-radius:4px;font-size:.8rem">${data.message || 'Error'}</code></div>`,
-                        background:'#1e1f22',
-                        color:'#dbdee1',
-                        confirmButtonColor:'#da373c'
-                    });
+            saveBtn.addEventListener('click', async (e) => {
+                e.preventDefault(); // cegah submit form reload
+                const authToken = authInput.value.trim();
+                if (!authToken) {
                     authInput.classList.add('is-invalid');
+                    return notify('error', 'Token Kosong',
+                        'Masukkan auth token Discord terlebih dahulu.<br>Token biasanya diawali <code>MFA...</code> atau <code>.</code>.');
                 }
-            } catch (error) {
-                console.error('Error:', error);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error Jaringan',
-                    text: 'Gagal menyimpan token (network error). Cek koneksi & coba ulang.',
-                    background:'#1e1f22',
-                    color:'#dbdee1',
-                    confirmButtonColor:'#da373c'
-                });
-            }
+
+                try {
+                    const response = await fetch('/save-auth-token', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ authToken })
+                    });
+                    const data = await response.json();
+
+                    if (data.success) {
+                        saveBtn.disabled = true;
+                        saveBtn.innerHTML = '<i data-lucide="loader-2" class="animate-spin"></i> Menyimpan...';
+                        showToast.fire({
+                            icon: 'success',
+                            title: 'Token tersimpan',
+                            text: 'Mengalihkan ke halaman konfigurasi...',
+                        }).then(() => {
+                            window.location.href = `/conf/${encodeURIComponent(authToken)}`;
+                        });
+                    } else {
+                        authInput.classList.add('is-invalid');
+                        notify('error', 'Gagal Simpan',
+                            `Server menolak token:<br><code style="background:#2b2d31;padding:.4rem .6rem;border-radius:4px;font-size:.8rem">${data.message || 'Error'}</code>`);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    authInput.classList.add('is-invalid');
+                    notify('error', 'Error Jaringan',
+                        'Gagal menyimpan token (network error). Cek koneksi & coba ulang.');
+                }
+            });
+        });
+
+        // Init lucide setelah semua siap
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
         }
     </script>
 </body>
