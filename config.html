@@ -227,7 +227,10 @@
                 }).then(r => { if (r.isConfirmed) onYes(); });
             } else if (confirm(`${title}\n${text}`)) onYes();
         };
-        const truncate = (t,n) => (t && t.length<=n) ? t : (t||'').substring(0,n-3)+'...';
+        const truncate = (t,n) => {
+            const s = String(t || '');
+            return s.length <= n ? s : s.substring(0,n-3)+'...';
+        };
 
         // ===== Token validation =====
         function setTokenStatus(state, label) {
