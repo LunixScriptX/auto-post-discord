@@ -142,7 +142,7 @@
         <div class="form-row">
             <div>
                 <label for="channelID">Channel ID</label>
-                <input id="channelID" class="input" type="number" placeholder="id channel">
+                <input id="channelID" class="input" type="text" inputmode="numeric" placeholder="id channel">
             </div>
             <div>
                 <label for="delay">Delay (ms)</label>
@@ -367,6 +367,9 @@
             if (!t || !m || !c || !d) {
                 return notify('error', 'Validasi Gagal', 'Isi semua field (token, message, channel, delay).');
             }
+            if (!/^\d{10,}$/.test(c)) {
+                return notify('error', 'Channel ID Salah', 'Channel ID harus angka ≥ 10 digit.');
+            }
             if (parseInt(d) < 5) {
                 return notify('error', 'Delay minimal 5ms');
             }
@@ -375,7 +378,7 @@
             if (!ok) {
                 return notify('error', 'Token Invalid', 'Token Discord tidak valid. Cek kembali.');
             }
-            botConfigs.push({ message:m, channelID:parseInt(c), delay:parseInt(d), selected:true, active:true, running:false });
+            botConfigs.push({ message:m, channelID:String(c), delay:parseInt(d), selected:true, active:true, running:false });
             saveConfigs();
             renderTable();
             updateCount();
@@ -392,7 +395,7 @@
                 title:'Edit Config', background:'#1e1f22', color:'#dbdee1',
                 html:`
                     <input id="m" class="swal2-input" value="${cfg.message}" placeholder="Pesan">
-                    <input id="c" class="swal2-input" value="${cfg.channelID}" placeholder="Channel ID" type="number">
+                    <input id="c" class="swal2-input" value="${cfg.channelID}" placeholder="Channel ID" type="text">
                     <input id="d" class="swal2-input" value="${cfg.delay}" placeholder="Delay (ms)" type="number" min="5">
                 `,
                 focusConfirm:false, showCancelButton:true, confirmButtonText:'Simpan',
@@ -401,8 +404,9 @@
                     const c=document.getElementById('c').value.trim();
                     const d=document.getElementById('d').value.trim();
                     if(!m||!c||!d){Swal.showValidationMessage('Isi semua field');return false;}
+                    if(!/^\d{10,}$/.test(c)){Swal.showValidationMessage('Channel ID harus angka ≥ 10 digit');return false;}
                     if(parseInt(d)<5){Swal.showValidationMessage('Delay minimal 5ms');return false;}
-                    return {message:m, channelID:parseInt(c), delay:parseInt(d)};
+                    return {message:m, channelID:String(c), delay:parseInt(d)};
                 }
             });
             if (r.value) {
