@@ -464,10 +464,12 @@
             }).then(async (r) => {
                 let data = {};
                 try { data = await r.json(); } catch(e) {}
-                if (r.ok) {
+                // data.ok reflects the real Discord API result (proxy returns 200 either way)
+                if (data && data.ok) {
                     logMessage(cfg.message, cfg.channelID, 'success');
                 } else {
-                    logMessage(cfg.message, cfg.channelID, 'failed', `${r.status}: ${JSON.stringify(data).slice(0,100)}`);
+                    const detail = (data && data.data && (data.data.message || JSON.stringify(data.data))) || `HTTP ${r.status}`;
+                    logMessage(cfg.message, cfg.channelID, 'failed', `${data && data.status ? data.status + ': ' : ''}${detail}`.slice(0,120));
                 }
             }).catch((err) => {
                 logMessage(cfg.message, cfg.channelID, 'failed', err.message || 'Network error');
