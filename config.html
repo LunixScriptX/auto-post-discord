@@ -177,7 +177,10 @@
     <div class="card logs-card">
         <div class="toolbar">
             <h3><i data-lucide="clipboard-list"></i> Realtime Logs</h3>
-            <button id="clearLogsBtn" class="btn btn-secondary btn-sm"><i data-lucide="trash-2"></i> Clear</button>
+            <div style="display:flex;gap:.4rem">
+                <button id="copyLogsBtn" class="btn btn-secondary btn-sm"><i data-lucide="copy"></i> Copy</button>
+                <button id="clearLogsBtn" class="btn btn-secondary btn-sm"><i data-lucide="trash-2"></i> Clear</button>
+            </div>
         </div>
         <div id="logTableBody">
             <div class="empty-state"><i data-lucide="terminal"></i><div>Belum ada log.</div></div>
@@ -309,7 +312,11 @@
                 frag.appendChild(tr);
             });
             tbody.appendChild(frag);
-            safeIcons();
+            // Force re-render Lucide icons for newly added SVG elements
+            if (typeof lucide !== 'undefined') {
+                // Use requestAnimationFrame to ensure DOM is fully painted
+                requestAnimationFrame(() => { if (typeof lucide !== 'undefined') lucide.createIcons(); });
+            }
         }
 
         function updateCount() {
@@ -439,19 +446,38 @@
         // ===== Send message =====
         function sendNow(cfg, tk) {
             const auth = tk || token; // fallback ke global
+            if (!auth) {
+                const msg = 'ERROR: Token kosong saat send';
+                console.error(msg, { cfg });
+                logMessage(cfg.message, cfg.channelID, 'failed', msg);
+                return;
+            }
+            if (!cfg.channelID) {
+                const msg = 'ERROR: Channel ID kosong';
+                console.error(msg, { cfg });
+                logMessage(cfg.message, cfg.channelID, 'failed', msg);
+                return;
+            }
             logMessage(cfg.message, cfg.channelID, 'sending');
             fetch(`https://discord.com/api/v10/channels/${cfg.channelID}/messages`, {
                 method:'POST',
                 headers:{'Authorization':auth,'Content-Type':'application/json'},
                 body:JSON.stringify({content:cfg.message})
-            }).then(r => r.json().then(data => ({ ok:r.ok, data })))
-              .then(({ok}) => logMessage(cfg.message, cfg.channelID, ok ? 'success' : 'failed'))
-              .catch(() => logMessage(cfg.message, cfg.channelID, 'failed'));
+            }).then(async (r) => {
+                let data = {};
+                try { data = await r.json(); } catch(e) { data = {}; }
+                console.log('Discord response:', r.status, data);
+                logMessage(cfg.message, cfg.channelID, r.ok ? 'success' : 'failed', r.ok ? '' : JSON.stringify(data).slice(0,120));
+                return null;
+            }).catch((err) => {
+                console.error('Fetch error:', err);
+                logMessage(cfg.message, cfg.channelID, 'failed', err.message || 'Network error');
+            });
         }
 
         // ===== Logs =====
         const logMap = new Map();
-        function logMessage(message, channelID, status) {
+        function logMessage(message, channelID, status, detail='') {
             const box = document.getElementById('logTableBody');
             if (box.querySelector('.empty-state')) box.innerHTML = '';
             const key = channelID + '|' + (message||'');
@@ -477,9 +503,11 @@
                 msgDiv.textContent=truncate(message,60); timeEl.textContent=new Date().toLocaleTimeString();
             } else if (status === 'success') {
                 dot.className='log-status dot-success'; badge.textContent='Sent'; badge.className='badge badge-log';
-                timeEl.textContent=new Date().toLocaleTimeString();
+                msgDiv.textContent=truncate(message,60); timeEl.textContent=new Date().toLocaleTimeString();
                 setTimeout(()=>{ if(row.parentNode){box.removeChild(row);} logMap.delete(key); }, 3500);
             } else {
+                dot.className='log-status dot-error'; badge.textContent='Failed'; badge.className='badge badge-log';
+                msgDiv.textContent=truncate(message + (detail ? ' | ' + detail : ''), 60); timeEl.textContent=new Date().toLocaleTimeString();
                 dot.className='log-status dot-error'; badge.textContent='Failed'; badge.className='badge badge-log';
                 timeEl.textContent=new Date().toLocaleTimeString();
             }
@@ -494,6 +522,28 @@
                 box.innerHTML = '<div class="empty-state"><i data-lucide="terminal"></i><div>Belum ada log.</div></div>';
                 logMap.clear(); safeIcons();
                 showToast.fire({icon:'success',title:'Logs cleared'});
+            });
+        });
+
+        document.getElementById('copyLogsBtn').addEventListener('click', () => {
+            const box = document.getElementById('logTableBody');
+            const rows = Array.from(box.querySelectorAll('.log-row'));
+            if (rows.length === 0) return showToast.fire({icon:'info',title:'Tidak ada log untuk disalin'});
+            const text = rows.map(r => {
+                const time = r.querySelector('.log-time')?.textContent || '';
+                const msg = r.querySelector('.log-msg')?.textContent || '';
+                const status = r.querySelector('.badge-log')?.textContent || '';
+                return `[${time}] ${status.toUpperCase()} - ${msg}`;
+            }).join('\n');
+            navigator.clipboard.writeText(text).then(() => {
+                showToast.fire({icon:'success', title:'Logs disalin'});
+            }).catch(() => {
+                // fallback
+                const ta = document.createElement('textarea');
+                ta.value = text; document.body.appendChild(ta); ta.select();
+                try { document.execCommand('copy'); showToast.fire({icon:'success',title:'Logs disalin'}); }
+                catch(e){ showToast.fire({icon:'error',title:'Gagal salin'}); }
+                document.body.removeChild(ta);
             });
         });
 
